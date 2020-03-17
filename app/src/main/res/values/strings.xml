@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AndroidCourse</string>
+    <string name="app_name" translatable="false">AndroidCourse</string>
+    <string name="country">default country</string>
 </resources>
