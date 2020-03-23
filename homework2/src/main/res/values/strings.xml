@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">HomeWork2</string>
     <string name="poi">POI</string>
+    <string name="attractions">"      "Attractions</string>
+    <string name="dining">"      "Dining</string>
+    <string name="education">"      "Education</string>
+    <string name="family">"      "Family</string>
+    <string name="health">"      "Health</string>
+    <string name="office">"      "Office</string>
+    <string name="promotions">"      "Promotions</string>
+    <string name="radio">"      "Radio</string>
+    <string name="recipes">"      "Recipes</string>
+    <string name="sports">"      "Sports</string>
 </resources>
