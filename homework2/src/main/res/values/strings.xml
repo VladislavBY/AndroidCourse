@@ -11,4 +11,11 @@
     <string name="radio">Radio</string>
     <string name="recipes">Recipes</string>
     <string name="sports">Sports</string>
+    <string name="photo">PHOTO</string>
+    <string name="title">Title</string>
+    <string name="prise">Prise</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
+    <string name="inventory">Inventory</string>
+    <string name="weight">Weight</string>
 </resources>
