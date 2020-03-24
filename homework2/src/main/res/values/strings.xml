@@ -18,4 +18,10 @@
     <string name="description">Description</string>
     <string name="inventory">Inventory</string>
     <string name="weight">Weight</string>
+    <string name="email">Email</string>
+    <string name="sing_in">Sing in</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="remember">Remember</string>
+    <string name="just_sing_in">* Just sing in</string>
 </resources>
