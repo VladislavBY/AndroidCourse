@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <FrameLayout
+    <RelativeLayout
         android:id="@+id/headFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,6 +10,7 @@
 
         <TextView
             android:id="@+id/head"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray"
@@ -21,6 +22,8 @@
             android:textSize="70sp" />
 
         <ImageButton
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@id/head"
             android:id="@+id/camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +32,7 @@
             android:layout_marginBottom="10dp"
             android:background="@color/gray"
             android:src="@drawable/ic_photo_camera_white_32dp" />
-    </FrameLayout>
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/title"
