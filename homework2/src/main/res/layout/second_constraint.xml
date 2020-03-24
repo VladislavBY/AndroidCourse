@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,18 +20,20 @@
             android:paddingBottom="70dp"
             android:text="@string/photo"
             android:textColor="@color/black"
-            android:textSize="70sp" />
+            android:textSize="70sp"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@color/gray"
-            android:src="@drawable/ic_photo_camera_white_32dp" />
-    </FrameLayout>
+            android:src="@drawable/ic_photo_camera_white_32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <EditText
         android:id="@+id/title"
