@@ -9,7 +9,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/secondLinearHead"
+            android:id="@+id/head"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray"
@@ -21,7 +21,7 @@
             android:textSize="70sp" />
 
         <ImageButton
-            android:id="@+id/secondLinearCamera"
+            android:id="@+id/camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
@@ -32,7 +32,7 @@
     </FrameLayout>
 
     <EditText
-        android:id="@+id/secondLinearTitle"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -48,7 +48,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/secondLinearPrise"
+            android:id="@+id/prise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -59,7 +59,7 @@
             android:hint="@string/prise" />
 
         <EditText
-            android:id="@+id/secondLinearLocation"
+            android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -72,7 +72,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/secondLinearDescription"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -88,7 +88,7 @@
 
         <EditText
 
-            android:id="@+id/secondLinearInventory"
+            android:id="@+id/inventory"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -100,7 +100,7 @@
             android:inputType="number" />
 
         <EditText
-            android:id="@+id/secondLinearWeight"
+            android:id="@+id/weight"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
