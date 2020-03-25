@@ -47,6 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/headFrame" />
 
     <LinearLayout
+        android:layout_marginTop="30dp"
         android:id="@+id/linearPriseLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,6 +91,7 @@
         app:layout_constraintTop_toBottomOf="@id/linearPriseLocation" />
 
     <FrameLayout
+        android:layout_marginTop="30dp"
         android:id="@+id/frameInventoryWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
