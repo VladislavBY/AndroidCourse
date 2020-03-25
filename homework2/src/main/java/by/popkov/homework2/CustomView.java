@@ -17,8 +17,8 @@ public class CustomView extends View {
     private Paint paintRightTop;
     private Paint paintRightBottom;
     private Paint paintCenter;
-    private int bigRadius = 400;
-    private int smallRadius = 150;
+    private int bigRadius;
+    private int smallRadius;
     Context myContext;
     Canvas myCanvas;
     int centerX;
