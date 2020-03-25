@@ -28,6 +28,7 @@ public class CustomView extends View {
     int centerX;
 
     int centerY;
+
     public CustomView(Context context) {
         super(context);
         myContext = context;
