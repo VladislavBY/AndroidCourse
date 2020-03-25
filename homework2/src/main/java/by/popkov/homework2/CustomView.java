@@ -82,7 +82,7 @@ public class CustomView extends View {
 
     private void colorChange(float eventX, float eventY) {
         if ((eventX > centerX - smallRadius && eventX < centerX + smallRadius) &&
-                (eventY > centerY - smallRadius && eventX < centerY + smallRadius)) { //Center
+                (eventY > centerY - smallRadius && eventY < centerY + smallRadius)) { //Center
             paintLeftBottom.setColor(getRandomColor());
             paintLeftTop.setColor(getRandomColor());
             paintRightTop.setColor(getRandomColor());
