@@ -19,7 +19,7 @@ public class CustomActivity extends Activity {
         customView.setListener(new CustomView.OnTouchEvent() {
             @Override
             public void onTouchEvent(float eventX, float eventY) {
-                String pos = String.format(Locale.ENGLISH, "Нажаты координаты %.0f:%.0f", eventX, eventY);
+                String pos = String.format(Locale.ENGLISH, "Нажаты координаты [%.0f:%.0f]", eventX, eventY);
                 Toast.makeText(CustomActivity.this, pos, Toast.LENGTH_SHORT).show();
             }
         });
