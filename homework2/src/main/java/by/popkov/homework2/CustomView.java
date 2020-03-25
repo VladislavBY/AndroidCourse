@@ -72,6 +72,10 @@ public class CustomView extends View {
     }
 
     private void colorChange(float eventX, float eventY) {
+        int leftSideBig = centerX - bigRadius;
+        int rightSideBig = centerX + bigRadius;
+        int topSideBig = centerY - bigRadius;
+        int bottomSideBig = centerY + bigRadius;
         if ((eventX > centerX - smallRadius && eventX < centerX + smallRadius) &&
                 (eventY > centerY - smallRadius && eventY < centerY + smallRadius)) { //Center
             paintLeftBottom.setColor(getRandomColor());
@@ -79,16 +83,16 @@ public class CustomView extends View {
             paintRightTop.setColor(getRandomColor());
             paintRightBottom.setColor(getRandomColor());
             paintCenter.setColor(getRandomColor());
-        } else if (eventX > centerX - bigRadius && eventX < centerX) {  //Left
-            if (eventY > centerY - bigRadius && eventY < centerY) { //LeftTop
+        } else if (eventX > leftSideBig && eventX < centerX) {  //Left
+            if (eventY > topSideBig && eventY < centerY) { //LeftTop
                 paintLeftTop.setColor(getRandomColor());
-            } else if (eventY < centerY + bigRadius && eventY > centerY) { //LeftBottom
+            } else if (eventY < bottomSideBig && eventY > centerY) { //LeftBottom
                 paintLeftBottom.setColor(getRandomColor());
             }
-        } else if (eventX > centerX && eventX < centerX + bigRadius) { //Right
-            if (eventY > centerY - bigRadius && eventY < centerY) { // RightTop
+        } else if (eventX > centerX && eventX < rightSideBig) { //Right
+            if (eventY > topSideBig && eventY < centerY) { // RightTop
                 paintRightTop.setColor(getRandomColor());
-            } else if ((eventY < centerY + bigRadius && eventY > centerY)) { //RightBottom
+            } else if ((eventY < bottomSideBig && eventY > centerY)) { //RightBottom
                 paintRightBottom.setColor(getRandomColor());
             }
         }
