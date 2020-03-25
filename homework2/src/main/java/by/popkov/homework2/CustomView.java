@@ -24,10 +24,18 @@ public class CustomView extends View {
     private int smallRadius = 150;
     Context myContext;
     Canvas myCanvas;
-
     int centerX;
-
     int centerY;
+
+    interface OnTouchEvent {
+        void onTouchEvent(float eventX, float eventY);
+    }
+
+    private OnTouchEvent listener;
+
+    public void setListener(OnTouchEvent listener) {
+        this.listener = listener;
+    }
 
     public CustomView(Context context) {
         super(context);
@@ -58,8 +66,7 @@ public class CustomView extends View {
         float eventX = event.getX();
         float eventY = event.getY();
         colorChange(eventX, eventY);
-        String pos = String.format(Locale.ENGLISH, "Нажаты координаты %f:%f", eventX, eventY);
-        Toast.makeText(myContext, pos, Toast.LENGTH_SHORT).show();
+        listener.onTouchEvent(eventX, eventY);
         invalidate();
         return super.onTouchEvent(event);
     }
