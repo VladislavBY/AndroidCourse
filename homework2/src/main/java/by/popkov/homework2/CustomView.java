@@ -12,9 +12,12 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 public class CustomView extends View {
-    private Paint paint;
-    private Paint paint2;
-    private int bigCircleRadius = 100;
+    private Paint paintLeftBottom;
+    private Paint paintLeftTop;
+    private Paint paintRightTop;
+    private Paint paintRightBottom;
+    private Paint paintCenter;
+    private int bigCircleRadius = 400;
     RectF rectf;
 
 
@@ -23,31 +26,60 @@ public class CustomView extends View {
 
     public CustomView(Context context) {
         super(context);
-        initPaint();
+        initPaintRightBottom();
+        initPaintLeftBottom();
+        initPaintLeftTop();
+        initPaintRightTop();
+        initPaintCenter();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initPaint();
+        initPaintRightBottom();
+        initPaintLeftBottom();
+        initPaintLeftTop();
+        initPaintRightTop();
+        initPaintCenter();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initPaint();
+        initPaintRightBottom();
+        initPaintLeftBottom();
+        initPaintLeftTop();
+        initPaintRightTop();
+        initPaintCenter();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initPaint();
+        initPaintRightBottom();
+        initPaintLeftBottom();
+        initPaintLeftTop();
+        initPaintRightTop();
+        initPaintCenter();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
                 centerX + bigCircleRadius, centerY + bigCircleRadius,
-                90, 90, true, paint);
-//        canvas.drawCircle(centerX, centerY, 50, paint2);
-//        canvas.drawCircle(centerX, centerY, 200, paint);
+                0, 90, true, paintRightBottom);
+
+        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
+                centerX + bigCircleRadius, centerY + bigCircleRadius,
+                90, 90, true, paintLeftBottom);
+
+        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
+                centerX + bigCircleRadius, centerY + bigCircleRadius,
+                180, 90, true, paintLeftTop);
+
+        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
+                centerX + bigCircleRadius, centerY + bigCircleRadius,
+                270, 90, true, paintRightTop);
+
+        canvas.drawCircle(centerX, centerY, 150, paintCenter);
+
         super.onDraw(canvas);
     }
 
@@ -58,17 +90,39 @@ public class CustomView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    private void initPaint() {
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.BLUE);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
+
+    private void initPaintRightBottom() {
+        paintRightBottom = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintRightBottom.setColor(Color.BLUE);
+        paintRightBottom.setAntiAlias(true);
+        paintRightBottom.setStyle(Paint.Style.FILL);
     }
 
-    private void initPaint2() {
-        paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.GREEN);
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.FILL);
+    private void initPaintLeftBottom() {
+        paintLeftBottom = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintLeftBottom.setColor(Color.RED);
+        paintLeftBottom.setAntiAlias(true);
+        paintLeftBottom.setStyle(Paint.Style.FILL);
+    }
+
+    private void initPaintLeftTop() {
+        paintLeftTop = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintLeftTop.setColor(Color.YELLOW);
+        paintLeftTop.setAntiAlias(true);
+        paintLeftTop.setStyle(Paint.Style.FILL);
+    }
+
+    private void initPaintRightTop() {
+        paintRightTop = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintRightTop.setColor(Color.GREEN);
+        paintRightTop.setAntiAlias(true);
+        paintRightTop.setStyle(Paint.Style.FILL);
+    }
+
+    private void initPaintCenter() {
+        paintCenter = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paintCenter.setColor(Color.GRAY);
+        paintCenter.setAntiAlias(true);
+        paintCenter.setStyle(Paint.Style.FILL);
     }
 }
