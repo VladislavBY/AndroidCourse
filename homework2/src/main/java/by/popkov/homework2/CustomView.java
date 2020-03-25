@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import java.util.Locale;
+
 
 public class CustomView extends View {
     private Paint paintLeftBottom;
@@ -72,7 +74,7 @@ public class CustomView extends View {
         float eventX = event.getX();
         float eventY = event.getY();
         colorChange(eventX, eventY);
-        String pos = String.format("Нажаты координаты %f:%f", eventX, eventY);
+        String pos = String.format(Locale.ENGLISH, "Нажаты координаты %f:%f", eventX, eventY);
         Toast.makeText(myContext, pos, Toast.LENGTH_SHORT).show();
         invalidate();
         return super.onTouchEvent(event);
