@@ -1,0 +1,14 @@
+package by.popkov.homework2;
+
+import android.app.Activity;
+import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+public class CustomActivity extends Activity {
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(new CustomView(this));
+    }
+
+}
