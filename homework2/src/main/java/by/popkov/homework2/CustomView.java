@@ -24,9 +24,21 @@ public class CustomView extends View {
     public CustomView(Context context) {
         super(context);
         initPaint();
-        initPaint2();
-        rectf = new RectF(700, 100, 800, 150);
+    }
 
+    public CustomView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        initPaint();
+    }
+
+    public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        initPaint();
+    }
+
+    public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        initPaint();
     }
 
     @Override
