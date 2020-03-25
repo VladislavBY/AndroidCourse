@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 
 import java.util.Locale;
@@ -24,48 +25,31 @@ public class CustomView extends View {
     Context myContext;
     Canvas myCanvas;
 
-
     int centerX;
-    int centerY;
 
+    int centerY;
     public CustomView(Context context) {
         super(context);
         myContext = context;
-        initPaintRightBottom();
-        initPaintLeftBottom();
-        initPaintLeftTop();
-        initPaintRightTop();
-        initPaintCenter();
+        initPaints();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         myContext = context;
-        initPaintRightBottom();
-        initPaintLeftBottom();
-        initPaintLeftTop();
-        initPaintRightTop();
-        initPaintCenter();
+        initPaints();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         myContext = context;
-        initPaintRightBottom();
-        initPaintLeftBottom();
-        initPaintLeftTop();
-        initPaintRightTop();
-        initPaintCenter();
+        initPaints();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         myContext = context;
-        initPaintRightBottom();
-        initPaintLeftBottom();
-        initPaintLeftTop();
-        initPaintRightTop();
-        initPaintCenter();
+        initPaints();
     }
 
     @Override
@@ -165,38 +149,19 @@ public class CustomView extends View {
     }
 
 
-    private void initPaintRightBottom() {
-        paintRightBottom = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintRightBottom.setColor(Color.BLUE);
-        paintRightBottom.setAntiAlias(true);
-        paintRightBottom.setStyle(Paint.Style.FILL);
+    private void initPaints() {
+        paintLeftBottom = initPaintWithRandColor();
+        paintLeftTop = initPaintWithRandColor();
+        paintRightTop = initPaintWithRandColor();
+        paintRightBottom = initPaintWithRandColor();
+        paintCenter = initPaintWithRandColor();
     }
 
-    private void initPaintLeftBottom() {
-        paintLeftBottom = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintLeftBottom.setColor(Color.RED);
-        paintLeftBottom.setAntiAlias(true);
-        paintLeftBottom.setStyle(Paint.Style.FILL);
-    }
-
-    private void initPaintLeftTop() {
-        paintLeftTop = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintLeftTop.setColor(Color.YELLOW);
-        paintLeftTop.setAntiAlias(true);
-        paintLeftTop.setStyle(Paint.Style.FILL);
-    }
-
-    private void initPaintRightTop() {
-        paintRightTop = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintRightTop.setColor(Color.GREEN);
-        paintRightTop.setAntiAlias(true);
-        paintRightTop.setStyle(Paint.Style.FILL);
-    }
-
-    private void initPaintCenter() {
-        paintCenter = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paintCenter.setColor(Color.GRAY);
-        paintCenter.setAntiAlias(true);
-        paintCenter.setStyle(Paint.Style.FILL);
+    private Paint initPaintWithRandColor() {
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(getRandomColor());
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        return paint;
     }
 }
