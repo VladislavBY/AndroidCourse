@@ -157,6 +157,9 @@ public class CustomView extends View {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        int narrowSide = Math.min(w, h);
+        bigRadius = narrowSide / 2;
+        smallRadius = narrowSide / 6;
         centerX = w / 2;
         centerY = h / 2;
         super.onSizeChanged(w, h, oldw, oldh);
