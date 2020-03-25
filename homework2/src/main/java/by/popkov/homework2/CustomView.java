@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,8 +18,8 @@ public class CustomView extends View {
     private Paint paintRightTop;
     private Paint paintRightBottom;
     private Paint paintCenter;
-    private int bigCircleRadius = 400;
-    private int smallCircleRadius = 150;
+    private int bigRadius = 400;
+    private int smallRadius = 150;
     Context myContext;
     Canvas myCanvas;
 
@@ -70,25 +69,35 @@ public class CustomView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        invalidate();
         float eventX = event.getX();
         float eventY = event.getY();
         colorChange(eventX, eventY);
         String pos = String.format("Нажаты координаты %f:%f", eventX, eventY);
-        Toast.makeText(myContext, String.valueOf(getRandomColor()), Toast.LENGTH_SHORT).show();
-        paintLeftTop.setColor(getRandomColor());
-        myCanvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
-                centerX + bigCircleRadius, centerY + bigCircleRadius,
-                180, 90, true, paintLeftTop);
+        Toast.makeText(myContext, pos, Toast.LENGTH_SHORT).show();
+        invalidate();
         return super.onTouchEvent(event);
     }
 
     private void colorChange(float eventX, float eventY) {
-        if (eventX > centerX - bigCircleRadius && eventX < centerX) {
-            if (eventY > centerY - bigCircleRadius && eventY < centerY) {
+        if ((eventX > centerX - smallRadius && eventX < centerX + smallRadius) &&
+                (eventY > centerY - smallRadius && eventX < centerY + smallRadius)) { //Center
+            paintLeftBottom.setColor(getRandomColor());
+            paintLeftTop.setColor(getRandomColor());
+            paintRightTop.setColor(getRandomColor());
+            paintRightBottom.setColor(getRandomColor());
+            paintCenter.setColor(getRandomColor());
+        } else if (eventX > centerX - bigRadius && eventX < centerX) {  //Left
+            if (eventY > centerY - bigRadius && eventY < centerY) { //LeftTop
                 paintLeftTop.setColor(getRandomColor());
+            } else if (eventY < centerY + bigRadius && eventY > centerY) { //LeftBottom
+                paintLeftBottom.setColor(getRandomColor());
             }
-//            }else if (eventY < centerY + bigCircleRadius && eventY > centerY){}
+        } else if (eventX > centerX && eventX < centerX + bigRadius) { //Right
+            if (eventY > centerY - bigRadius && eventY < centerY) { // RightTop
+                paintRightTop.setColor(getRandomColor());
+            } else if ((eventY < centerY + bigRadius && eventY > centerY)) { //RightBottom
+                paintRightBottom.setColor(getRandomColor());
+            }
         }
     }
 
@@ -123,23 +132,23 @@ public class CustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         myCanvas = canvas;
-        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
-                centerX + bigCircleRadius, centerY + bigCircleRadius,
+        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
+                centerX + bigRadius, centerY + bigRadius,
                 0, 90, true, paintRightBottom);
 
-        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
-                centerX + bigCircleRadius, centerY + bigCircleRadius,
+        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
+                centerX + bigRadius, centerY + bigRadius,
                 90, 90, true, paintLeftBottom);
 
-        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
-                centerX + bigCircleRadius, centerY + bigCircleRadius,
+        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
+                centerX + bigRadius, centerY + bigRadius,
                 180, 90, true, paintLeftTop);
 
-        canvas.drawArc(centerX - bigCircleRadius, centerY - bigCircleRadius,
-                centerX + bigCircleRadius, centerY + bigCircleRadius,
+        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
+                centerX + bigRadius, centerY + bigRadius,
                 270, 90, true, paintRightTop);
 
-        canvas.drawCircle(centerX, centerY, smallCircleRadius, paintCenter);
+        canvas.drawCircle(centerX, centerY, smallRadius, paintCenter);
 
         super.onDraw(canvas);
     }
