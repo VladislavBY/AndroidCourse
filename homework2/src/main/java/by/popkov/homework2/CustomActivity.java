@@ -8,7 +8,7 @@ public class CustomActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(new CustomView(this));
+        setContentView(R.layout.activity_custom_view);
     }
 
 }

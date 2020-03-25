@@ -3,15 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
     <by.popkov.homework2.CustomView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:background="@color/green" />
-
-    <by.popkov.homework2.CustomView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_gravity="center_horizontal|center_vertical" />
 </FrameLayout>
