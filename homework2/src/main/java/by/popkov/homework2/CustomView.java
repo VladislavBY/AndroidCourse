@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 
 import java.util.Locale;
