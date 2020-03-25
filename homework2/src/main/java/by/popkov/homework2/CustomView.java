@@ -17,12 +17,17 @@ public class CustomView extends View {
     private Paint paintRightTop;
     private Paint paintRightBottom;
     private Paint paintCenter;
+
     private int bigRadius;
     private int smallRadius;
-    Context myContext;
-    Canvas myCanvas;
+
     int centerX;
     int centerY;
+
+    int leftSideBig;
+    int rightSideBig;
+    int topSideBig;
+    int bottomSideBig;
 
     interface OnTouchEvent {
         void onTouchEvent(float eventX, float eventY);
@@ -36,25 +41,21 @@ public class CustomView extends View {
 
     public CustomView(Context context) {
         super(context);
-        myContext = context;
         initPaints();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        myContext = context;
         initPaints();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        myContext = context;
         initPaints();
     }
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        myContext = context;
         initPaints();
     }
 
@@ -69,10 +70,6 @@ public class CustomView extends View {
     }
 
     private void colorChange(float eventX, float eventY) {
-        int leftSideBig = centerX - bigRadius;
-        int rightSideBig = centerX + bigRadius;
-        int topSideBig = centerY - bigRadius;
-        int bottomSideBig = centerY + bigRadius;
         if ((eventX > centerX - smallRadius && eventX < centerX + smallRadius) &&
                 (eventY > centerY - smallRadius && eventY < centerY + smallRadius)) { //Center
             paintLeftBottom.setColor(getRandomColor());
@@ -125,21 +122,16 @@ public class CustomView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        myCanvas = canvas;
-        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
-                centerX + bigRadius, centerY + bigRadius,
+        canvas.drawArc(leftSideBig, topSideBig, rightSideBig, bottomSideBig,
                 0, 90, true, paintRightBottom);
 
-        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
-                centerX + bigRadius, centerY + bigRadius,
+        canvas.drawArc(leftSideBig, topSideBig, rightSideBig, bottomSideBig,
                 90, 90, true, paintLeftBottom);
 
-        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
-                centerX + bigRadius, centerY + bigRadius,
+        canvas.drawArc(leftSideBig, topSideBig, rightSideBig, bottomSideBig,
                 180, 90, true, paintLeftTop);
 
-        canvas.drawArc(centerX - bigRadius, centerY - bigRadius,
-                centerX + bigRadius, centerY + bigRadius,
+        canvas.drawArc(leftSideBig, topSideBig, rightSideBig, bottomSideBig,
                 270, 90, true, paintRightTop);
 
         canvas.drawCircle(centerX, centerY, smallRadius, paintCenter);
@@ -154,6 +146,10 @@ public class CustomView extends View {
         smallRadius = narrowSide / 6;
         centerX = w / 2;
         centerY = h / 2;
+        leftSideBig = centerX - bigRadius;
+        rightSideBig = centerX + bigRadius;
+        topSideBig = centerY - bigRadius;
+        bottomSideBig = centerY + bigRadius;
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
