@@ -24,4 +24,8 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="remember">Remember</string>
     <string name="just_sing_in">* Just sing in</string>
+    <string name="android">Android</string>
+    <string name="_125_n_posts">125 \n Posts</string>
+    <string name="_20k_n_followers">20K \n Followers</string>
+    <string name="_22_n_following">22 \n Following</string>
 </resources>
