@@ -85,9 +85,9 @@
 
     <TextView
         android:id="@+id/descriptionTextView"
-        android:layout_below="@id/addressTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/addressTextView"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:text="@string/description"
@@ -96,9 +96,9 @@
 
     <LinearLayout
         android:id="@+id/manyImageLinearLayout"
-        android:layout_below="@id/descriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/descriptionTextView"
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
@@ -141,9 +141,9 @@
 
     <LinearLayout
         android:id="@+id/actionLinearLayout"
-        android:layout_below="@id/manyImageLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/manyImageLinearLayout"
         android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
@@ -190,17 +190,17 @@
 
     <ImageView
         android:id="@+id/line"
-        android:layout_below="@id/actionLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/actionLinearLayout"
         android:layout_marginTop="20dp"
         android:background="@color/gray" />
 
     <LinearLayout
         android:id="@+id/lastImagesLinearLayout"
-        android:layout_below="@id/line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/line"
         android:layout_marginTop="30dp"
         android:orientation="horizontal">
 
