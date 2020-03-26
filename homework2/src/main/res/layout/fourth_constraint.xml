@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/headTextView"
         android:layout_width="match_parent"
@@ -12,9 +11,11 @@
         android:text="@string/android"
         android:textColor="@color/black"
         android:textSize="40sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/headTextView"
         android:id="@+id/avatarLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,6 +60,7 @@
     </LinearLayout>
 
     <TextView
+        app:layout_constraintTop_toBottomOf="@id/avatarLinearLayout"
         android:id="@+id/usernameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,17 +72,19 @@
         android:textColor="@color/black"
         android:textSize="20sp" />
 
-    <TextView
+    <TextView app:layout_constraintTop_toBottomOf="@id/usernameTextView"
         android:id="@+id/addressTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/address"
         android:textColor="@color/black"
         android:textSize="20sp" />
 
     <TextView
+        app:layout_constraintTop_toBottomOf="@id/addressTextView"
         android:id="@+id/descriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -92,10 +96,11 @@
         android:textSize="20sp" />
 
     <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/descriptionTextView"
         android:id="@+id/manyImageLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -136,6 +141,7 @@
     </LinearLayout>
 
     <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/manyImageLinearLayout"
         android:id="@+id/actionLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -182,14 +188,16 @@
             android:text="@string/website"
             android:textColor="@color/blue" />
     </LinearLayout>
-<ImageView
-    android:id="@+id/line"
-    android:layout_marginTop="20dp"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/gray"/>
+    <ImageView
+        app:layout_constraintTop_toBottomOf="@id/actionLinearLayout"
+        android:id="@+id/line"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray"/>
 
     <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/line"
         android:id="@+id/lastImagesLinearLayout"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
@@ -214,5 +222,4 @@
             android:layout_marginEnd="20dp"
             android:background="@color/gray" />
     </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

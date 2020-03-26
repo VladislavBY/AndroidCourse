@@ -29,4 +29,8 @@
     <string name="_20k_n_followers">20K \n Followers</string>
     <string name="_22_n_following">22 \n Following</string>
     <string name="directions">directions</string>
+    <string name="address">Address</string>
+    <string name="username">Username</string>
+    <string name="website">website</string>
+    <string name="save">save</string>
 </resources>
