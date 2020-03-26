@@ -64,7 +64,9 @@ public class CustomView extends View {
         float eventX = event.getX();
         float eventY = event.getY();
         colorChange(eventX, eventY);
-        listener.onTouchEvent(eventX, eventY);
+        if (listener != null) {
+            listener.onTouchEvent(eventX, eventY);
+        }
         invalidate();
         return super.onTouchEvent(event);
     }
