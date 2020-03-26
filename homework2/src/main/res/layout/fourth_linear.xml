@@ -182,31 +182,35 @@
             android:text="@string/website"
             android:textColor="@color/blue" />
     </LinearLayout>
-<ImageView
-    android:id="@+id/line"
-    android:layout_marginTop="20dp"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/gray"/>
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/gray" />
 
     <LinearLayout
         android:id="@+id/lastImagesLinearLayout"
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal">
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@color/gray" />
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@color/gray" />
+
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
