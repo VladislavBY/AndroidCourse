@@ -1,3 +1,4 @@
 rootProject.name='AndroidCourse'
 include ':app'
 include ':homework2'
+include ':homework3'
