@@ -10,7 +10,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class ContactsActivity extends AppCompatActivity {
 
     private FloatingActionButton floatingActionButtonAddContact;
-
     private int requestCode = 7777777;
 
     @Override
