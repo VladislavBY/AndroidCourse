@@ -3,14 +3,22 @@ package by.popkov.homework3;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddContact extends AppCompatActivity {
+    private Contact contact;
+
+    private int imageIDEmail = R.drawable.ic_contact_mail_pink_60dp;
+    private int imageIDPhone = R.drawable.ic_contact_phone_blue_60dp;
+
     private ImageButton buttonBack;
     private ImageButton buttonAdd;
 
@@ -30,6 +38,26 @@ public class AddContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
         viewsInit();
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Editable name = editTextName.getText();
+                Editable phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText();
+                if (name != null && phoneNumberOrEmail != null) {
+                    if (radioButtonEmail.isChecked()) contact =
+                            new ContactEmail(name.toString(), phoneNumberOrEmail.toString(), imageIDEmail);
+                    else if (radioButtonPhoneNumber.isChecked()) contact =
+                            new ContactPhone(name.toString(), phoneNumberOrEmail.toString(), imageIDPhone);
+                }
+                Intent result = new Intent(AddContact.this, ContactsActivity.class);
+                if (contact != null) {
+                    result.putExtra("Extra", contact);
+                    setResult(RESULT_OK, result);
+                    finish();
+                } else
+                    Toast.makeText(AddContact.this, "Input data please", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void viewsInit() {

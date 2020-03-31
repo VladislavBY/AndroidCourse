@@ -3,11 +3,13 @@ package by.popkov.homework3;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 
 public class ContactsActivity extends AppCompatActivity {
 
@@ -30,6 +32,9 @@ public class ContactsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Contact contact = (Contact) data.getSerializableExtra("Extra");
+        String name = contact.getName();
+        Toast.makeText(ContactsActivity.this, name, Toast.LENGTH_LONG).show();
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

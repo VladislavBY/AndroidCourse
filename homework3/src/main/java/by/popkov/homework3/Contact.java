@@ -1,11 +1,13 @@
 package by.popkov.homework3;
 
-interface Contact {
+import java.io.Serializable;
+
+interface Contact extends Serializable {
     String getName();
 
     String getDate();
 
-    String getImageID();
+    int getImageID();
 
     void setName(String name);
 

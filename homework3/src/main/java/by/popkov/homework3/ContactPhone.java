@@ -1,6 +1,8 @@
 package by.popkov.homework3;
 
-public class ContactPhone implements Contact {
+import java.io.Serializable;
+
+public class ContactPhone implements Contact, Serializable {
     private String name;
     private String date;
     private int imageID;
@@ -13,31 +15,31 @@ public class ContactPhone implements Contact {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public String getDate() {
-        return null;
+        return date;
     }
 
     @Override
-    public String getImageID() {
-        return null;
+    public int getImageID() {
+        return imageID;
     }
 
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     @Override
     public void setDate(String date) {
-
+        this.date = date;
     }
 
     @Override
     public void setImageID(int imageID) {
-
+        this.imageID = imageID;
     }
 }
