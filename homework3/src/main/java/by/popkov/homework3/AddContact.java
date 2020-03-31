@@ -29,10 +29,10 @@ public class AddContact extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
-        viewInit();
+        viewsInit();
     }
 
-    private void viewInit() {
+    private void viewsInit() {
         buttonBack = findViewById(R.id.buttonBack);
         buttonAdd = findViewById(R.id.buttonAdd);
         radioButtonPhoneNumber = findViewById(R.id.radioButtonPhoneNumber);
