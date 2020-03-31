@@ -67,11 +67,11 @@
         android:hint="@string/name" />
 
     <EditText
-        android:id="@+id/editTextPhoneNumber"
+        android:id="@+id/editTextPhoneNumberOrEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="@string/phone_number" />
+        android:hint="@string/phone_number_or_email" />
 
 
 </LinearLayout>
