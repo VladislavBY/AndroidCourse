@@ -1,8 +1,10 @@
 package by.popkov.homework3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -10,7 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class ContactsActivity extends AppCompatActivity {
 
     private FloatingActionButton floatingActionButtonAddContact;
-    private int requestCode = 7777777;
+    private int requestCode = 7777;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +26,10 @@ public class ContactsActivity extends AppCompatActivity {
                 startActivityForResult(AddContact.newIntent(ContactsActivity.this), requestCode);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
