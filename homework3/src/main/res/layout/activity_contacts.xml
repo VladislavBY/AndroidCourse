@@ -9,7 +9,14 @@
         android:layout_height="wrap_content"
         android:background="@color/blue">
 
+        <TextView
+            style="@style/TextViewStyle.Head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/contacts"/>
+
         <SearchView
+            android:searchIcon="@drawable/ic_search_white_32dp"
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +32,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textSize="20sp"
             android:gravity="center"
+            android:textColor="@color/grey"
             android:text="@string/no_contacts_please_add" />
 
 

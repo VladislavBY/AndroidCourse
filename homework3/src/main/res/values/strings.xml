@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Home Work 3</string>
     <string name="no_contacts_please_add">No contacts. Please add</string>
+    <string name="contacts">Contacts</string>
+    <string name="phone_number">Phone number</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="add_contact">Add contact</string>
 </resources>
