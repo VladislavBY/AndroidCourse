@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -18,16 +19,29 @@ import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder> {
 
-    private List<Contact> contactItemList = new ArrayList<>();
     private Context context;
+    private ContactsActivity contactsActivity;
 
     void setContext(Context context) {
         this.context = context;
     }
 
+    private List<Contact> contactItemList = new ArrayList<>();
+
     void addContact(Contact contact) {
         contactItemList.add(contact);
         notifyItemChanged(contactItemList.size() - 1);
+    }
+
+    void removeContact(Contact contactForRemove) {
+        contactItemList.remove(contactForRemove);
+        notifyDataSetChanged();
+    }
+
+    void editContact(Contact oldContact, Contact newContact){
+        oldContact.setData(newContact.getData());
+        oldContact.setName(newContact.getName());
+        oldContact.setImageID(newContact.getImageID());
     }
 
     @NonNull
@@ -62,12 +76,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             contactImageView = itemView.findViewById(R.id.contactImageView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewData = itemView.findViewById(R.id.textViewData);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, EditContactActivity.class));
-                    Toast.makeText(context, textViewName.getText(), Toast.LENGTH_LONG).show();
+                    contactsActivity.startEditContact(contactItemList.get(getAdapterPosition()));
+//                    Toast.makeText(context, "layoutPos" + getLayoutPosition()+ "/ adapterPos" + getAdapterPosition() , Toast.LENGTH_LONG).show();
                 }
             });
         }

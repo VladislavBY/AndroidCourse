@@ -44,7 +44,7 @@ public class AddContactActivity extends AppCompatActivity {
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
                 if (!name.trim().equals("") && !phoneNumberOrEmail.equals("")) {
                     if (radioButtonEmail.isChecked()) contact =
-                            new ContactEmail(name, phoneNumberOrEmail, imageIDEmail);
+                            new ContactEmail(name, phoneNumberOrEmail);
                     else if (radioButtonPhoneNumber.isChecked()) contact =
                             new ContactPhone(name, phoneNumberOrEmail, imageIDPhone);
                 }

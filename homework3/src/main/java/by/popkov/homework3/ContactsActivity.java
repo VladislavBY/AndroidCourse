@@ -20,7 +20,8 @@ public class ContactsActivity extends AppCompatActivity {
     private RecyclerView contactsRecyclerView;
     private FloatingActionButton floatingActionButtonAddContact;
 
-    private int requestCode = 7777;
+    private int requestCodeForAdd = 7777;
+    private int requestCodeForEdit = 1111;
 
 
     @Override
@@ -38,14 +39,14 @@ public class ContactsActivity extends AppCompatActivity {
         floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(AddContactActivity.newIntent(ContactsActivity.this), requestCode);
+                startActivityForResult(AddContactActivity.newIntent(ContactsActivity.this), requestCodeForAdd);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (this.requestCode == requestCode && resultCode == RESULT_OK && data != null) {
+        if (this.requestCodeForAdd == requestCode && resultCode == RESULT_OK && data != null) {
             Contact contact = (Contact) data.getSerializableExtra("Extra");
             if (contact != null) {
                 ContactListAdapter adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
@@ -58,6 +59,11 @@ public class ContactsActivity extends AppCompatActivity {
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }
+    }
+
+    void startEditContact(Contact contact) {
+        startActivityForResult(EditContactActivity
+                .newIntent(ContactsActivity.this, contact), requestCodeForEdit);
     }
 }
 
