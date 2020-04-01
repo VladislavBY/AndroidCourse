@@ -1,10 +1,12 @@
 package by.popkov.homework3;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +18,11 @@ import java.util.List;
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder> {
 
     private List<Contact> contactItemList = new ArrayList<>();
+    private Context context;
+
+    void setContext(Context context) {
+        this.context = context;
+    }
 
     void addContact(Contact contact) {
         contactItemList.add(contact);
@@ -41,17 +48,26 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         else return 0;
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+        private View itemLayout;
         private ImageView contactImageView;
         private TextView textViewName;
         private TextView textViewData;
 
 
-        ItemViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull final View itemView) {
             super(itemView);
+            itemLayout = itemView;
             contactImageView = itemView.findViewById(R.id.contactImageView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewData = itemView.findViewById(R.id.textViewData);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, textViewName.getText(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         void bingData(Contact contact) {
