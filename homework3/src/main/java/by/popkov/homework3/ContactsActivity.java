@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,25 +46,25 @@ public class ContactsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (this.requestCodeForAdd == requestCode && resultCode == RESULT_OK && data != null) {
-            Contact contact = (Contact) data.getSerializableExtra("Extra");
-            if (contact != null) {
-                if (adapter != null) {
-                    adapter.setContext(ContactsActivity.this);
+        if (data != null) {
+            if (this.requestCodeForAdd == requestCode && resultCode == RESULT_OK) {
+                Contact contact = (Contact) data.getSerializableExtra("Extra");
+                if (contact != null) {
                     adapter.addContact(contact);
-                    if (adapter.getItemCount() > 0) contactsRecyclerView
-                            .setBackground(getDrawable(R.drawable.white_background));
+                }
+            } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK) {
+                Contact newContact = (Contact) data.getSerializableExtra("newContact");
+                int adapterPosition = data.getIntExtra("adapterPosition", -202);
+                if (newContact != null) {
+                    adapter.editContact(newContact, adapterPosition);
+                } else {
+                    adapter.removeContact(adapterPosition);
                 }
             }
-        } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK && data != null) {
-            Contact oldContact = (Contact) data.getSerializableExtra("oldContact");
-            Contact newContact = (Contact) data.getSerializableExtra("newContact");
-            int adapterPosition = data.getIntExtra("adapterPosition", -202);
-            if (newContact != null && oldContact != null) {
-                adapter.editContact(oldContact, newContact, adapterPosition);
-            } else if (newContact == null && oldContact != null) {
-                adapter.removeContact(oldContact, adapterPosition);
-            }
+            if (adapter.getItemCount() > 0) {
+                contactsRecyclerView.setBackground(getDrawable(R.drawable.white_background));
+            } else
+                contactsRecyclerView.setBackground(getDrawable(R.drawable.transparent_background));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

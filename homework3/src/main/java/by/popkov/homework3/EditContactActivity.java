@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,13 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-
 public class EditContactActivity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
     private Button buttonEdit;
     private Button buttonRemove;
     private ImageButton buttonBack;
+
     private Intent comeIntent;
     private Contact oldContact;
     private int adapterPosition;
@@ -50,7 +49,7 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra("oldContact", oldContact);
+                intent.putExtra("adapterPosition", adapterPosition);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -59,7 +58,6 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra("oldContact", oldContact);
                 intent.putExtra("adapterPosition", adapterPosition);
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();

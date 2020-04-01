@@ -15,13 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AddContactActivity extends AppCompatActivity {
     private Contact contact;
 
-
     private ImageButton buttonBack;
     private ImageButton buttonAdd;
-
     private RadioButton radioButtonPhoneNumber;
     private RadioButton radioButtonEmail;
-
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
 

@@ -1,16 +1,13 @@
 package by.popkov.homework3;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -19,14 +16,9 @@ import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder> {
 
-    private Context context;
     private ContactsActivity contactsActivity;
 
-    void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void setContactsActivity(ContactsActivity contactsActivity) {
+    void setContactsActivity(ContactsActivity contactsActivity) {
         this.contactsActivity = contactsActivity;
     }
 
@@ -37,17 +29,15 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyItemChanged(contactItemList.size() - 1);
     }
 
-    void removeContact(Contact contactForRemove, int adapterPosition) {
-//        contactItemList.remove(adapterPosition);
+    void removeContact(int adapterPosition) {
+        contactItemList.remove(adapterPosition);
         notifyDataSetChanged();
-        Toast.makeText(context, "remove/" + adapterPosition, Toast.LENGTH_LONG).show();
     }
 
-    void editContact(Contact oldContact, Contact newContact, int adapterPosition) {
+    void editContact(Contact newContact, int adapterPosition) {
         contactItemList.remove(adapterPosition);
         contactItemList.add(adapterPosition, newContact);
         notifyDataSetChanged();
-        Toast.makeText(context, "edit/" + adapterPosition, Toast.LENGTH_LONG).show();
     }
 
     @NonNull
@@ -70,7 +60,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
-        private View itemLayout;
         private ImageView contactImageView;
         private TextView textViewName;
         private TextView textViewData;
@@ -78,7 +67,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
         ItemViewHolder(@NonNull final View itemView) {
             super(itemView);
-            itemLayout = itemView;
             contactImageView = itemView.findViewById(R.id.contactImageView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewData = itemView.findViewById(R.id.textViewData);
@@ -87,7 +75,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 public void onClick(View v) {
                     int adapterPosition = getAdapterPosition();
                     contactsActivity.startEditContact(contactItemList.get(adapterPosition), adapterPosition);
-//                    Toast.makeText(context, "layoutPos" + getLayoutPosition()+ "/ adapterPos" + getAdapterPosition() , Toast.LENGTH_LONG).show();
                 }
             });
         }
