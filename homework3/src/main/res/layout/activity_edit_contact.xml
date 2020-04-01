@@ -41,11 +41,29 @@
         android:layout_margin="10dp"
         android:hint="@string/phone_number_or_email" />
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/buttonEdit"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="@drawable/button_background_red"
-        android:text="Remove"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white"
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp"
+        android:text="@string/edit"
+        android:layout_margin="10dp"
+        />
+    <Button
+        android:id="@+id/buttonRemove"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_background_red"
+        android:textColor="@color/white"
+        android:paddingStart="80dp"
+        android:paddingEnd="80dp"
+        android:layout_margin="10dp"
+        android:text="@string/remove"
         />
 
 </LinearLayout>

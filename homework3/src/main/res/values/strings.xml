@@ -8,4 +8,6 @@
     <string name="add_contact">Add contact</string>
     <string name="phone_number_or_email">Phone number or Email</string>
     <string name="edit_contact">Edit contact</string>
+    <string name="remove">Remove</string>
+    <string name="edit">Edit</string>
 </resources>
