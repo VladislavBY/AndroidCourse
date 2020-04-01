@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -12,7 +12,7 @@ import android.widget.ImageButton;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Serializable;
+
 
 public class EditContactActivity extends AppCompatActivity {
     private EditText editTextName;
@@ -62,9 +62,9 @@ public class EditContactActivity extends AppCompatActivity {
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
                 if (data.contains("@")) {
-                    newContact = new ContactEmail(name, data, R.drawable.ic_contact_mail_pink_60dp);
+                    newContact = new ContactEmail(name, data, Contact.IMAGE_ID_EMAIL);
                 } else {
-                    newContact = new ContactPhone(name, data, R.drawable.ic_contact_phone_blue_60dp);
+                    newContact = new ContactPhone(name, data, Contact.IMAGE_ID_PHONE);
                 }
                 intent.putExtra("newContact", newContact);
                 setResult(RESULT_OK, intent);

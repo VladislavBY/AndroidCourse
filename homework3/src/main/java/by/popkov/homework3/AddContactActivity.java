@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AddContactActivity extends AppCompatActivity {
     private Contact contact;
 
-    private int imageIDEmail = R.drawable.ic_contact_mail_pink_60dp;
-    private int imageIDPhone = R.drawable.ic_contact_phone_blue_60dp;
 
     private ImageButton buttonBack;
     private ImageButton buttonAdd;
@@ -44,9 +42,9 @@ public class AddContactActivity extends AppCompatActivity {
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
                 if (!name.trim().equals("") && !phoneNumberOrEmail.equals("")) {
                     if (radioButtonEmail.isChecked()) contact =
-                            new ContactEmail(name, phoneNumberOrEmail);
+                            new ContactEmail(name, phoneNumberOrEmail, Contact.IMAGE_ID_EMAIL);
                     else if (radioButtonPhoneNumber.isChecked()) contact =
-                            new ContactPhone(name, phoneNumberOrEmail, imageIDPhone);
+                            new ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE);
                 }
                 Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                 if (contact != null) {

@@ -19,6 +19,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     private RecyclerView contactsRecyclerView;
     private FloatingActionButton floatingActionButtonAddContact;
+    private ContactListAdapter adapter;
 
     private int requestCodeForAdd = 7777;
     private int requestCodeForEdit = 1111;
@@ -33,6 +34,7 @@ public class ContactsActivity extends AppCompatActivity {
         contactsRecyclerView.setAdapter(new ContactListAdapter());
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (this, RecyclerView.VERTICAL, false));
+        adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
 
 
         floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
@@ -49,16 +51,23 @@ public class ContactsActivity extends AppCompatActivity {
         if (this.requestCodeForAdd == requestCode && resultCode == RESULT_OK && data != null) {
             Contact contact = (Contact) data.getSerializableExtra("Extra");
             if (contact != null) {
-                ContactListAdapter adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
                 if (adapter != null) {
                     adapter.setContext(ContactsActivity.this);
                     adapter.addContact(contact);
                     if (adapter.getItemCount() > 0) contactsRecyclerView
                             .setBackground(getDrawable(R.drawable.white_background));
                 }
-                super.onActivityResult(requestCode, resultCode, data);
+            }
+        } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK && data != null) {
+            Contact oldContact = (Contact) data.getSerializableExtra("oldContact");
+            Contact newContact = (Contact) data.getSerializableExtra("newContact");
+            if (newContact != null && oldContact != null) {
+                adapter.editContact(oldContact, newContact);
+            } else if (newContact == null && oldContact != null) {
+                adapter.removeContact(oldContact);
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     void startEditContact(Contact contact) {
