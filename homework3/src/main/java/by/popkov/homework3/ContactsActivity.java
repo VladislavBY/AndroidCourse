@@ -1,5 +1,6 @@
 package by.popkov.homework3;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -38,13 +39,18 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (this.requestCode == requestCode && resultCode == RESULT_OK && data != null) {
             Contact contact = (Contact) data.getSerializableExtra("Extra");
             if (contact != null) {
-                RecyclerView.Adapter adapter = contactsRecyclerView.getAdapter();
-                if (adapter != null) ((ContactListAdapter) adapter).addContact(contact);
+                ContactListAdapter adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
+                if (adapter != null) {
+                    adapter.addContact(contact);
+                    if (adapter.getItemCount() > 0) contactsRecyclerView
+                            .setBackground(getDrawable(R.drawable.white_background));
+                }
                 super.onActivityResult(requestCode, resultCode, data);
             }
         }
