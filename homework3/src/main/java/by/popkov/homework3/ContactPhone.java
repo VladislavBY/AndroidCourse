@@ -7,7 +7,7 @@ public class ContactPhone implements Contact, Serializable {
     private String data;
     private int imageID;
 
-    public ContactPhone(String name, String data, int imageID) {
+    ContactPhone(String name, String data, int imageID) {
         this.name = name;
         this.data = data;
         this.imageID = imageID;

@@ -8,7 +8,7 @@ public class ContactEmail implements Contact, Serializable {
     private int imageID;
 
 
-    public ContactEmail(String name, String date, int imageID) {
+    ContactEmail(String name, String date, int imageID) {
         this.name = name;
         this.data = date;
         this.imageID = imageID;

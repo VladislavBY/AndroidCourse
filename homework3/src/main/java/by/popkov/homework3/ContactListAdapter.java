@@ -17,7 +17,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     private List<Contact> contactItemList = new ArrayList<>();
 
-    public void addContact(Contact contact) {
+    void addContact(Contact contact) {
         contactItemList.add(contact);
         notifyItemChanged(contactItemList.size() - 1);
     }
@@ -41,20 +41,20 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         else return 0;
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
         private ImageView contactImageView;
         private TextView textViewName;
         private TextView textViewData;
 
 
-        public ItemViewHolder(@NonNull View itemView) {
+        ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             contactImageView = itemView.findViewById(R.id.contactImageView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewData = itemView.findViewById(R.id.textViewData);
         }
 
-        public void bingData(Contact contact) {
+        void bingData(Contact contact) {
             contactImageView.setImageResource(contact.getImageID());
             textViewName.setText(contact.getName());
             textViewData.setText(contact.getData());
