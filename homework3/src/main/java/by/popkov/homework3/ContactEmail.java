@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class ContactEmail implements Contact, Serializable {
     private String name;
-    private String date;
+    private String data;
     private int imageID;
 
 
     public ContactEmail(String name, String date, int imageID) {
         this.name = name;
-        this.date = date;
+        this.data = date;
         this.imageID = imageID;
     }
 
@@ -20,8 +20,8 @@ public class ContactEmail implements Contact, Serializable {
     }
 
     @Override
-    public String getDate() {
-        return date;
+    public String getData() {
+        return data;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class ContactEmail implements Contact, Serializable {
     }
 
     @Override
-    public void setDate(String date) {
-        this.date = date;
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override

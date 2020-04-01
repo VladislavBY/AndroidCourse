@@ -13,16 +13,16 @@
             style="@style/TextViewStyle.Head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/contacts"/>
+            android:text="@string/contacts" />
 
         <SearchView
-            android:searchIcon="@drawable/ic_search_white_32dp"
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:queryBackground="@color/white"
-            android:queryHint="Search contacts" />
+            android:queryHint="Search contacts"
+            android:searchIcon="@drawable/ic_search_white_32dp" />
     </FrameLayout>
 
     <FrameLayout
@@ -32,10 +32,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="20sp"
             android:gravity="center"
+            android:text="@string/no_contacts_please_add"
             android:textColor="@color/grey"
-            android:text="@string/no_contacts_please_add" />
+            android:textSize="20sp" />
 
 
         <androidx.recyclerview.widget.RecyclerView

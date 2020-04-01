@@ -41,13 +41,13 @@ public class AddContact extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Editable name = editTextName.getText();
-                Editable phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText();
-                if (name != null && phoneNumberOrEmail != null) {
+                String name = editTextName.getText().toString();
+                String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
+                if (!name.trim().equals("") && !phoneNumberOrEmail.equals("")) {
                     if (radioButtonEmail.isChecked()) contact =
-                            new ContactEmail(name.toString(), phoneNumberOrEmail.toString(), imageIDEmail);
+                            new ContactEmail(name, phoneNumberOrEmail, imageIDEmail);
                     else if (radioButtonPhoneNumber.isChecked()) contact =
-                            new ContactPhone(name.toString(), phoneNumberOrEmail.toString(), imageIDPhone);
+                            new ContactPhone(name, phoneNumberOrEmail, imageIDPhone);
                 }
                 Intent result = new Intent(AddContact.this, ContactsActivity.class);
                 if (contact != null) {
@@ -56,6 +56,14 @@ public class AddContact extends AppCompatActivity {
                     finish();
                 } else
                     Toast.makeText(AddContact.this, "Input data please", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
     }

@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class ContactPhone implements Contact, Serializable {
     private String name;
-    private String date;
+    private String data;
     private int imageID;
 
-    public ContactPhone(String name, String date, int imageID) {
+    public ContactPhone(String name, String data, int imageID) {
         this.name = name;
-        this.date = date;
+        this.data = data;
         this.imageID = imageID;
     }
 
@@ -19,8 +19,8 @@ public class ContactPhone implements Contact, Serializable {
     }
 
     @Override
-    public String getDate() {
-        return date;
+    public String getData() {
+        return data;
     }
 
     @Override
@@ -34,8 +34,8 @@ public class ContactPhone implements Contact, Serializable {
     }
 
     @Override
-    public void setDate(String date) {
-        this.date = date;
+    public void setData(String data) {
+        this.data = data;
     }
 
     @Override
