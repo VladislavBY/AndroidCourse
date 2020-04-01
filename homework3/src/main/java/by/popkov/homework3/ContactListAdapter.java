@@ -26,6 +26,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         this.context = context;
     }
 
+    public void setContactsActivity(ContactsActivity contactsActivity) {
+        this.contactsActivity = contactsActivity;
+    }
+
     private List<Contact> contactItemList = new ArrayList<>();
 
     void addContact(Contact contact) {
@@ -33,15 +37,17 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyItemChanged(contactItemList.size() - 1);
     }
 
-    void removeContact(Contact contactForRemove) {
-        contactItemList.remove(contactForRemove);
+    void removeContact(Contact contactForRemove, int adapterPosition) {
+//        contactItemList.remove(adapterPosition);
         notifyDataSetChanged();
+        Toast.makeText(context, "remove/" + adapterPosition, Toast.LENGTH_LONG).show();
     }
 
-    void editContact(Contact oldContact, Contact newContact){
-        oldContact.setData(newContact.getData());
-        oldContact.setName(newContact.getName());
-        oldContact.setImageID(newContact.getImageID());
+    void editContact(Contact oldContact, Contact newContact, int adapterPosition) {
+        contactItemList.remove(adapterPosition);
+        contactItemList.add(adapterPosition, newContact);
+        notifyDataSetChanged();
+        Toast.makeText(context, "edit/" + adapterPosition, Toast.LENGTH_LONG).show();
     }
 
     @NonNull
@@ -79,7 +85,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    contactsActivity.startEditContact(contactItemList.get(getAdapterPosition()));
+                    int adapterPosition = getAdapterPosition();
+                    contactsActivity.startEditContact(contactItemList.get(adapterPosition), adapterPosition);
 //                    Toast.makeText(context, "layoutPos" + getLayoutPosition()+ "/ adapterPos" + getAdapterPosition() , Toast.LENGTH_LONG).show();
                 }
             });

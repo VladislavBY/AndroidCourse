@@ -22,10 +22,12 @@ public class EditContactActivity extends AppCompatActivity {
     private ImageButton buttonBack;
     private Intent comeIntent;
     private Contact oldContact;
+    private int adapterPosition;
 
-    public static Intent newIntent(Context context, Contact contact) {
-        Intent intent = new Intent(context, AddContactActivity.class);
+    public static Intent newIntent(Context context, Contact contact, int adapterPosition) {
+        Intent intent = new Intent(context, EditContactActivity.class);
         intent.putExtra("contact", contact);
+        intent.putExtra("adapterPosition", adapterPosition);
         return intent;
     }
 
@@ -58,6 +60,7 @@ public class EditContactActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
                 intent.putExtra("oldContact", oldContact);
+                intent.putExtra("adapterPosition", adapterPosition);
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
@@ -89,5 +92,6 @@ public class EditContactActivity extends AppCompatActivity {
         buttonRemove = findViewById(R.id.buttonRemove);
         buttonBack = findViewById(R.id.buttonBack);
         oldContact = (Contact) comeIntent.getSerializableExtra("contact");
+        adapterPosition = comeIntent.getIntExtra("adapterPosition", -404);
     }
 }

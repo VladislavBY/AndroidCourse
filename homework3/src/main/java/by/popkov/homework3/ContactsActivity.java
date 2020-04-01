@@ -35,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (this, RecyclerView.VERTICAL, false));
         adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
-
+        if (adapter != null) adapter.setContactsActivity(this);
 
         floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
         floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
@@ -61,18 +61,19 @@ public class ContactsActivity extends AppCompatActivity {
         } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK && data != null) {
             Contact oldContact = (Contact) data.getSerializableExtra("oldContact");
             Contact newContact = (Contact) data.getSerializableExtra("newContact");
+            int adapterPosition = data.getIntExtra("adapterPosition", -202);
             if (newContact != null && oldContact != null) {
-                adapter.editContact(oldContact, newContact);
+                adapter.editContact(oldContact, newContact, adapterPosition);
             } else if (newContact == null && oldContact != null) {
-                adapter.removeContact(oldContact);
+                adapter.removeContact(oldContact, adapterPosition);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    void startEditContact(Contact contact) {
+    void startEditContact(Contact contact, int adapterPosition) {
         startActivityForResult(EditContactActivity
-                .newIntent(ContactsActivity.this, contact), requestCodeForEdit);
+                .newIntent(ContactsActivity.this, contact, adapterPosition), requestCodeForEdit);
     }
 }
 
