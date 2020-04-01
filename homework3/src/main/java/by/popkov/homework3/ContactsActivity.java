@@ -38,7 +38,7 @@ public class ContactsActivity extends AppCompatActivity {
         floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(AddContact.newIntent(ContactsActivity.this), requestCode);
+                startActivityForResult(AddContactActivity.newIntent(ContactsActivity.this), requestCode);
             }
         });
     }

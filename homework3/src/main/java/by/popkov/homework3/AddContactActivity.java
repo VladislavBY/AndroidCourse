@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class AddContact extends AppCompatActivity {
+public class AddContactActivity extends AppCompatActivity {
     private Contact contact;
 
     private int imageIDEmail = R.drawable.ic_contact_mail_pink_60dp;
@@ -29,7 +29,7 @@ public class AddContact extends AppCompatActivity {
 
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, AddContact.class);
+        return new Intent(context, AddContactActivity.class);
     }
 
     @Override
@@ -48,13 +48,13 @@ public class AddContact extends AppCompatActivity {
                     else if (radioButtonPhoneNumber.isChecked()) contact =
                             new ContactPhone(name, phoneNumberOrEmail, imageIDPhone);
                 }
-                Intent result = new Intent(AddContact.this, ContactsActivity.class);
+                Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                 if (contact != null) {
                     result.putExtra("Extra", contact);
                     setResult(RESULT_OK, result);
                     finish();
                 } else
-                    Toast.makeText(AddContact.this, "Input data please", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddContactActivity.this, "Input data please", Toast.LENGTH_LONG).show();
             }
         });
 

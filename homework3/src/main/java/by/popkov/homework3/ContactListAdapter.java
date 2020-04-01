@@ -1,6 +1,7 @@
 package by.popkov.homework3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    context.startActivity(new Intent(context, EditContactActivity.class));
                     Toast.makeText(context, textViewName.getText(), Toast.LENGTH_LONG).show();
                 }
             });

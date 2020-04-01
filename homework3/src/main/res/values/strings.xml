@@ -7,4 +7,5 @@
     <string name="name">Name</string>
     <string name="add_contact">Add contact</string>
     <string name="phone_number_or_email">Phone number or Email</string>
+    <string name="edit_contact">Edit contact</string>
 </resources>
