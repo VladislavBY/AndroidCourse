@@ -26,18 +26,23 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyItemChanged(contactItemList.size() - 1);
     }
 
-    void removeContact(int adapterPosition) {
-        contactItemList.remove(adapterPosition);
-        contactItemListFull.remove(adapterPosition);
+    void removeContact(int fullListPosition) {
+        Contact removed = contactItemListFull.remove(fullListPosition);
+        contactItemList.remove(removed);
         notifyDataSetChanged();
     }
 
-    void editContact(Contact newContact, int adapterPosition) {
-        contactItemList.remove(adapterPosition);
-        contactItemList.add(adapterPosition, newContact);
-        contactItemListFull.remove(adapterPosition);
-        contactItemListFull.add(adapterPosition, newContact);
+    void editContact(Contact newContact, int fullListPosition) {
+        Contact removed = contactItemListFull.remove(fullListPosition);
+        contactItemListFull.add(fullListPosition, newContact);
+        int indexOfRemoved = contactItemList.indexOf(removed);
+        contactItemList.remove(removed);
+        contactItemList.add(indexOfRemoved, newContact);
         notifyDataSetChanged();
+    }
+
+    private int getFullListPosition(Contact contact) {
+        return contactItemListFull.indexOf(contact);
     }
 
     private ContactsActivity contactsActivity;
@@ -121,7 +126,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 @Override
                 public void onClick(View v) {
                     int adapterPosition = getAdapterPosition();
-                    contactsActivity.startEditContact(contactItemList.get(adapterPosition), adapterPosition);
+                    Contact clickedContact = contactItemList.get(adapterPosition);
+                    contactsActivity.startEditContact(clickedContact, getFullListPosition(clickedContact));
                 }
             });
         }
