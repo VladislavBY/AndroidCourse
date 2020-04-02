@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class ContactsActivity extends AppCompatActivity {
 
     private RecyclerView contactsRecyclerView;
-    private FloatingActionButton floatingActionButtonAddContact;
     private ContactListAdapter adapter;
 
     private int requestCodeForAdd = 7777;
@@ -27,15 +26,13 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         contactsRecyclerView.setAdapter(new ContactListAdapter());
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (this, RecyclerView.VERTICAL, false));
         adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
         if (adapter != null) adapter.setContactsActivity(this);
-
-        floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
+        FloatingActionButton floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
         floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
