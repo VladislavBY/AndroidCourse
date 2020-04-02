@@ -74,14 +74,14 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK) {
                 Contact newContact = (Contact) data.getSerializableExtra("newContact");
-                int adapterPosition = data.getIntExtra("adapterPosition", -202);
+                int fullListPosition = data.getIntExtra("fullListPosition", -202);
                 if (newContact != null) {
-                    adapter.editContact(newContact, adapterPosition);
+                    adapter.editContact(newContact, fullListPosition);
                 } else {
-                    adapter.removeContact(adapterPosition);
+                    adapter.removeContact(fullListPosition);
                 }
             }
-            if (adapter.getItemCount() > 0) {
+            if (adapter.getFullItemCount() > 0) {
                 contactsRecyclerView.setVisibility(View.VISIBLE);
             } else
                 contactsRecyclerView.setVisibility(View.INVISIBLE);
@@ -89,9 +89,9 @@ public class ContactsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    void startEditContact(Contact contact, int adapterPosition) {
+    void startEditContact(Contact contact, int fullListPosition) {
         startActivityForResult(EditContactActivity
-                .newIntent(ContactsActivity.this, contact, adapterPosition), requestCodeForEdit);
+                .newIntent(ContactsActivity.this, contact, fullListPosition), requestCodeForEdit);
     }
 }
 

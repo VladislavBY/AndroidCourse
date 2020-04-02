@@ -20,12 +20,12 @@ public class EditContactActivity extends AppCompatActivity {
     private ImageButton buttonBack;
 
     private Contact oldContact;
-    private int adapterPosition;
+    private int fullListPosition;
 
-    public static Intent newIntent(Context context, Contact contact, int adapterPosition) {
+    public static Intent newIntent(Context context, Contact contact, int fullListPosition) {
         Intent intent = new Intent(context, EditContactActivity.class);
         intent.putExtra("contact", contact);
-        intent.putExtra("adapterPosition", adapterPosition);
+        intent.putExtra("fullListPosition", fullListPosition);
         return intent;
     }
 
@@ -48,7 +48,7 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra("adapterPosition", adapterPosition);
+                intent.putExtra("fullListPosition", fullListPosition);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -57,7 +57,7 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra("adapterPosition", adapterPosition);
+                intent.putExtra("fullListPosition", fullListPosition);
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
@@ -89,6 +89,6 @@ public class EditContactActivity extends AppCompatActivity {
         buttonBack = findViewById(R.id.buttonBack);
         Intent comeIntent = getIntent();
         oldContact = (Contact) comeIntent.getSerializableExtra("contact");
-        adapterPosition = comeIntent.getIntExtra("adapterPosition", -404);
+        fullListPosition = comeIntent.getIntExtra("fullListPosition", -404);
     }
 }

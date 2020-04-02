@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder> implements Filterable {
+public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>
+        implements Filterable {
     private List<Contact> contactItemList = new ArrayList<>();
     private List<Contact> contactItemListFull = new ArrayList<>();
 
@@ -41,8 +42,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyDataSetChanged();
     }
 
-    private int getFullListPosition(Contact contact) {
-        return contactItemListFull.indexOf(contact);
+    int getFullItemCount() {
+        if (contactItemList != null) return contactItemListFull.size();
+        else return 0;
     }
 
     private ContactsActivity contactsActivity;
@@ -57,7 +59,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     ContactListAdapter(List<Contact> contactItemListList) {
         this.contactItemList = contactItemListList;
         this.contactItemListFull = new ArrayList<>(contactItemListList);
-
     }
 
     @NonNull
@@ -116,7 +117,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         private TextView textViewName;
         private TextView textViewData;
 
-
         ItemViewHolder(@NonNull final View itemView) {
             super(itemView);
             contactImageView = itemView.findViewById(R.id.contactImageView);
@@ -125,9 +125,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int adapterPosition = getAdapterPosition();
-                    Contact clickedContact = contactItemList.get(adapterPosition);
-                    contactsActivity.startEditContact(clickedContact, getFullListPosition(clickedContact));
+                    Contact clickedContact = contactItemList.get(getAdapterPosition());
+                    contactsActivity.startEditContact(clickedContact, contactItemListFull.indexOf(clickedContact));
                 }
             });
         }
