@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <FrameLayout
@@ -31,6 +31,7 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/textViewNoContacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -43,11 +44,13 @@
             android:id="@+id/recyclerViewContacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="invisible"
             app:fastScrollEnabled="true"
             app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
             app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
             app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"/>
+            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButtonAddContact"

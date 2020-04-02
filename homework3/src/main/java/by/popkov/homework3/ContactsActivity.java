@@ -62,9 +62,9 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
             if (adapter.getItemCount() > 0) {
-                contactsRecyclerView.setBackground(getDrawable(R.drawable.white_background));
+                contactsRecyclerView.setVisibility(View.VISIBLE);
             } else
-                contactsRecyclerView.setBackground(getDrawable(R.drawable.transparent_background));
+                contactsRecyclerView.setVisibility(View.INVISIBLE);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
