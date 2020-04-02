@@ -81,12 +81,16 @@ public class ContactsActivity extends AppCompatActivity {
                     adapter.removeContact(fullListPosition);
                 }
             }
-            if (adapter.getFullItemCount() > 0) {
-                contactsRecyclerView.setVisibility(View.VISIBLE);
-            } else
-                contactsRecyclerView.setVisibility(View.INVISIBLE);
+            visibleSwitcher(adapter.getFullItemCount());
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void visibleSwitcher(int fullItemCount) {
+        if (fullItemCount > 0) {
+            contactsRecyclerView.setVisibility(View.VISIBLE);
+        } else
+            contactsRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     void startEditContact(Contact contact, int fullListPosition) {
