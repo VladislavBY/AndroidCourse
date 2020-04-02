@@ -57,7 +57,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     ContactListAdapter(List<Contact> contactItemListList) {
-        this.contactItemList = contactItemListList;
+        this.contactItemList = new ArrayList<>(contactItemListList);
         this.contactItemListFull = new ArrayList<>(contactItemListList);
     }
 
