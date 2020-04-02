@@ -18,7 +18,6 @@ public class ContactsActivity extends AppCompatActivity {
 
     private RecyclerView contactsRecyclerView;
     private ContactListAdapter adapter;
-    private SearchView searchView;
 
     private int requestCodeForAdd = 7777;
     private int requestCodeForEdit = 1111;
@@ -28,7 +27,21 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-        searchView = findViewById(R.id.searchView);
+        initContactsRecyclerView();
+        setListeners();
+    }
+
+    private void initContactsRecyclerView() {
+        contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
+        contactsRecyclerView.setAdapter(new ContactListAdapter());
+        contactsRecyclerView.setLayoutManager(new LinearLayoutManager
+                (this, RecyclerView.VERTICAL, false));
+        adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
+        if (adapter != null) adapter.setContactsActivity(this);
+    }
+
+    private void setListeners() {
+        SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -41,12 +54,6 @@ public class ContactsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
-        contactsRecyclerView.setAdapter(new ContactListAdapter());
-        contactsRecyclerView.setLayoutManager(new LinearLayoutManager
-                (this, RecyclerView.VERTICAL, false));
-        adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
-        if (adapter != null) adapter.setContactsActivity(this);
         FloatingActionButton floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
         floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
