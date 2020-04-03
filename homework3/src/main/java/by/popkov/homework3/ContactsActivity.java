@@ -32,12 +32,6 @@ public class ContactsActivity extends AppCompatActivity {
         setListeners();
     }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable("adapter", adapter);
-    }
-
     private void initContactsRecyclerView(Bundle savedInstanceState) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         if (savedInstanceState != null) {
@@ -77,6 +71,12 @@ public class ContactsActivity extends AppCompatActivity {
                         .newIntent(ContactsActivity.this), requestCodeForAdd);
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("adapter", adapter);
     }
 
     @Override

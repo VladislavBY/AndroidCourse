@@ -58,9 +58,30 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     ContactListAdapter() {
     }
 
-    ContactListAdapter(List<Contact> contactItemListList) {
-        this.contactItemList = new ArrayList<>(contactItemListList);
-        this.contactItemListFull = new ArrayList<>(contactItemListList);
+    private ContactListAdapter(Parcel source) {
+        int sizeContactFull = source.readInt();
+        int sizeContact = (int) source.readLong();
+        String[] commonNames = new String[sizeContactFull + sizeContact];
+        source.readStringArray(commonNames);
+        ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
+        source.readStringList(commonData);
+        int[] commonImageID = new int[sizeContactFull + sizeContact];
+        source.readIntArray(commonImageID);
+        for (int i = 0; i < commonNames.length; i++) {
+            if (i < sizeContactFull) {
+                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
+                    contactItemListFull.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
+                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
+                    contactItemListFull.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
+                }
+            } else {
+                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
+                    contactItemList.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
+                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
+                    contactItemList.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
+                }
+            }
+        }
     }
 
     @NonNull
@@ -126,7 +147,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         String[] commonNames = new String[sizeContactFull + sizeContact];
         for (int i = 0; i < commonNames.length; i++) {
             if (i < sizeContactFull) commonNames[i] = contactItemListFull.get(i).getName();
-            else commonNames[i] = contactItemList.get(i).getName();
+            else commonNames[i] = contactItemList.get(i - sizeContactFull).getName();
         }
 
         ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
@@ -141,7 +162,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         for (int i = 0; i < commonImageID.length; i++) {
             if (i < sizeContactFull)
                 commonImageID[i] = contactItemListFull.get(i).getImageID();
-            else commonImageID[i] = contactItemList.get(i).getImageID();
+            else commonImageID[i] = contactItemList.get(i - sizeContactFull).getImageID();
         }
         dest.writeStringArray(commonNames);
         dest.writeStringList(commonData);
@@ -150,32 +171,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         dest.writeLong(sizeContact);
     }
 
-
-    public ContactListAdapter(Parcel source) {
-        int sizeContactFull = source.readInt();
-        int sizeContact = (int) source.readLong();
-        String[] commonNames = new String[sizeContactFull + sizeContact];
-        source.readStringArray(commonNames);
-        ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
-        source.readStringList(commonData);
-        int[] commonImageID = new int[sizeContactFull + sizeContact];
-        source.readIntArray(commonImageID);
-        for (int i = 0; i < commonNames.length; i++) {
-            if (i < sizeContactFull) {
-                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
-                    contactItemListFull.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
-                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
-                    contactItemListFull.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
-                }
-            } else {
-                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
-                    contactItemList.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
-                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
-                    contactItemList.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
-                }
-            }
-        }
-    }
 
     public static final Parcelable.Creator<ContactListAdapter> CREATOR = new Parcelable.Creator<ContactListAdapter>() {
 
