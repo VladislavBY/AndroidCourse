@@ -1,6 +1,8 @@
 package by.popkov.homework3;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,7 @@ import java.util.List;
 
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>
-        implements Filterable {
+        implements Filterable, Parcelable {
     private List<Contact> contactItemList = new ArrayList<>();
     private List<Contact> contactItemListFull = new ArrayList<>();
 
@@ -112,7 +114,84 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         return contactFilter;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        int sizeContactFull = contactItemListFull.size();
+        int sizeContact = contactItemList.size();
+        String[] commonNames = new String[sizeContactFull + sizeContact];
+        for (int i = 0; i < commonNames.length; i++) {
+            if (i < sizeContactFull) commonNames[i] = contactItemListFull.get(i).getName();
+            else commonNames[i] = contactItemList.get(i).getName();
+        }
+
+        ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
+        for (Contact contact : contactItemListFull) {
+            commonData.add(contact.getData());
+        }
+        for (Contact contact : contactItemList) {
+            commonData.add(contact.getData());
+        }
+
+        int[] commonImageID = new int[sizeContactFull + sizeContact];
+        for (int i = 0; i < commonImageID.length; i++) {
+            if (i < sizeContactFull)
+                commonImageID[i] = contactItemListFull.get(i).getImageID();
+            else commonImageID[i] = contactItemList.get(i).getImageID();
+        }
+        dest.writeStringArray(commonNames);
+        dest.writeStringList(commonData);
+        dest.writeIntArray(commonImageID);
+        dest.writeInt(sizeContactFull);
+        dest.writeLong(sizeContact);
+    }
+
+
+    public ContactListAdapter(Parcel source) {
+        int sizeContactFull = source.readInt();
+        int sizeContact = (int) source.readLong();
+        String[] commonNames = new String[sizeContactFull + sizeContact];
+        source.readStringArray(commonNames);
+        ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
+        source.readStringList(commonData);
+        int[] commonImageID = new int[sizeContactFull + sizeContact];
+        source.readIntArray(commonImageID);
+        for (int i = 0; i < commonNames.length; i++) {
+            if (i < sizeContactFull) {
+                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
+                    contactItemListFull.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
+                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
+                    contactItemListFull.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
+                }
+            } else {
+                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
+                    contactItemList.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
+                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
+                    contactItemList.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
+                }
+            }
+        }
+    }
+
+    public static final Parcelable.Creator<ContactListAdapter> CREATOR = new Parcelable.Creator<ContactListAdapter>() {
+
+        @Override
+        public ContactListAdapter createFromParcel(Parcel source) {
+            return new ContactListAdapter(source);
+        }
+
+        @Override
+        public ContactListAdapter[] newArray(int size) {
+            return new ContactListAdapter[size];
+        }
+    };
+
     class ItemViewHolder extends RecyclerView.ViewHolder {
+
         private ImageView contactImageView;
         private TextView textViewName;
         private TextView textViewData;

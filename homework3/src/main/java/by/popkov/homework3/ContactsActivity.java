@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,17 +28,31 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-        initContactsRecyclerView();
+        initContactsRecyclerView(savedInstanceState);
         setListeners();
     }
 
-    private void initContactsRecyclerView() {
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("adapter", adapter);
+    }
+
+    private void initContactsRecyclerView(Bundle savedInstanceState) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
-        contactsRecyclerView.setAdapter(new ContactListAdapter());
+        if (savedInstanceState != null) {
+            contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState.getParcelable("adapter"));
+        } else {
+            contactsRecyclerView.setAdapter(new ContactListAdapter());
+        }
         contactsRecyclerView.setLayoutManager(new LinearLayoutManager
                 (this, RecyclerView.VERTICAL, false));
         adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
-        if (adapter != null) adapter.setContactsActivity(this);
+
+        if (adapter != null) {
+            visibleSwitcher(adapter.getFullItemCount());
+            adapter.setContactsActivity(this);
+        }
     }
 
     private void setListeners() {
