@@ -29,18 +29,17 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyItemChanged(contactItemList.size() - 1);
     }
 
-    void removeContact(int fullListPosition) {
-        Contact removed = contactItemListFull.remove(fullListPosition);
-        contactItemList.remove(removed);
+    void removeContact(int fullListPosition, int listPosition) {
+        contactItemListFull.remove(fullListPosition);
+        contactItemList.remove(listPosition);
         notifyDataSetChanged();
     }
 
-    void editContact(Contact newContact, int fullListPosition) {
-        Contact removed = contactItemListFull.remove(fullListPosition);
+    void editContact(Contact newContact, int fullListPosition, int listPosition) {
+        contactItemListFull.remove(fullListPosition);
         contactItemListFull.add(fullListPosition, newContact);
-        int indexOfRemoved = contactItemList.indexOf(removed);
-        contactItemList.remove(removed);
-        contactItemList.add(indexOfRemoved, newContact);
+        contactItemList.remove(listPosition);
+        contactItemList.add(listPosition, newContact);
         notifyDataSetChanged();
     }
 
@@ -200,7 +199,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 @Override
                 public void onClick(View v) {
                     Contact clickedContact = contactItemList.get(getAdapterPosition());
-                    contactsActivity.startEditContact(clickedContact, contactItemListFull.indexOf(clickedContact));
+                    contactsActivity.startEditContact(clickedContact,
+                            contactItemListFull.indexOf(clickedContact),
+                            contactItemList.indexOf(clickedContact));
                 }
             });
         }

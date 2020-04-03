@@ -21,11 +21,13 @@ public class EditContactActivity extends AppCompatActivity {
 
     private Contact oldContact;
     private int fullListPosition;
+    private int listPosition;
 
-    public static Intent newIntent(Context context, Contact contact, int fullListPosition) {
+    public static Intent newIntent(Context context, Contact contact, int fullListPosition, int listPosition) {
         Intent intent = new Intent(context, EditContactActivity.class);
         intent.putExtra("contact", contact);
         intent.putExtra("fullListPosition", fullListPosition);
+        intent.putExtra("listPosition", listPosition);
         return intent;
     }
 
@@ -35,7 +37,10 @@ public class EditContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_contact);
         init();
         setDataInFields();
+        setListeners();
+    }
 
+    private void setListeners() {
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +54,7 @@ public class EditContactActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
                 intent.putExtra("fullListPosition", fullListPosition);
+                intent.putExtra("listPosition", listPosition);
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -58,6 +64,7 @@ public class EditContactActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
                 intent.putExtra("fullListPosition", fullListPosition);
+                intent.putExtra("listPosition", listPosition);
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
@@ -90,5 +97,6 @@ public class EditContactActivity extends AppCompatActivity {
         Intent comeIntent = getIntent();
         oldContact = (Contact) comeIntent.getSerializableExtra("contact");
         fullListPosition = comeIntent.getIntExtra("fullListPosition", -404);
+        listPosition = comeIntent.getIntExtra("listPosition", -777);
     }
 }
