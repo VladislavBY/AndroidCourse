@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class ContactsActivity extends AppCompatActivity {
-
     private RecyclerView contactsRecyclerView;
     private ContactListAdapter adapter;
 
