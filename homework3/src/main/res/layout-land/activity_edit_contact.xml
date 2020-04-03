@@ -29,39 +29,47 @@
 
     <EditText
         android:id="@+id/editTextName"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/name" />
 
     <EditText
         android:id="@+id/editTextPhoneNumberOrEmail"
-        android:layout_width="match_parent"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/phone_number_or_email" />
 
-    <Button
-        android:id="@+id/buttonEdit"
-        android:layout_width="240dp"
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/button_background_red"
-        android:backgroundTint="@color/blue"
-        android:gravity="center"
-        android:text="@string/edit"
-        android:textColor="@color/white" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/buttonRemove"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:background="@drawable/button_background_red"
-        android:gravity="center"
-        android:text="@string/remove"
-        android:textColor="@color/white" />
+        <Button
+            android:id="@+id/buttonEdit"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background_red"
+            android:backgroundTint="@color/blue"
+            android:gravity="center"
+            android:text="@string/edit"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/buttonRemove"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background_red"
+            android:gravity="center"
+            android:text="@string/remove"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
 
 </LinearLayout>
