@@ -9,6 +9,7 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,12 +35,13 @@ public class ContactsActivity extends AppCompatActivity {
     private void initContactsRecyclerView(Bundle savedInstanceState) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         if (savedInstanceState != null) {
-            contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState.getParcelable("adapter"));
+            contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState
+                    .getParcelable("adapter"));
         } else {
             contactsRecyclerView.setAdapter(new ContactListAdapter());
         }
-        contactsRecyclerView.setLayoutManager(new LinearLayoutManager
-                (this, RecyclerView.VERTICAL, false));
+        contactsRecyclerView.setLayoutManager(new GridLayoutManager(ContactsActivity.this,
+                Integer.parseInt(contactsRecyclerView.getTag().toString())));
         adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
 
         if (adapter != null) {
