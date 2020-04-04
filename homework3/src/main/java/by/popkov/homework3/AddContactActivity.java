@@ -3,6 +3,8 @@ package by.popkov.homework3;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -40,12 +42,15 @@ public class AddContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editTextPhoneNumberOrEmail.setHint(R.string.email);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+
             }
         });
         radioButtonPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
+                editTextPhoneNumberOrEmail.setHint(InputType.TYPE_CLASS_PHONE);
             }
         });
 
