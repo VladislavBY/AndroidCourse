@@ -68,7 +68,7 @@ public class EditContactActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
-                if (data.contains("@")) {
+                if (oldContact instanceof ContactEmail) {
                     newContact = new ContactEmail(name, data, Contact.IMAGE_ID_EMAIL);
                 } else {
                     newContact = new ContactPhone(name, data, Contact.IMAGE_ID_PHONE);
