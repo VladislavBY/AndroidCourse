@@ -83,12 +83,12 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void setDataInFields() {
         if (oldContact != null) {
-            if (oldContact instanceof ContactPhone) {
-                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
-                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
-            } else {
+            if (oldContact instanceof ContactEmail) {
                 editTextPhoneNumberOrEmail.setHint(R.string.email);
                 editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            } else {
+                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
             }
             editTextName.setText(oldContact.getName());
             editTextPhoneNumberOrEmail.setText(oldContact.getData());

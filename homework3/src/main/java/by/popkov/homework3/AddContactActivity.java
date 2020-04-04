@@ -3,7 +3,6 @@ package by.popkov.homework3;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
