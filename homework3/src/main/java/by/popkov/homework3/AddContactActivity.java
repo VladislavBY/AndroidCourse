@@ -50,7 +50,7 @@ public class AddContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
-                editTextPhoneNumberOrEmail.setHint(InputType.TYPE_CLASS_PHONE);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
             }
         });
 

@@ -3,6 +3,7 @@ package by.popkov.homework3;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,9 +83,17 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void setDataInFields() {
         if (oldContact != null) {
+            if (oldContact instanceof ContactPhone) {
+                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
+            } else {
+                editTextPhoneNumberOrEmail.setHint(R.string.email);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            }
             editTextName.setText(oldContact.getName());
             editTextPhoneNumberOrEmail.setText(oldContact.getData());
         }
+
 
     }
 
