@@ -50,7 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/phone_number"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:checked="true"/>
 
         <RadioButton
             android:layout_marginStart="40dp"
@@ -73,7 +74,7 @@
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="@string/phone_number_or_email" />
+        android:hint="@string/phone_number" />
 
 
 </LinearLayout>

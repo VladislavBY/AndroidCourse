@@ -32,24 +32,41 @@ public class AddContactActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_contact);
         viewsInit();
+        setListeners();
+    }
+
+    private void setListeners() {
+        radioButtonEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextPhoneNumberOrEmail.setHint(R.string.email);
+            }
+        });
+        radioButtonPhoneNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
+            }
+        });
+
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String name = editTextName.getText().toString();
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
-                if (!name.trim().equals("") && !phoneNumberOrEmail.equals("")) {
+                if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
                     if (radioButtonEmail.isChecked()) contact =
                             new ContactEmail(name, phoneNumberOrEmail, Contact.IMAGE_ID_EMAIL);
                     else if (radioButtonPhoneNumber.isChecked()) contact =
                             new ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE);
-                }
-                Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
-                if (contact != null) {
-                    result.putExtra("Extra", contact);
-                    setResult(RESULT_OK, result);
-                    finish();
+                    Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
+                    if (contact != null) {
+                        result.putExtra("Extra", contact);
+                        setResult(RESULT_OK, result);
+                        finish();
+                    }
                 } else
-                    Toast.makeText(AddContactActivity.this, "Input data please", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddContactActivity.this, R.string.input_data_please, Toast.LENGTH_LONG).show();
             }
         });
 
