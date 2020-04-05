@@ -9,6 +9,7 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,11 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
         initContactsRecyclerView(savedInstanceState);
         setListeners();
+        setToolBar();
+    }
+
+    private void setToolBar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
     }
 
     private void initContactsRecyclerView(Bundle savedInstanceState) {

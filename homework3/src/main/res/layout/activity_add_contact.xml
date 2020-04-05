@@ -4,40 +4,44 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <FrameLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue">
 
-        <TextView
-            style="@style/TextViewStyle.Head"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/blue"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/add_contact" />
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/buttonBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start|center_vertical"
-            android:background="@color/blue"
-            android:padding="10dp"
-            android:src="@drawable/ic_arrow_white_white_32dp" />
+            <TextView
+                style="@style/TextViewStyle.Head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:gravity="center"
+                android:text="@string/add_contact" />
 
-        <ImageButton
-            android:id="@+id/buttonAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end|center_vertical"
-            android:background="@color/blue"
-            android:padding="10dp"
-            android:src="@drawable/ic_done_white_32dp" />
+            <ImageButton
+                android:id="@+id/buttonBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start|center_vertical"
+                android:background="@color/blue"
+                android:padding="10dp"
+                android:src="@drawable/ic_arrow_white_white_32dp" />
 
+            <ImageButton
+                android:id="@+id/buttonAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end|center_vertical"
+                android:background="@color/blue"
+                android:padding="10dp"
+                android:src="@drawable/ic_done_white_32dp" />
+        </FrameLayout>
+    </androidx.appcompat.widget.Toolbar>
 
-    </FrameLayout>
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -48,9 +52,9 @@
             android:id="@+id/radioButtonPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/phone_number"
-            android:textSize="16sp"
-            android:checked="true"/>
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/radioButtonEmail"
@@ -66,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/name"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/editTextPhoneNumberOrEmail"
@@ -74,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/phone_number"
-        android:inputType="phone"/>
+        android:inputType="phone" />
 
 
 </LinearLayout>

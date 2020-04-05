@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class AddContactActivity extends AppCompatActivity {
     private Contact contact;
@@ -34,6 +35,10 @@ public class AddContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_contact);
         viewsInit();
         setListeners();
+        setToolBar();
+    }
+    private void setToolBar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
     }
 
     private void setListeners() {

@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 
 public class EditContactActivity extends AppCompatActivity {
@@ -39,6 +40,11 @@ public class EditContactActivity extends AppCompatActivity {
         init();
         setDataInFields();
         setListeners();
+        setToolBar();
+    }
+
+    private void setToolBar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
     }
 
     private void setListeners() {
