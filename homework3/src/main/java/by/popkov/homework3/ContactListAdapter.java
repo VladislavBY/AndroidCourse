@@ -48,12 +48,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         else return 0;
     }
 
-    private ContactsActivity contactsActivity;
-
-    void setContactsActivity(ContactsActivity contactsActivity) {
-        this.contactsActivity = contactsActivity;
-    }
-
     ContactListAdapter() {
     }
 
@@ -184,11 +178,23 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
     };
 
+
+    private ItemListenerWithData itemListenerWithData;
+
+    interface ItemListenerWithData {
+        void onClick(Contact oldContact, int positionFullList, int positionList);
+    }
+
+    void setItemListenerWithData(ItemListenerWithData itemListenerWithData) {
+        this.itemListenerWithData = itemListenerWithData;
+    }
+
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView contactImageView;
         private TextView textViewName;
         private TextView textViewData;
+
 
         ItemViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -199,9 +205,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 @Override
                 public void onClick(View v) {
                     Contact clickedContact = contactItemList.get(getAdapterPosition());
-                    contactsActivity.startEditContact(clickedContact,
-                            contactItemListFull.indexOf(clickedContact),
-                            contactItemList.indexOf(clickedContact));
+                    if (itemListenerWithData != null) {
+                        itemListenerWithData.onClick(clickedContact,
+                                contactItemListFull.indexOf(clickedContact),
+                                contactItemList.indexOf(clickedContact));
+                    }
                 }
             });
         }

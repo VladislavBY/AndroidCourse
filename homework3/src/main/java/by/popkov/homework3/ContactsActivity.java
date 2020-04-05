@@ -45,7 +45,6 @@ public class ContactsActivity extends AppCompatActivity {
 
         if (adapter != null) {
             visibleSwitcher(adapter.getFullItemCount());
-            adapter.setContactsActivity(this);
         }
     }
 
@@ -69,6 +68,14 @@ public class ContactsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivityForResult(AddContactActivity
                         .newIntent(ContactsActivity.this), requestCodeForAdd);
+            }
+        });
+
+        adapter.setItemListenerWithData(new ContactListAdapter.ItemListenerWithData() {
+            @Override
+            public void onClick(Contact oldContact, int positionFullList, int positionList) {
+                startActivityForResult(EditContactActivity
+                        .newIntent(ContactsActivity.this, oldContact, positionFullList, positionList), requestCodeForEdit);
             }
         });
     }
@@ -107,11 +114,6 @@ public class ContactsActivity extends AppCompatActivity {
             contactsRecyclerView.setVisibility(View.VISIBLE);
         } else
             contactsRecyclerView.setVisibility(View.INVISIBLE);
-    }
-
-    void startEditContact(Contact contact, int fullListPosition, int listPosition) {
-        startActivityForResult(EditContactActivity
-                .newIntent(ContactsActivity.this, contact, fullListPosition, listPosition), requestCodeForEdit);
     }
 }
 
