@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -19,7 +21,6 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText editTextPhoneNumberOrEmail;
     private Button buttonEdit;
     private Button buttonRemove;
-    private ImageButton buttonBack;
 
     private Contact oldContact;
     private int fullListPosition;
@@ -45,17 +46,23 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void setToolBar() {
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setListeners() {
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
-        });
-
         buttonRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +115,6 @@ public class EditContactActivity extends AppCompatActivity {
         editTextPhoneNumberOrEmail = findViewById(R.id.editTextPhoneNumberOrEmail);
         buttonEdit = findViewById(R.id.buttonEdit);
         buttonRemove = findViewById(R.id.buttonRemove);
-        buttonBack = findViewById(R.id.buttonBack);
         Intent comeIntent = getIntent();
         oldContact = (Contact) comeIntent.getSerializableExtra("contact");
         fullListPosition = comeIntent.getIntExtra("fullListPosition", -404);

@@ -4,20 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class AddContactActivity extends AppCompatActivity {
     private Contact contact;
 
-    private ImageButton buttonBack;
     private ImageButton buttonAdd;
     private RadioButton radioButtonPhoneNumber;
     private RadioButton radioButtonEmail;
@@ -37,8 +39,23 @@ public class AddContactActivity extends AppCompatActivity {
         setListeners();
         setToolBar();
     }
+
     private void setToolBar() {
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setListeners() {
@@ -78,18 +95,9 @@ public class AddContactActivity extends AppCompatActivity {
                     Toast.makeText(AddContactActivity.this, R.string.input_data_please, Toast.LENGTH_LONG).show();
             }
         });
-
-        buttonBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
-        });
     }
 
     private void viewsInit() {
-        buttonBack = findViewById(R.id.buttonBack);
         buttonAdd = findViewById(R.id.buttonAdd);
         radioButtonPhoneNumber = findViewById(R.id.radioButtonPhoneNumber);
         radioButtonEmail = findViewById(R.id.radioButtonEmail);

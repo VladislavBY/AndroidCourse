@@ -24,8 +24,13 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="Toolbar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:background">@color/blue</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
