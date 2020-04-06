@@ -17,6 +17,7 @@
             android:background="@color/blue">
 
             <TextView
+                android:id="@+id/textViewHead"
                 style="@style/TextViewStyle.Head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -26,7 +27,9 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:queryBackground="@color/white"
                 android:queryHint="Search contacts"
                 android:searchIcon="@drawable/ic_search_white_32dp" />
@@ -52,13 +55,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:tag="1"
             android:visibility="invisible"
             app:fastScrollEnabled="true"
             app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
             app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
             app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
-            android:tag="1"/>
+            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButtonAddContact"

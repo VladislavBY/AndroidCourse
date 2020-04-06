@@ -17,6 +17,7 @@
             android:background="@color/blue">
 
             <TextView
+                android:id="@+id/textViewHead"
                 style="@style/TextViewStyle.Head"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -26,9 +27,11 @@
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:queryBackground="@color/white"
                 android:queryHint="Search contacts"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:searchIcon="@drawable/ic_search_white_32dp" />
         </FrameLayout>
     </androidx.appcompat.widget.Toolbar>
