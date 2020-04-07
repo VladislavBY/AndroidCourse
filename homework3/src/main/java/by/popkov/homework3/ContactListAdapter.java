@@ -93,7 +93,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.bingData(contactItemList.get(position));
+        holder.bindData(contactItemList.get(position));
     }
 
     @Override
@@ -227,7 +227,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             });
         }
 
-        void bingData(Contact contact) {
+        void bindData(Contact contact) {
             contactImageView.setImageResource(contact.getImageID());
             textViewName.setText(contact.getName());
             textViewData.setText(contact.getData());

@@ -53,11 +53,17 @@ class ContactsActivity : AppCompatActivity() {
                 return false
             }
         })
-        val floatingActionButtonAddContact = findViewById<FloatingActionButton>(R.id.floatingActionButtonAddContact)
+        val floatingActionButtonAddContact: FloatingActionButton = findViewById(R.id.floatingActionButtonAddContact)
         floatingActionButtonAddContact.setOnClickListener {
             startActivityForResult(AddContactActivity
                     .newIntent(this@ContactsActivity), requestCodeForAdd)
         }
+        adapter.setItemListenerWithData(object : ContactListAdapter.ItemListenerWithData {
+            override fun onClick(oldContact: Contact, positionFullList: Int, positionList: Int) {
+                startActivityForResult(EditContactActivity.newIntent(this@ContactsActivity,
+                        oldContact, positionFullList, positionList), requestCodeForEdit)
+            }
+        })
 
     }
 }
