@@ -52,29 +52,35 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     private ContactListAdapter(Parcel source) {
-        int sizeContactFull = source.readInt();
-        int sizeContact = (int) source.readLong();
-        String[] commonNames = new String[sizeContactFull + sizeContact];
-        source.readStringArray(commonNames);
-        ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
-        source.readStringList(commonData);
-        int[] commonImageID = new int[sizeContactFull + sizeContact];
-        source.readIntArray(commonImageID);
-        for (int i = 0; i < commonNames.length; i++) {
-            if (i < sizeContactFull) {
-                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
-                    contactItemListFull.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
-                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
-                    contactItemListFull.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
-                }
-            } else {
-                if (commonImageID[i] == Contact.IMAGE_ID_PHONE) {
-                    contactItemList.add(new ContactPhone(commonNames[i], commonData.get(i), commonImageID[i]));
-                } else if (commonImageID[i] == Contact.IMAGE_ID_EMAIL) {
-                    contactItemList.add(new ContactEmail(commonNames[i], commonData.get(i), commonImageID[i]));
-                }
+        String[] listFullNames = new String[0];
+        source.readStringArray(listFullNames);
+        String[] listFullData = new String[0];
+        source.readStringArray(listFullData);
+        int[] listFullImages = new int[0];
+        source.readIntArray(listFullImages);
+
+        String[] listNames = new String[0];
+        source.readStringArray(listNames);
+        String[] listData = new String[0];
+        source.readStringArray(listData);
+        int[] listImages = new int[0];
+        source.readIntArray(listImages);
+
+        for (int i = 0; i < listFullNames.length; i++) {
+            if (listFullImages[i] == Contact.IMAGE_ID_PHONE) {
+                contactItemListFull.add(new ContactPhone(listFullNames[i], listFullData[i], Contact.IMAGE_ID_PHONE));
+            } else if (listFullImages[i] == Contact.IMAGE_ID_EMAIL) {
+                contactItemListFull.add(new ContactEmail(listFullNames[i], listFullData[i], Contact.IMAGE_ID_EMAIL));
             }
         }
+        for (int i = 0; i < listNames.length; i++) {
+            if (listImages[i] == Contact.IMAGE_ID_PHONE) {
+                contactItemList.add(new ContactPhone(listNames[i], listData[i], Contact.IMAGE_ID_PHONE));
+            } else if (listImages[i] == Contact.IMAGE_ID_EMAIL) {
+                contactItemList.add(new ContactEmail(listNames[i], listData[i], Contact.IMAGE_ID_EMAIL));
+            }
+        }
+
     }
 
     @NonNull
@@ -135,33 +141,40 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        int sizeContactFull = contactItemListFull.size();
-        int sizeContact = contactItemList.size();
-        String[] commonNames = new String[sizeContactFull + sizeContact];
-        for (int i = 0; i < commonNames.length; i++) {
-            if (i < sizeContactFull) commonNames[i] = contactItemListFull.get(i).getName();
-            else commonNames[i] = contactItemList.get(i - sizeContactFull).getName();
+        String[] listFullNames = new String[contactItemListFull.size()];
+        for (int i = 0; i < listFullNames.length; i++) {
+            listFullNames[i] = contactItemListFull.get(i).getName();
+        }
+        String[] listFullData = new String[contactItemListFull.size()];
+        for (int i = 0; i < listFullData.length; i++) {
+            listFullData[i] = contactItemListFull.get(i).getData();
         }
 
-        ArrayList<String> commonData = new ArrayList<>(sizeContactFull + sizeContact);
-        for (Contact contact : contactItemListFull) {
-            commonData.add(contact.getData());
-        }
-        for (Contact contact : contactItemList) {
-            commonData.add(contact.getData());
+        int[] listFullImages = new int[contactItemListFull.size()];
+        for (int i = 0; i < listFullImages.length; i++) {
+            listFullImages[i] = contactItemListFull.get(i).getImageID();
         }
 
-        int[] commonImageID = new int[sizeContactFull + sizeContact];
-        for (int i = 0; i < commonImageID.length; i++) {
-            if (i < sizeContactFull)
-                commonImageID[i] = contactItemListFull.get(i).getImageID();
-            else commonImageID[i] = contactItemList.get(i - sizeContactFull).getImageID();
+
+        String[] listNames = new String[contactItemList.size()];
+        for (int i = 0; i < listNames.length; i++) {
+            listNames[i] = contactItemList.get(i).getName();
         }
-        dest.writeStringArray(commonNames);
-        dest.writeStringList(commonData);
-        dest.writeIntArray(commonImageID);
-        dest.writeInt(sizeContactFull);
-        dest.writeLong(sizeContact);
+        String[] listData = new String[contactItemList.size()];
+        for (int i = 0; i < listData.length; i++) {
+            listData[i] = contactItemList.get(i).getData();
+        }
+        int[] listImages = new int[contactItemList.size()];
+        for (int i = 0; i < listImages.length; i++) {
+            listImages[i] = contactItemList.get(i).getImageID();
+        }
+        dest.writeStringArray(listFullNames);
+        dest.writeStringArray(listFullData);
+        dest.writeIntArray(listFullImages);
+        dest.writeStringArray(listNames);
+        dest.writeStringArray(listData);
+        dest.writeIntArray(listImages);
+
     }
 
 
