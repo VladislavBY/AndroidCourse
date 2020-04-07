@@ -37,10 +37,12 @@ class ContactsActivity : AppCompatActivity() {
         val textViewHead: TextView = findViewById(R.id.textViewHead)
         val searchView: SearchView = findViewById(R.id.searchView)
         searchView.setOnSearchClickListener { textViewHead.visibility = View.INVISIBLE }
-        searchView.setOnCloseListener {
-            textViewHead.visibility = View.VISIBLE
-            false
-        }
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                textViewHead.visibility = View.VISIBLE
+                return false
+            }
+        })
         searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
