@@ -1,11 +1,14 @@
 package by.popkov.homework4
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
 import android.widget.SearchView.OnQueryTextListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -26,7 +29,14 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun initContactsRecyclerView(savedInstanceState: Bundle?) {
-
+        contactsRecyclerView = findViewById(R.id.recyclerViewContacts)
+        if (savedInstanceState != null) contactsRecyclerView.adapter = savedInstanceState
+                .getParcelable<ContactListAdapter>("adapter")
+        else contactsRecyclerView.adapter = ContactListAdapter()
+        contactsRecyclerView.layoutManager = GridLayoutManager((this@ContactsActivity),
+                contactsRecyclerView.tag.toString().toInt())
+        adapter = contactsRecyclerView.adapter as ContactListAdapter
+        visibleSwitcher(adapter.getFullItemCount())
     }
 
     private fun setToolBar() {
@@ -49,7 +59,7 @@ class ContactsActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter.getFilter().filter(newText)
+                adapter.filter.filter(newText)
                 return false
             }
         })
@@ -64,6 +74,39 @@ class ContactsActivity : AppCompatActivity() {
                         oldContact, positionFullList, positionList), requestCodeForEdit)
             }
         })
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable("adapter", adapter)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (data != null) {
+            if (requestCodeForAdd == requestCode && resultCode == Activity.RESULT_OK) {
+                val contact: Contact? = data.getSerializableExtra("Extra") as Contact
+                if (contact != null) {
+                    adapter.addContact(contact)
+                }
+            } else if (requestCodeForEdit == requestCode && resultCode == Activity.RESULT_OK) {
+                val newContact: Contact? = data.getSerializableExtra("newContact") as Contact
+                val fullListPosition = data.getIntExtra("fullListPosition", -202)
+                val listPosition = data.getIntExtra("listPosition", -204)
+                if (newContact != null) {
+                    adapter.editContact(newContact, fullListPosition, listPosition)
+                } else {
+                    adapter.removeContact(fullListPosition, listPosition)
+                }
+            }
+            visibleSwitcher(adapter.getFullItemCount())
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun visibleSwitcher(fullItemCount: Int) {
+        if (fullItemCount > 0) contactsRecyclerView.visibility = View.VISIBLE
+        else contactsRecyclerView.visibility = View.INVISIBLE
 
     }
 }
