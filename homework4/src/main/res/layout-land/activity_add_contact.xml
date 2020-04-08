@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -45,15 +46,15 @@
             android:id="@+id/radioButtonPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/phone_number"
-            android:textSize="16sp"
-            android:checked="true"/>
+            android:textSize="16sp" />
 
         <RadioButton
-            android:layout_marginStart="40dp"
             android:id="@+id/radioButtonEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:text="@string/email"
             android:textSize="16sp" />
     </RadioGroup>
@@ -72,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:hint="@string/phone_number"
-        android:inputType="phone"/>
+        android:inputType="phone" />
 
 
 </LinearLayout>
