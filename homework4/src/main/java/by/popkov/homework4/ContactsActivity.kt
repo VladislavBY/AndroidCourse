@@ -90,7 +90,7 @@ class ContactsActivity : AppCompatActivity() {
                     adapter.addContact(contact)
                 }
             } else if (requestCodeForEdit == requestCode && resultCode == Activity.RESULT_OK) {
-                val newContact: Contact? = data.getSerializableExtra("newContact") as Contact
+                val newContact: Contact? = data.getSerializableExtra("newContact") as? Contact
                 val fullListPosition = data.getIntExtra("fullListPosition", -202)
                 val listPosition = data.getIntExtra("listPosition", -204)
                 if (newContact != null) {
