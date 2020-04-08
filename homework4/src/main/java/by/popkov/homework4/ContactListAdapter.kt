@@ -39,7 +39,6 @@ class ContactListAdapter() :
 
     fun getFullItemCount(): Int = contactItemListFull.size
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val inflate = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_contact, parent, false)
@@ -58,7 +57,7 @@ class ContactListAdapter() :
             if (constraint == null || constraint.isEmpty()) {
                 filteredContactItemList.addAll(contactItemListFull)
             } else {
-                val filterPattern: String = constraint.toString().toLowerCase().trim()
+                val filterPattern: String = constraint.toString().toLowerCase(Locale.ROOT).trim()
                 for (contact in contactItemListFull) {
                     if (contact.name.toLowerCase().contains(filterPattern)) {
                         filteredContactItemList.add(contact)
@@ -81,14 +80,6 @@ class ContactListAdapter() :
 
     override fun getFilter(): Filter = contactFilter
 
-
-    interface ItemListenerWithData {
-        fun onClick(oldContact: Contact, positionFullList: Int, positionList: Int)
-
-    }
-
-    private lateinit var itemListenerWithData: ItemListenerWithData
-
     constructor(parcel: Parcel) : this() {
         val listFullNames = arrayOfNulls<String>(0)
         parcel.readStringArray(listFullNames)
@@ -104,10 +95,10 @@ class ContactListAdapter() :
         val listImages = IntArray(0)
         parcel.readIntArray(listImages)
 
-        for (i in listFullNames.indices){
-            if (listFullImages[i] == Contact.IMAGE_ID_PHONE){
+        for (i in listFullNames.indices) {
+            if (listFullImages[i] == Contact.IMAGE_ID_PHONE) {
                 contactItemListFull.add(ContactPhone(listFullNames[i]!!, listFullData[i]!!, Contact.IMAGE_ID_PHONE))
-            }else if (listFullImages[i] == Contact.IMAGE_ID_EMAIL){
+            } else if (listFullImages[i] == Contact.IMAGE_ID_EMAIL) {
                 contactItemListFull.add(ContactEmail(listFullNames[i]!!, listFullData[i]!!, Contact.IMAGE_ID_EMAIL))
             }
         }
@@ -118,35 +109,6 @@ class ContactListAdapter() :
                 contactItemList.add(ContactEmail(listNames[i]!!, listData[i]!!, Contact.IMAGE_ID_EMAIL))
             }
         }
-    }
-
-    fun setItemListenerWithData(itemListenerWithData: ItemListenerWithData) {
-        this.itemListenerWithData = itemListenerWithData
-    }
-
-    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val contactImageView: ImageView = itemView.findViewById(R.id.contactImageView)
-        private val textViewName: TextView = itemView.findViewById(R.id.textViewName)
-
-        private val textViewData: TextView = itemView.findViewById(R.id.textViewData)
-
-        init {
-            itemView.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(v: View?) {
-                    val clickedContact: Contact = contactItemList[adapterPosition]
-                    itemListenerWithData.onClick(clickedContact,
-                            contactItemListFull.indexOf(clickedContact),
-                            contactItemList.indexOf(clickedContact))
-                }
-            })
-        }
-
-        fun bindData(contact: Contact) {
-            contactImageView.setImageResource(contact.imageID)
-            textViewName.text = contact.name
-            textViewData.text = contact.data
-        }
-
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -196,5 +158,38 @@ class ContactListAdapter() :
         override fun newArray(size: Int): Array<ContactListAdapter?> {
             return arrayOfNulls(size)
         }
+    }
+
+
+    interface ItemListenerWithData {
+        fun onClick(oldContact: Contact, positionFullList: Int, positionList: Int)
+    }
+
+    private lateinit var itemListenerWithData: ItemListenerWithData
+
+    fun setItemListenerWithData(itemListenerWithData: ItemListenerWithData) {
+        this.itemListenerWithData = itemListenerWithData
+    }
+
+    inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val contactImageView: ImageView = itemView.findViewById(R.id.contactImageView)
+        private val textViewName: TextView = itemView.findViewById(R.id.textViewName)
+        private val textViewData: TextView = itemView.findViewById(R.id.textViewData)
+
+        init {
+            itemView.setOnClickListener {
+                val clickedContact: Contact = contactItemList[adapterPosition]
+                itemListenerWithData.onClick(clickedContact,
+                        contactItemListFull.indexOf(clickedContact),
+                        contactItemList.indexOf(clickedContact))
+            }
+        }
+
+        fun bindData(contact: Contact) {
+            contactImageView.setImageResource(contact.imageID)
+            textViewName.text = contact.name
+            textViewData.text = contact.data
+        }
+
     }
 }
