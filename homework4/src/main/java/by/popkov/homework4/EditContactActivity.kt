@@ -17,8 +17,8 @@ class EditContactActivity : AppCompatActivity() {
     private lateinit var buttonRemove: Button
 
     private lateinit var oldContact: Contact
-    private var fullListPosition: Int = 0
-    private var listPosition: Int = 0
+    private var fullListPosition: Int = -100
+    private var listPosition: Int = -100
 
     companion object {
         fun newIntent(context: Context, contact: Contact, fullListPosition: Int, listPosition: Int): Intent {

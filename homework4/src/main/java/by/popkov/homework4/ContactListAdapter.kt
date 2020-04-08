@@ -114,7 +114,7 @@ class ContactListAdapter() :
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         val listFullNames = arrayOfNulls<String>(contactItemListFull.size)
         for (i in listFullNames.indices) {
-            listFullNames[i] = contactItemList[i].name
+            listFullNames[i] = contactItemListFull[i].name
         }
         val listFullData = arrayOfNulls<String>(contactItemListFull.size)
         for (i in listFullData.indices) {
