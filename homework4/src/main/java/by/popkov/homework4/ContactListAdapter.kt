@@ -1,5 +1,7 @@
 package by.popkov.homework4
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +12,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
-class ContactListAdapter : RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>(), Filterable {
+class ContactListAdapter() :
+        RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>(), Filterable, Parcelable {
     private val contactItemList: ArrayList<Contact> = ArrayList()
     private val contactItemListFull: ArrayList<Contact> = ArrayList()
 
@@ -86,6 +89,37 @@ class ContactListAdapter : RecyclerView.Adapter<ContactListAdapter.ItemViewHolde
 
     private lateinit var itemListenerWithData: ItemListenerWithData
 
+    constructor(parcel: Parcel) : this() {
+        val listFullNames = arrayOfNulls<String>(0)
+        parcel.readStringArray(listFullNames)
+        val listFullData = arrayOfNulls<String>(0)
+        parcel.readStringArray(listFullData)
+        val listFullImages = IntArray(0)
+        parcel.readIntArray(listFullImages)
+
+        val listNames = arrayOfNulls<String>(0)
+        parcel.readStringArray(listNames)
+        val listData = arrayOfNulls<String>(0)
+        parcel.readStringArray(listData)
+        val listImages = IntArray(0)
+        parcel.readIntArray(listImages)
+
+        for (i in listFullNames.indices){
+            if (listFullImages[i] == Contact.IMAGE_ID_PHONE){
+                contactItemListFull.add(ContactPhone(listFullNames[i]!!, listFullData[i]!!, Contact.IMAGE_ID_PHONE))
+            }else if (listFullImages[i] == Contact.IMAGE_ID_EMAIL){
+                contactItemListFull.add(ContactEmail(listFullNames[i]!!, listFullData[i]!!, Contact.IMAGE_ID_EMAIL))
+            }
+        }
+        for (i in listNames.indices) {
+            if (listImages[i] == Contact.IMAGE_ID_PHONE) {
+                contactItemList.add(ContactPhone(listNames[i]!!, listData[i]!!, Contact.IMAGE_ID_PHONE))
+            } else if (listImages[i] == Contact.IMAGE_ID_EMAIL) {
+                contactItemList.add(ContactEmail(listNames[i]!!, listData[i]!!, Contact.IMAGE_ID_EMAIL))
+            }
+        }
+    }
+
     fun setItemListenerWithData(itemListenerWithData: ItemListenerWithData) {
         this.itemListenerWithData = itemListenerWithData
     }
@@ -113,5 +147,54 @@ class ContactListAdapter : RecyclerView.Adapter<ContactListAdapter.ItemViewHolde
             textViewData.text = contact.data
         }
 
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        val listFullNames = arrayOfNulls<String>(contactItemListFull.size)
+        for (i in listFullNames.indices) {
+            listFullNames[i] = contactItemList[i].name
+        }
+        val listFullData = arrayOfNulls<String>(contactItemListFull.size)
+        for (i in listFullData.indices) {
+            listFullData[i] = contactItemListFull[i].data
+        }
+        val listFullImages = IntArray(contactItemListFull.size)
+        for (i in listFullImages.indices) {
+            listFullImages[i] = contactItemListFull[i].imageID
+        }
+
+        val listNames = arrayOfNulls<String>(contactItemList.size)
+        for (i in listNames.indices) {
+            listNames[i] = contactItemList[i].name
+        }
+        val listData = arrayOfNulls<String>(contactItemList.size)
+        for (i in listData.indices) {
+            listData[i] = contactItemList[i].data
+        }
+        val listImages = IntArray(contactItemList.size)
+        for (i in listImages.indices) {
+            listImages[i] = contactItemList[i].imageID
+        }
+
+        parcel.writeStringArray(listFullNames)
+        parcel.writeStringArray(listFullData)
+        parcel.writeIntArray(listFullImages)
+        parcel.writeStringArray(listNames)
+        parcel.writeStringArray(listData)
+        parcel.writeIntArray(listImages)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ContactListAdapter> {
+        override fun createFromParcel(parcel: Parcel): ContactListAdapter {
+            return ContactListAdapter(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ContactListAdapter?> {
+            return arrayOfNulls(size)
+        }
     }
 }
