@@ -14,8 +14,8 @@ import java.util.*
 
 class ContactListAdapter() :
         RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>(), Filterable, Parcelable {
-    private val contactItemList: ArrayList<Contact> = ArrayList()
-    private val contactItemListFull: ArrayList<Contact> = ArrayList()
+    private var contactItemList: ArrayList<Contact> = ArrayList()
+    private var contactItemListFull: ArrayList<Contact> = ArrayList()
 
     fun addContact(contact: Contact) {
         contactItemListFull.add(contact)
@@ -80,70 +80,14 @@ class ContactListAdapter() :
 
     override fun getFilter(): Filter = contactFilter
 
-    constructor(parcel: Parcel) : this() {
-        val listFullNames = arrayOfNulls<String>(0)
-        parcel.readStringArray(listFullNames)
-        val listFullData = arrayOfNulls<String>(0)
-        parcel.readStringArray(listFullData)
-        val listFullImages = IntArray(0)
-        parcel.readIntArray(listFullImages)
-
-        val listNames = arrayOfNulls<String>(0)
-        parcel.readStringArray(listNames)
-        val listData = arrayOfNulls<String>(0)
-        parcel.readStringArray(listData)
-        val listImages = IntArray(0)
-        parcel.readIntArray(listImages)
-
-        for (i in listFullNames.indices) {
-            if (listFullImages[i] == Contact.IMAGE_ID_PHONE) {
-                contactItemListFull.add(ContactPhone(listFullNames[i]!!, listFullData[i]!!, Contact.IMAGE_ID_PHONE))
-            } else if (listFullImages[i] == Contact.IMAGE_ID_EMAIL) {
-                contactItemListFull.add(ContactEmail(listFullNames[i]!!, listFullData[i]!!, Contact.IMAGE_ID_EMAIL))
-            }
-        }
-        for (i in listNames.indices) {
-            if (listImages[i] == Contact.IMAGE_ID_PHONE) {
-                contactItemList.add(ContactPhone(listNames[i]!!, listData[i]!!, Contact.IMAGE_ID_PHONE))
-            } else if (listImages[i] == Contact.IMAGE_ID_EMAIL) {
-                contactItemList.add(ContactEmail(listNames[i]!!, listData[i]!!, Contact.IMAGE_ID_EMAIL))
-            }
-        }
+    private constructor(parcel: Parcel) : this() {
+        contactItemListFull = parcel.readSerializable() as ArrayList<Contact>
+        contactItemList = parcel.readSerializable() as ArrayList<Contact>
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        val listFullNames = arrayOfNulls<String>(contactItemListFull.size)
-        for (i in listFullNames.indices) {
-            listFullNames[i] = contactItemListFull[i].name
-        }
-        val listFullData = arrayOfNulls<String>(contactItemListFull.size)
-        for (i in listFullData.indices) {
-            listFullData[i] = contactItemListFull[i].data
-        }
-        val listFullImages = IntArray(contactItemListFull.size)
-        for (i in listFullImages.indices) {
-            listFullImages[i] = contactItemListFull[i].imageID
-        }
-
-        val listNames = arrayOfNulls<String>(contactItemList.size)
-        for (i in listNames.indices) {
-            listNames[i] = contactItemList[i].name
-        }
-        val listData = arrayOfNulls<String>(contactItemList.size)
-        for (i in listData.indices) {
-            listData[i] = contactItemList[i].data
-        }
-        val listImages = IntArray(contactItemList.size)
-        for (i in listImages.indices) {
-            listImages[i] = contactItemList[i].imageID
-        }
-
-        parcel.writeStringArray(listFullNames)
-        parcel.writeStringArray(listFullData)
-        parcel.writeIntArray(listFullImages)
-        parcel.writeStringArray(listNames)
-        parcel.writeStringArray(listData)
-        parcel.writeIntArray(listImages)
+       parcel.writeSerializable(contactItemListFull)
+       parcel.writeSerializable(contactItemList)
     }
 
     override fun describeContents(): Int {
