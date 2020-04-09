@@ -34,7 +34,7 @@ class ContactsActivity : AppCompatActivity() {
                 .getParcelable<ContactListAdapter>("adapter")
         else contactsRecyclerView.adapter = ContactListAdapter()
         contactsRecyclerView.layoutManager = GridLayoutManager((this@ContactsActivity),
-                contactsRecyclerView.tag.toString().toInt())
+                contactsRecyclerView.tag.toString().toInt(), RecyclerView.VERTICAL, false)
         adapter = contactsRecyclerView.adapter as ContactListAdapter
         visibleSwitcher(adapter.getFullItemCount())
     }

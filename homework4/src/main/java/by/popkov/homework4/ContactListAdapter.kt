@@ -18,8 +18,8 @@ class ContactListAdapter() :
     private val contactItemListFull: ArrayList<Contact> = ArrayList()
 
     fun addContact(contact: Contact) {
-        contactItemList.add(contact)
         contactItemListFull.add(contact)
+        contactItemList.add(contact)
         notifyDataSetChanged()
     }
 
