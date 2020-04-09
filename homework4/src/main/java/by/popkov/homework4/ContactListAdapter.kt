@@ -59,7 +59,7 @@ class ContactListAdapter() :
             } else {
                 val filterPattern: String = constraint.toString().toLowerCase(Locale.ROOT).trim()
                 for (contact in contactItemListFull) {
-                    if (contact.name.toLowerCase().contains(filterPattern)) {
+                    if (contact.name.toLowerCase(Locale.ROOT).contains(filterPattern)) {
                         filteredContactItemList.add(contact)
                     }
                 }
