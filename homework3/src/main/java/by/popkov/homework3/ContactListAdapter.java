@@ -27,7 +27,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     void addContact(Contact contact) {
         contactItemList.add(contact);
         contactItemListFull.add(contact);
-        notifyItemChanged(contactItemList.size() - 1);
+        notifyDataSetChanged();
     }
 
     void removeContact(int fullListPosition, int listPosition) {
