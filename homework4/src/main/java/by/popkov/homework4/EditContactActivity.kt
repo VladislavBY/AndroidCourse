@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
+
 class EditContactActivity : AppCompatActivity() {
     private lateinit var editTextName: EditText
     private lateinit var editTextPhoneNumberOrEmail: EditText
@@ -21,11 +22,16 @@ class EditContactActivity : AppCompatActivity() {
     private var listPosition: Int = -100
 
     companion object {
+        const val EXTRA_NEW_CONTACT = "newContact"
+        const val EXTRA_OLD_CONTACT = "contact"
+        const val EXTRA_FULL_LIST_POS = "fullListPosition"
+        const val EXTRA_LIST_POS = "listPosition"
+
         fun newIntent(context: Context, contact: Contact, fullListPosition: Int, listPosition: Int): Intent {
             val intent = Intent(context, EditContactActivity::class.java)
-            intent.putExtra("contact", contact)
-            intent.putExtra("fullListPosition", fullListPosition)
-            intent.putExtra("listPosition", listPosition)
+            intent.putExtra(EXTRA_OLD_CONTACT, contact)
+            intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition)
+            intent.putExtra(EXTRA_LIST_POS, listPosition)
             return intent
         }
     }
@@ -57,21 +63,21 @@ class EditContactActivity : AppCompatActivity() {
     private fun setListeners() {
         buttonRemove.setOnClickListener {
             val intent = Intent(this@EditContactActivity, ContactsActivity::class.java)
-            intent.putExtra("fullListPosition", fullListPosition)
-            intent.putExtra("listPosition", listPosition)
+            intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition)
+            intent.putExtra(EXTRA_LIST_POS, listPosition)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
         buttonEdit.setOnClickListener {
             val intent = Intent(this@EditContactActivity, ContactsActivity::class.java)
-            intent.putExtra("fullListPosition", fullListPosition)
-            intent.putExtra("listPosition", listPosition)
+            intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition)
+            intent.putExtra(EXTRA_LIST_POS, listPosition)
             val name = editTextName.text.toString().trim()
             val data = editTextPhoneNumberOrEmail.text.toString().trim()
             val newContact: Contact
             newContact = if (oldContact is ContactEmail) ContactEmail(name, data, Contact.IMAGE_ID_EMAIL)
             else ContactPhone(name, data, Contact.IMAGE_ID_PHONE)
-            intent.putExtra("newContact", newContact)
+            intent.putExtra(EXTRA_NEW_CONTACT, newContact)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -95,8 +101,8 @@ class EditContactActivity : AppCompatActivity() {
         buttonEdit = findViewById(R.id.buttonEdit)
         buttonRemove = findViewById(R.id.buttonRemove)
         val comeIntent = intent
-        oldContact = comeIntent.getSerializableExtra("contact") as Contact
-        fullListPosition = comeIntent.getIntExtra("fullListPosition", -404)
-        listPosition = comeIntent.getIntExtra("listPosition", -777)
+        oldContact = comeIntent.getSerializableExtra(EXTRA_OLD_CONTACT) as Contact
+        fullListPosition = comeIntent.getIntExtra(EXTRA_FULL_LIST_POS, -404)
+        listPosition = comeIntent.getIntExtra(EXTRA_LIST_POS, -777)
     }
 }

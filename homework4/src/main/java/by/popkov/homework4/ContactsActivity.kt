@@ -19,6 +19,10 @@ class ContactsActivity : AppCompatActivity() {
     private val requestCodeForAdd: Int = 7777
     private val requestCodeForEdit: Int = 1111
 
+    companion object{
+        const val ADAPTER = "adapter"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contacts)
@@ -31,12 +35,17 @@ class ContactsActivity : AppCompatActivity() {
     private fun initContactsRecyclerView(savedInstanceState: Bundle?) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts)
         if (savedInstanceState != null) contactsRecyclerView.adapter = savedInstanceState
-                .getParcelable<ContactListAdapter>("adapter")
+                .getParcelable<ContactListAdapter>(ADAPTER)
         else contactsRecyclerView.adapter = ContactListAdapter()
         contactsRecyclerView.layoutManager = GridLayoutManager((this@ContactsActivity),
                 contactsRecyclerView.tag.toString().toInt(), RecyclerView.VERTICAL, false)
         adapter = contactsRecyclerView.adapter as ContactListAdapter
         visibleSwitcher(adapter.getFullItemCount())
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(ADAPTER, adapter)
     }
 
     private fun setToolBar() {
@@ -77,22 +86,17 @@ class ContactsActivity : AppCompatActivity() {
 
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable("adapter", adapter)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (data != null) {
             if (requestCodeForAdd == requestCode && resultCode == Activity.RESULT_OK) {
-                val contact: Contact? = data.getSerializableExtra("Extra") as Contact
+                val contact: Contact? = data.getSerializableExtra(AddContactActivity.PUT_EXTRA) as Contact
                 if (contact != null) {
                     adapter.addContact(contact)
                 }
             } else if (requestCodeForEdit == requestCode && resultCode == Activity.RESULT_OK) {
-                val newContact: Contact? = data.getSerializableExtra("newContact") as? Contact
-                val fullListPosition = data.getIntExtra("fullListPosition", -202)
-                val listPosition = data.getIntExtra("listPosition", -204)
+                val newContact: Contact? = data.getSerializableExtra(EditContactActivity.EXTRA_NEW_CONTACT) as? Contact
+                val fullListPosition = data.getIntExtra(EditContactActivity.EXTRA_FULL_LIST_POS, -202)
+                val listPosition = data.getIntExtra(EditContactActivity.EXTRA_LIST_POS, -204)
                 if (newContact != null) {
                     adapter.editContact(newContact, fullListPosition, listPosition)
                 } else {

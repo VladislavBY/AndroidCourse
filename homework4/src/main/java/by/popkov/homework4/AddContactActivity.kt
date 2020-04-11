@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class AddContactActivity : AppCompatActivity() {
     private lateinit var contact: Contact
-
     private lateinit var buttonAdd: ImageButton
     private lateinit var radioButtonPhoneNumber: RadioButton
     private lateinit var radioButtonEmail: RadioButton
@@ -23,6 +22,7 @@ class AddContactActivity : AppCompatActivity() {
     private lateinit var editTextPhoneNumberOrEmail: EditText
 
     companion object {
+        const val PUT_EXTRA: String = "Extra"
         fun newIntent(context: Context): Intent = Intent(context, AddContactActivity::class.java)
     }
 
@@ -60,7 +60,7 @@ class AddContactActivity : AppCompatActivity() {
                 else if (radioButtonPhoneNumber.isChecked) contact =
                         ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE)
                 val result = Intent(this@AddContactActivity, ContactsActivity::class.java)
-                result.putExtra("Extra", contact)
+                result.putExtra(PUT_EXTRA, contact)
                 setResult(Activity.RESULT_OK, result)
                 finish()
             } else {
