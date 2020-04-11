@@ -26,6 +26,7 @@ public class AddContactActivity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
 
+    public static final String PUT_EXTRA = "Extra";
 
     public static Intent newIntent(Context context) {
         return new Intent(context, AddContactActivity.class);
@@ -87,7 +88,7 @@ public class AddContactActivity extends AppCompatActivity {
                             new ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE);
                     Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                     if (contact != null) {
-                        result.putExtra("Extra", contact);
+                        result.putExtra(PUT_EXTRA, contact);
                         setResult(RESULT_OK, result);
                         finish();
                     }

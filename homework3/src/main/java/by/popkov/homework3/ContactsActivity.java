@@ -23,6 +23,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     private int requestCodeForAdd = 7777;
     private int requestCodeForEdit = 1111;
+    public static final String ADAPTER = "adapter";
 
 
     @Override
@@ -42,7 +43,7 @@ public class ContactsActivity extends AppCompatActivity {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         if (savedInstanceState != null) {
             contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState
-                    .getParcelable("adapter"));
+                    .getParcelable(ADAPTER));
         } else {
             contactsRecyclerView.setAdapter(new ContactListAdapter());
         }
@@ -104,21 +105,21 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("adapter", adapter);
+        outState.putParcelable(ADAPTER, adapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (data != null) {
             if (this.requestCodeForAdd == requestCode && resultCode == RESULT_OK) {
-                Contact contact = (Contact) data.getSerializableExtra("Extra");
+                Contact contact = (Contact) data.getSerializableExtra(AddContactActivity.PUT_EXTRA);
                 if (contact != null) {
                     adapter.addContact(contact);
                 }
             } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK) {
-                Contact newContact = (Contact) data.getSerializableExtra("newContact");
-                int fullListPosition = data.getIntExtra("fullListPosition", -202);
-                int listPosition = data.getIntExtra("listPosition", -204);
+                Contact newContact = (Contact) data.getSerializableExtra(EditContactActivity.EXTRA_NEW_CONTACT);
+                int fullListPosition = data.getIntExtra(EditContactActivity.EXTRA_FULL_LIST_POS, -202);
+                int listPosition = data.getIntExtra(EditContactActivity.EXTRA_LIST_POS, -204);
                 if (newContact != null) {
                     adapter.editContact(newContact, fullListPosition, listPosition);
                 } else {
