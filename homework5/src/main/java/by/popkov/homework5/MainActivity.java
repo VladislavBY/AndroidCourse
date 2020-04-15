@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,16 +18,13 @@ public class MainActivity extends AppCompatActivity {
 
     private SongAdapter songAdapter;
     private static final String ADAPTER = "ADAPTER";
+    static final String SONG = "SONG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initRecyclerView(savedInstanceState);
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.song1);
-        mediaPlayer.start();
-
-        songAdapter.setSongItemList(new ArrayList<>(Arrays.asList("Song 1", "Song 2", "Song 3")));
     }
 
     private void initRecyclerView(Bundle savedInstanceState) {

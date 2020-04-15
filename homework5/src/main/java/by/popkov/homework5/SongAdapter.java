@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder> implements Parcelable {
-    private ArrayList<String> songItemList = new ArrayList<>();
+    private ArrayList<Song> songItemList = new ArrayList<>();
 
-    public ArrayList<String> getSongItemList() {
+    public ArrayList<Song> getSongItemList() {
         return songItemList;
     }
 
-    void setSongItemList(ArrayList<String> songItemList) {
+    void setSongItemList(ArrayList<Song> songItemList) {
         this.songItemList = songItemList;
         notifyDataSetChanged();
     }
@@ -47,6 +47,16 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
         else return 0;
     }
 
+    interface CustomItemClickListener {
+        void onClick(Song song);
+    }
+
+    private CustomItemClickListener customItemClickListener;
+
+    public void setCustomItemClickListener(CustomItemClickListener customItemClickListener) {
+        this.customItemClickListener = customItemClickListener;
+    }
+
     class ItemViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewSongName;
         private ImageView imageViewPlayStatus;
@@ -59,17 +69,18 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
                 @Override
                 public void onClick(View v) {
                     imageViewPlayStatus.setVisibility(View.VISIBLE);
+                    customItemClickListener.onClick(songItemList.get(getAdapterPosition()));
                 }
             });
         }
 
-        void bindItem(String songName) {
-            textViewSongName.setText(songName);
+        void bindItem(Song song) {
+            textViewSongName.setText(song.getName());
         }
     }
 
     private SongAdapter(Parcel in) {
-        songItemList = (ArrayList<String>) in.readSerializable();
+        songItemList = (ArrayList<Song>) in.readSerializable();
     }
 
     public static final Creator<SongAdapter> CREATOR = new Creator<SongAdapter>() {
