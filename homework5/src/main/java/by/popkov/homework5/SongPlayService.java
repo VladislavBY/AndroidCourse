@@ -24,21 +24,22 @@ public class SongPlayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
-        String input = intent.getStringExtra("inputExtra");
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+        if (song != null) {
+            Intent notificationIntent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    0, notificationIntent, 0);
 
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("ExampleService")
-                .setContentText(input)
-                .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
-                .setContentIntent(pendingIntent)
-                .build();
-        startForeground(1, notification);
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(song.getName())
+                    .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
+                    .setContentIntent(pendingIntent)
+                    .build();
+            startForeground(1, notification);
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.song1);
-        mediaPlayer.start();
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, song.getId());
+            mediaPlayer.start();
+        }
 
         return START_REDELIVER_INTENT;
     }

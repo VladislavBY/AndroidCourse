@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +31,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         createNotificationChannel();
         initRecyclerView(savedInstanceState);
-        startSongPlayService();
+        makeSongList();
+        setListener();
+    }
+
+    private void setListener() {
+        songAdapter.setCustomItemClickListener(new SongAdapter.CustomItemClickListener() {
+            @Override
+            public void onClick(Song song) {
+                startSongPlayService(song);
+            }
+        });
+    }
+
+    private void makeSongList() {
+        ArrayList<Song> songs = new ArrayList<>();
+        songs.add(new Song(R.raw.song1, "Song 1"));
+        songs.add(new Song(R.raw.song2, "Song 2"));
+        songs.add(new Song(R.raw.song3, "Song 3"));
+        songs.add(new Song(R.raw.song4, "Song 4"));
+        songs.add(new Song(R.raw.song5, "Song 5"));
+        songAdapter.setSongItemList(songs);
     }
 
     private void createNotificationChannel() {
@@ -40,14 +62,15 @@ public class MainActivity extends AppCompatActivity {
                     NotificationManager.IMPORTANCE_HIGH
             );
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 
-
-    private void startSongPlayService() {
+    private void startSongPlayService(Song song) {
         Intent intent = new Intent(this, SongPlayService.class);
-        intent.putExtra(SONG, new Song(R.raw.song1, "Song1"));
+        intent.putExtra(SONG, song);
         startService(intent);
 
     }
