@@ -2,6 +2,7 @@ package by.popkov.homework5;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private void startSongPlayService(Song song) {
         Intent intent = new Intent(this, SongPlayService.class);
         intent.putExtra(SONG, song);
-        startService(intent);
-
+        ContextCompat.startForegroundService(this, intent);
     }
 
     ServiceConnection serviceConnection = new ServiceConnection() {
