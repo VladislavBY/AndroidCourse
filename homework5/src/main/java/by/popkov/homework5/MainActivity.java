@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         createNotificationChannel();
+        makeSongList();
         initRecyclerView(savedInstanceState);
         setAdapterListener();
-        makeSongList();
         bindSongPlayService();
     }
 
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         songArrayList.add(new Song(R.raw.song3, "Song 3"));
         songArrayList.add(new Song(R.raw.song4, "Song 4"));
         songArrayList.add(new Song(R.raw.song5, "Song 5"));
-        songAdapter.setSongItemList(songArrayList);
     }
 
     private void createNotificationChannel() {
@@ -129,7 +128,11 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         if (savedInstanceState != null) {
             recyclerView.setAdapter((RecyclerView.Adapter) savedInstanceState.getParcelable(ADAPTER));
-        } else recyclerView.setAdapter(new SongAdapter());
+        } else {
+            SongAdapter songAdapter = new SongAdapter();
+            songAdapter.setSongItemList(songArrayList);
+            recyclerView.setAdapter(songAdapter);
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager
                 (this, RecyclerView.VERTICAL, false));
         songAdapter = (SongAdapter) recyclerView.getAdapter();
