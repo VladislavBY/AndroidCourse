@@ -14,7 +14,9 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String ADAPTER = "ADAPTER";
     static final String SONG = "SONG";
     public static final String CHANNEL_ID = "songPlayChannel";
+    public static final String TAG= "TAG";
+
+
 
     private SongAdapter songAdapter;
     private SongPlayService songPlayService;
@@ -36,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
         makeSongList();
         initRecyclerView(savedInstanceState);
         setAdapterListener();
+        setPlayArrowByNotification();
         bindSongPlayService();
+        Log.d(TAG, "onCreate()");
     }
 
     private void setAdapterListener() {
@@ -46,6 +53,20 @@ public class MainActivity extends AppCompatActivity {
                 startSongPlayService(song);
             }
         });
+    }
+
+    private void setPlayArrowByNotification() {
+        Intent intent = getIntent();
+        Song song = (Song) intent.getSerializableExtra(SONG);
+        if (song != null) {
+            for (int i = 0; i < songArrayList.size(); i++) {
+                if (songArrayList.get(i).getId() == song.getId()) {
+                    songArrayList.get(i).setPlaying(true);
+                    songAdapter.setSongItemList(songArrayList);
+                    break;
+                }
+            }
+        }
     }
 
     private void setSongPlayServiceListener() {

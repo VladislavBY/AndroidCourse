@@ -43,8 +43,9 @@ public class SongPlayService extends Service {
         final Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
         if (song != null) {
             Intent notificationIntent = new Intent(this, MainActivity.class);
+            notificationIntent.putExtra(MainActivity.SONG, song);
             final PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                    0, notificationIntent, 0);
+                    0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle(getString(R.string.app_name))
