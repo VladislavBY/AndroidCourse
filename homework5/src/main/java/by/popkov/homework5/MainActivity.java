@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
