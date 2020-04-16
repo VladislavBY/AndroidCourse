@@ -73,8 +73,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
                     for (ImageView imageView : itemImageViewsList) {
                         imageView.setVisibility(View.INVISIBLE);
                     }
+                    for (Song song : songItemList) {
+                        song.setPlaying(false);
+                    }
+                    Song song = songItemList.get(getAdapterPosition());
+                    song.setPlaying(true);
                     imageViewPlayStatus.setVisibility(View.VISIBLE);
-                    customItemClickListener.onClick(songItemList.get(getAdapterPosition()));
+                    customItemClickListener.onClick(song);
                 }
             });
         }
