@@ -20,11 +20,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SongAdapter songAdapter;
     private static final String ADAPTER = "ADAPTER";
     static final String SONG = "SONG";
     public static final String CHANNEL_ID = "songPlayChannel";
+
+    private SongAdapter songAdapter;
     private SongPlayService songPlayService;
+    private ArrayList<Song> songArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         createNotificationChannel();
         initRecyclerView(savedInstanceState);
+        setAdapterListener();
         makeSongList();
-        setListener();
+        bindSongPlayService();
     }
 
-    private void setListener() {
+    private void setAdapterListener() {
         songAdapter.setCustomItemClickListener(new SongAdapter.CustomItemClickListener() {
             @Override
             public void onClick(Song song) {
@@ -45,14 +48,35 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setSongPlayServiceListener() {
+
+        songPlayService.setCustomOnCompletionListener(new SongPlayService.CustomOnCompletionListener() {
+            @Override
+            public void onCompletion(Song song) {
+                for (int i = 0; i < songArrayList.size(); i++) {
+                    if (songArrayList.get(i).getId() == song.getId() && i + 1 < songArrayList.size()) {
+                        startSongPlayService(songArrayList.get(i + 1));
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    private void startSongPlayService(Song song) {
+        Intent intent = new Intent(this, SongPlayService.class);
+        intent.putExtra(SONG, song);
+        ContextCompat.startForegroundService(this, intent);
+    }
+
     private void makeSongList() {
-        ArrayList<Song> songs = new ArrayList<>();
-        songs.add(new Song(R.raw.song1, "Song 1"));
-        songs.add(new Song(R.raw.song2, "Song 2"));
-        songs.add(new Song(R.raw.song3, "Song 3"));
-        songs.add(new Song(R.raw.song4, "Song 4"));
-        songs.add(new Song(R.raw.song5, "Song 5"));
-        songAdapter.setSongItemList(songs);
+        songArrayList = new ArrayList<>();
+        songArrayList.add(new Song(R.raw.song1, "Song 1"));
+        songArrayList.add(new Song(R.raw.song2, "Song 2"));
+        songArrayList.add(new Song(R.raw.song3, "Song 3"));
+        songArrayList.add(new Song(R.raw.song4, "Song 4"));
+        songArrayList.add(new Song(R.raw.song5, "Song 5"));
+        songAdapter.setSongItemList(songArrayList);
     }
 
     private void createNotificationChannel() {
@@ -69,17 +93,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startSongPlayService(Song song) {
-        Intent intent = new Intent(this, SongPlayService.class);
-        intent.putExtra(SONG, song);
-        ContextCompat.startForegroundService(this, intent);
-    }
-
-    ServiceConnection serviceConnection = new ServiceConnection() {
+    private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder iBinder) {
             SongPlayService.SongPlayServicesBinder binder = (SongPlayService.SongPlayServicesBinder) iBinder;
             songPlayService = binder.getService();
+            setSongPlayServiceListener();
         }
 
         @Override
@@ -89,12 +108,19 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void bindSongPlayService() {
-        bindService(new Intent(this, SongPlayService.class), serviceConnection, BIND_AUTO_CREATE);
+        Intent intent = new Intent(this, SongPlayService.class);
+        bindService(intent, serviceConnection, BIND_IMPORTANT);
     }
 
     private void unbindSongPlayService() {
         unbindService(serviceConnection);
         if (songPlayService != null) songPlayService = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindSongPlayService();
     }
 
     private void initRecyclerView(Bundle savedInstanceState) {

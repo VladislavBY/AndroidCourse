@@ -6,12 +6,12 @@ public class Song implements Serializable {
     private int id;
     private String name;
 
-    public Song(int id, String name) {
+    Song(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 
@@ -19,7 +19,7 @@ public class Song implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 

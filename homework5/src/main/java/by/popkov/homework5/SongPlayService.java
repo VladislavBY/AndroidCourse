@@ -15,18 +15,35 @@ import static by.popkov.homework5.MainActivity.CHANNEL_ID;
 
 
 public class SongPlayService extends Service {
+    private MediaPlayer mediaPlayer;
+
+    interface CustomOnCompletionListener {
+        void onCompletion(Song song);
+    }
+
+    private CustomOnCompletionListener customOnCompletionListener;
+
+    public CustomOnCompletionListener getCustomOnCompletionListener() {
+        return customOnCompletionListener;
+    }
+
+    public void setCustomOnCompletionListener(CustomOnCompletionListener customOnCompletionListener) {
+        this.customOnCompletionListener = customOnCompletionListener;
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return new SongPlayServicesBinder();
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
+        final Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
         if (song != null) {
             Intent notificationIntent = new Intent(this, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+            final PendingIntent pendingIntent = PendingIntent.getActivity(this,
                     0, notificationIntent, 0);
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -37,8 +54,15 @@ public class SongPlayService extends Service {
                     .build();
             startForeground(1, notification);
 
-            MediaPlayer mediaPlayer = MediaPlayer.create(this, song.getId());
+            if (mediaPlayer != null) mediaPlayer.stop();
+            mediaPlayer = MediaPlayer.create(this, song.getId());
             mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    customOnCompletionListener.onCompletion(song);
+                }
+            });
         }
 
         return START_REDELIVER_INTENT;
