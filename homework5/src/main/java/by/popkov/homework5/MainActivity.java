@@ -49,13 +49,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSongPlayServiceListener() {
-
         songPlayService.setCustomOnCompletionListener(new SongPlayService.CustomOnCompletionListener() {
             @Override
             public void onCompletion(Song song) {
                 for (int i = 0; i < songArrayList.size(); i++) {
                     if (songArrayList.get(i).getId() == song.getId() && i + 1 < songArrayList.size()) {
                         startSongPlayService(songArrayList.get(i + 1));
+                        songArrayList.get(i + 1).setPlaying(true);
+                        songArrayList.get(i).setPlaying(false);
+                        songAdapter.setSongItemList(songArrayList);
                         break;
                     }
                 }

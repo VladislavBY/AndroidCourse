@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder> implements Parcelable {
     private ArrayList<Song> songItemList = new ArrayList<>();
+    private ArrayList<ImageView> itemImageViewsList = new ArrayList<>();
 
     public ArrayList<Song> getSongItemList() {
         return songItemList;
@@ -65,9 +66,13 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
             super(itemView);
             textViewSongName = itemView.findViewById(R.id.textViewSongName);
             imageViewPlayStatus = itemView.findViewById(R.id.imageViewPlayStatus);
+            itemImageViewsList.add(imageViewPlayStatus);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    for (ImageView imageView : itemImageViewsList) {
+                        imageView.setVisibility(View.INVISIBLE);
+                    }
                     imageViewPlayStatus.setVisibility(View.VISIBLE);
                     customItemClickListener.onClick(songItemList.get(getAdapterPosition()));
                 }
@@ -76,6 +81,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
 
         void bindItem(Song song) {
             textViewSongName.setText(song.getName());
+            imageViewPlayStatus.setVisibility((song.isPlaying()) ? View.VISIBLE : View.INVISIBLE);
         }
     }
 
