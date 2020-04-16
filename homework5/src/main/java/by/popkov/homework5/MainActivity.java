@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindSongPlayService() {
         Intent intent = new Intent(this, SongPlayService.class);
-        bindService(intent, serviceConnection, BIND_IMPORTANT);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 
     private void unbindSongPlayService() {
