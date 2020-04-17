@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
-            android:text="@string/song_1"
+            android:text="TEXT"
             android:textColor="@color/songText"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"

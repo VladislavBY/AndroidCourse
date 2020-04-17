@@ -15,13 +15,12 @@ import static by.popkov.homework5.MainActivity.CHANNEL_ID;
 
 
 public class SongPlayService extends Service {
-    private static final String COMMAND = "COMMAND";
-
     private MediaPlayer mediaPlayer;
 
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
+
     private Song currentSong;
 
     interface CustomOnCompletionListener {
@@ -60,51 +59,70 @@ public class SongPlayService extends Service {
             else if (intentAction.equals("previousSong"))
                 customOnClickPreviousListener.onClick(currentSong);
         }
-
         final Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
         if (song != null) {
             currentSong = song;
-            Intent openPlayerIntent = new Intent(this, MainActivity.class);
-            openPlayerIntent.putExtra(MainActivity.SONG, song);
-            openPlayerIntent.setAction("sendSong");
-            PendingIntent openPlayerPendingIntent = PendingIntent.getActivity(this,
-                    0, openPlayerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            Intent nextIntent = new Intent(this, SongPlayService.class);
-            nextIntent.putExtra(COMMAND, "NEXT");
-            nextIntent.setAction("nextSong");
-            PendingIntent nextPendingIntent = PendingIntent.getService(this,
-                    0, nextIntent, 0);
-
-            Intent previousIntent = new Intent(this, SongPlayService.class);
-            previousIntent.putExtra(COMMAND, "PREVIOUS");
-            previousIntent.setAction("previousSong");
-            PendingIntent previousPendingIntent = PendingIntent.getService(this,
-                    0, previousIntent, 0);
-
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText(song.getName())
-                    .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
-                    .setContentIntent(openPlayerPendingIntent)
-                    .addAction(R.drawable.ic_arrow_back_black_24dp, "PREVIOUS", previousPendingIntent)
-                    .addAction(R.drawable.ic_arrow_forward_black_24dp, "NEXT", nextPendingIntent)
-                    .build();
+            PendingIntent openPlayerPendingIntent = getOpenPlayerPendingIntent();
+            PendingIntent nextSongPendingIntent = getNextSongPendingIntent();
+            PendingIntent previousSongPendingIntent = getPreviousSongPendingIntent();
+            Notification notification = getNotification(
+                    song,
+                    openPlayerPendingIntent,
+                    nextSongPendingIntent,
+                    previousSongPendingIntent);
             startForeground(1, notification);
-
-            if (mediaPlayer != null) mediaPlayer.stop();
-            mediaPlayer = MediaPlayer.create(this, song.getId());
-            mediaPlayer.start();
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    customOnCompletionListener.onCompletion(song);
-                }
-            });
+            startMediaPlayer(song);
         }
 
         return START_REDELIVER_INTENT;
+    }
+
+    private Notification getNotification(Song song,
+                                         PendingIntent openPlayerPendingIntent,
+                                         PendingIntent nextSongPendingIntent,
+                                         PendingIntent previousSongPendingIntent) {
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(song.getName())
+                .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
+                .setContentIntent(openPlayerPendingIntent)
+                .addAction(R.drawable.ic_arrow_back_black_24dp, "PREVIOUS" , previousSongPendingIntent)
+                .addAction(R.drawable.ic_arrow_forward_black_24dp, "NEXT", nextSongPendingIntent)
+                .build();
+    }
+
+    private void startMediaPlayer(final Song song) {
+        if (mediaPlayer != null) mediaPlayer.stop();
+        mediaPlayer = MediaPlayer.create(this, song.getId());
+        mediaPlayer.start();
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                customOnCompletionListener.onCompletion(song);
+            }
+        });
+    }
+
+    private PendingIntent getOpenPlayerPendingIntent() {
+        Intent openPlayerIntent = new Intent(this, MainActivity.class);
+        openPlayerIntent.putExtra(MainActivity.SONG, currentSong);
+        openPlayerIntent.setAction("sendSong");
+        return PendingIntent.getActivity(this,
+                0, openPlayerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent getNextSongPendingIntent() {
+        Intent nextIntent = new Intent(this, SongPlayService.class);
+        nextIntent.setAction("nextSong");
+        return PendingIntent.getService(this, 0, nextIntent, 0);
+
+    }
+
+    private PendingIntent getPreviousSongPendingIntent() {
+        Intent previousIntent = new Intent(this, SongPlayService.class);
+        previousIntent.setAction("previousSong");
+        return PendingIntent.getService(this, 0, previousIntent, 0);
     }
 
     class SongPlayServicesBinder extends Binder {
