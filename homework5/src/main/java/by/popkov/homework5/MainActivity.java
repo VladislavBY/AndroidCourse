@@ -24,8 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String ADAPTER = "ADAPTER";
     static final String SONG = "SONG";
     public static final String CHANNEL_ID = "songPlayChannel";
-    public static final String TAG= "TAG";
-
+    public static final String TAG = "TAG";
 
 
     private SongAdapter songAdapter;
@@ -76,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
                     if (songArrayList.get(i).getId() == song.getId() && i + 1 < songArrayList.size()) {
                         startSongPlayService(songArrayList.get(i + 1));
                         songArrayList.get(i + 1).setPlaying(true);
+                        songArrayList.get(i).setPlaying(false);
+                        songAdapter.setSongItemList(songArrayList);
+                        break;
+                    }
+                }
+            }
+        });
+        songPlayService.setCustomOnClickPreviousListener(new SongPlayService.CustomOnClickPreviousListener() {
+            @Override
+            public void onClick(Song song) {
+                for (int i = 0; i < songArrayList.size(); i++) {
+                    if (songArrayList.get(i).getId() == song.getId() && i - 1 >= 0) {
+                        startSongPlayService(songArrayList.get(i - 1));
+                        songArrayList.get(i - 1).setPlaying(true);
                         songArrayList.get(i).setPlaying(false);
                         songAdapter.setSongItemList(songArrayList);
                         break;

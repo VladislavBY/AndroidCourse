@@ -15,7 +15,9 @@ import static by.popkov.homework5.MainActivity.CHANNEL_ID;
 
 
 public class SongPlayService extends Service {
+    private static final String COMMAND = "COMMAND";
     private MediaPlayer mediaPlayer;
+    private Song currentSong;
 
     interface CustomOnCompletionListener {
         void onCompletion(Song song);
@@ -23,12 +25,18 @@ public class SongPlayService extends Service {
 
     private CustomOnCompletionListener customOnCompletionListener;
 
-    public CustomOnCompletionListener getCustomOnCompletionListener() {
-        return customOnCompletionListener;
-    }
-
     public void setCustomOnCompletionListener(CustomOnCompletionListener customOnCompletionListener) {
         this.customOnCompletionListener = customOnCompletionListener;
+    }
+
+    interface CustomOnClickPreviousListener {
+        void onClick(Song song);
+    }
+
+    private CustomOnClickPreviousListener customOnClickPreviousListener;
+
+    public void setCustomOnClickPreviousListener(CustomOnClickPreviousListener customOnClickPreviousListener) {
+        this.customOnClickPreviousListener = customOnClickPreviousListener;
     }
 
     @Nullable
@@ -40,18 +48,42 @@ public class SongPlayService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String intentAction = intent.getAction();
+        if (intentAction != null) {
+            if (intentAction.equals("nextSong"))
+                customOnCompletionListener.onCompletion(currentSong);
+            else if (intentAction.equals("previousSong"))
+                customOnClickPreviousListener.onClick(currentSong);
+        }
+
         final Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
         if (song != null) {
-            Intent notificationIntent = new Intent(this, MainActivity.class);
-            notificationIntent.putExtra(MainActivity.SONG, song);
-            final PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                    0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            currentSong = song;
+            Intent openPlayerIntent = new Intent(this, MainActivity.class);
+            openPlayerIntent.putExtra(MainActivity.SONG, song);
+            openPlayerIntent.setAction("sendSong");
+            PendingIntent openPlayerPendingIntent = PendingIntent.getActivity(this,
+                    0, openPlayerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Intent nextIntent = new Intent(this, SongPlayService.class);
+            nextIntent.putExtra(COMMAND, "NEXT");
+            nextIntent.setAction("nextSong");
+            PendingIntent nextPendingIntent = PendingIntent.getService(this,
+                    0, nextIntent, 0);
+
+            Intent previousIntent = new Intent(this, SongPlayService.class);
+            previousIntent.putExtra(COMMAND, "PREVIOUS");
+            previousIntent.setAction("previousSong");
+            PendingIntent previousPendingIntent = PendingIntent.getService(this,
+                    0, previousIntent, 0);
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(song.getName())
                     .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
-                    .setContentIntent(pendingIntent)
+                    .setContentIntent(openPlayerPendingIntent)
+                    .addAction(R.drawable.ic_arrow_back_black_24dp, "PREVIOUS", previousPendingIntent)
+                    .addAction(R.drawable.ic_arrow_forward_black_24dp, "NEXT", nextPendingIntent)
                     .build();
             startForeground(1, notification);
 
