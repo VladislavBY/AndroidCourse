@@ -2,7 +2,7 @@ package by.popkov.homework5;
 
 import java.io.Serializable;
 
-public class Song implements Serializable {
+class Song implements Serializable {
     private int id;
     private String name;
     private boolean playing;
@@ -24,15 +24,10 @@ public class Song implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 }

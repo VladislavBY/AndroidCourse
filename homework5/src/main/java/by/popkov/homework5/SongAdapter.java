@@ -17,10 +17,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
     private ArrayList<Song> songItemList = new ArrayList<>();
     private ArrayList<ImageView> itemImageViewsList = new ArrayList<>();
 
-    public ArrayList<Song> getSongItemList() {
-        return songItemList;
-    }
-
     void setSongItemList(ArrayList<Song> songItemList) {
         this.songItemList = songItemList;
         notifyDataSetChanged();
@@ -54,7 +50,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
 
     private CustomItemClickListener customItemClickListener;
 
-    public void setCustomItemClickListener(CustomItemClickListener customItemClickListener) {
+    void setCustomItemClickListener(CustomItemClickListener customItemClickListener) {
         this.customItemClickListener = customItemClickListener;
     }
 

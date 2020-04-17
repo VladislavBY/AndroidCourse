@@ -15,6 +15,9 @@ import static by.popkov.homework5.MainActivity.CHANNEL_ID;
 
 
 public class SongPlayService extends Service {
+    public static final String SEND_SONG = "sendSong";
+    public static final String NEXT_SONG = "nextSong";
+    public static final String PREVIOUS_SONG = "previousSong";
     private MediaPlayer mediaPlayer;
 
     public MediaPlayer getMediaPlayer() {
@@ -54,9 +57,9 @@ public class SongPlayService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String intentAction = intent.getAction();
         if (intentAction != null) {
-            if (intentAction.equals("nextSong"))
+            if (intentAction.equals(NEXT_SONG))
                 customOnCompletionListener.onCompletion(currentSong);
-            else if (intentAction.equals("previousSong"))
+            else if (intentAction.equals(PREVIOUS_SONG))
                 customOnClickPreviousListener.onClick(currentSong);
         }
         final Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
@@ -77,18 +80,26 @@ public class SongPlayService extends Service {
         return START_REDELIVER_INTENT;
     }
 
-    private Notification getNotification(Song song,
-                                         PendingIntent openPlayerPendingIntent,
-                                         PendingIntent nextSongPendingIntent,
-                                         PendingIntent previousSongPendingIntent) {
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
+    private Notification getNotification(
+            Song song,
+            PendingIntent openPlayerPendingIntent,
+            PendingIntent nextSongPendingIntent,
+            PendingIntent previousSongPendingIntent) {
+        return new NotificationCompat
+                .Builder(this, CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(song.getName())
                 .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
                 .setContentIntent(openPlayerPendingIntent)
-                .addAction(R.drawable.ic_arrow_back_black_24dp, "PREVIOUS" , previousSongPendingIntent)
-                .addAction(R.drawable.ic_arrow_forward_black_24dp, "NEXT", nextSongPendingIntent)
+                .addAction(
+                        R.drawable.ic_arrow_back_black_24dp,
+                        getString(R.string.previous_song_text),
+                        previousSongPendingIntent)
+                .addAction(
+                        R.drawable.ic_arrow_forward_black_24dp,
+                        getString(R.string.next_song_text),
+                        nextSongPendingIntent)
                 .build();
     }
 
@@ -107,21 +118,21 @@ public class SongPlayService extends Service {
     private PendingIntent getOpenPlayerPendingIntent() {
         Intent openPlayerIntent = new Intent(this, MainActivity.class);
         openPlayerIntent.putExtra(MainActivity.SONG, currentSong);
-        openPlayerIntent.setAction("sendSong");
+        openPlayerIntent.setAction(SEND_SONG);
         return PendingIntent.getActivity(this,
                 0, openPlayerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent getNextSongPendingIntent() {
         Intent nextIntent = new Intent(this, SongPlayService.class);
-        nextIntent.setAction("nextSong");
+        nextIntent.setAction(NEXT_SONG);
         return PendingIntent.getService(this, 0, nextIntent, 0);
 
     }
 
     private PendingIntent getPreviousSongPendingIntent() {
         Intent previousIntent = new Intent(this, SongPlayService.class);
-        previousIntent.setAction("previousSong");
+        previousIntent.setAction(PREVIOUS_SONG);
         return PendingIntent.getService(this, 0, previousIntent, 0);
     }
 
