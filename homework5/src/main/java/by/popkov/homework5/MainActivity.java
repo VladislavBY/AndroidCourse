@@ -43,24 +43,41 @@ public class MainActivity extends AppCompatActivity {
         updateSeekBar();
     }
 
-    private void updateSeekBar() {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (songPlayService != null && songPlayService.getMediaPlayer() != null) {
-                        seekBar.setMax(songPlayService.getMediaPlayer().getDuration());
-                        seekBar.setProgress(songPlayService.getMediaPlayer().getCurrentPosition());
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Song Play Channel",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
             }
-        });
-        thread.start();
+        }
+    }
+
+    private void makeSongList() {
+        songArrayList = new ArrayList<>();
+        songArrayList.add(new Song(R.raw.song1, "Song 1"));
+        songArrayList.add(new Song(R.raw.song2, "Song 2"));
+        songArrayList.add(new Song(R.raw.song3, "Song 3"));
+        songArrayList.add(new Song(R.raw.song4, "Song 4"));
+        songArrayList.add(new Song(R.raw.song5, "Song 5"));
+    }
+
+    private void initRecyclerView(Bundle savedInstanceState) {
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        if (savedInstanceState != null) {
+            recyclerView.setAdapter((RecyclerView.Adapter) savedInstanceState.getParcelable(ADAPTER));
+        } else {
+            SongAdapter songAdapter = new SongAdapter();
+            songAdapter.setSongItemList(songArrayList);
+            recyclerView.setAdapter(songAdapter);
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager
+                (this, RecyclerView.VERTICAL, false));
+        songAdapter = (SongAdapter) recyclerView.getAdapter();
     }
 
     private void setAdapterListener() {
@@ -85,6 +102,30 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void bindSongPlayService() {
+        Intent intent = new Intent(this, SongPlayService.class);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+    }
+
+    private void unbindSongPlayService() {
+        unbindService(serviceConnection);
+        if (songPlayService != null) songPlayService = null;
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder iBinder) {
+            SongPlayService.SongPlayServicesBinder binder = (SongPlayService.SongPlayServicesBinder) iBinder;
+            songPlayService = binder.getService();
+            setSongPlayServiceListener();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            if (songPlayService != null) songPlayService = null;
+        }
+    };
 
     private void setSongPlayServiceListener() {
         songPlayService.setCustomOnCompletionListener(new SongPlayService.CustomOnCompletionListener() {
@@ -117,82 +158,41 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void updateSeekBar() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (songPlayService != null && songPlayService.getMediaPlayer() != null) {
+                        seekBar.setMax(songPlayService.getMediaPlayer().getDuration());
+                        seekBar.setProgress(songPlayService.getMediaPlayer().getCurrentPosition());
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
+    }
+
     private void startSongPlayService(Song song) {
         Intent intent = new Intent(this, SongPlayService.class);
         intent.putExtra(SONG, song);
         ContextCompat.startForegroundService(this, intent);
     }
 
-    private void makeSongList() {
-        songArrayList = new ArrayList<>();
-        songArrayList.add(new Song(R.raw.song1, "Song 1"));
-        songArrayList.add(new Song(R.raw.song2, "Song 2"));
-        songArrayList.add(new Song(R.raw.song3, "Song 3"));
-        songArrayList.add(new Song(R.raw.song4, "Song 4"));
-        songArrayList.add(new Song(R.raw.song5, "Song 5"));
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Song Play Channel",
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder iBinder) {
-            SongPlayService.SongPlayServicesBinder binder = (SongPlayService.SongPlayServicesBinder) iBinder;
-            songPlayService = binder.getService();
-            setSongPlayServiceListener();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            if (songPlayService != null) songPlayService = null;
-        }
-    };
-
-    private void bindSongPlayService() {
-        Intent intent = new Intent(this, SongPlayService.class);
-        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
-    }
-
-    private void unbindSongPlayService() {
-        unbindService(serviceConnection);
-        if (songPlayService != null) songPlayService = null;
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ADAPTER, songAdapter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbindSongPlayService();
-    }
-
-    private void initRecyclerView(Bundle savedInstanceState) {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        if (savedInstanceState != null) {
-            recyclerView.setAdapter((RecyclerView.Adapter) savedInstanceState.getParcelable(ADAPTER));
-        } else {
-            SongAdapter songAdapter = new SongAdapter();
-            songAdapter.setSongItemList(songArrayList);
-            recyclerView.setAdapter(songAdapter);
-        }
-        recyclerView.setLayoutManager(new LinearLayoutManager
-                (this, RecyclerView.VERTICAL, false));
-        songAdapter = (SongAdapter) recyclerView.getAdapter();
-    }
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(ADAPTER, songAdapter);
     }
 }

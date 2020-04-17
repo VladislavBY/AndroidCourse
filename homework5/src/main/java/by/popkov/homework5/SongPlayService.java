@@ -72,7 +72,8 @@ public class SongPlayService extends Service {
                     song,
                     openPlayerPendingIntent,
                     nextSongPendingIntent,
-                    previousSongPendingIntent);
+                    previousSongPendingIntent
+            );
             startForeground(1, notification);
             startMediaPlayer(song);
         }
@@ -84,7 +85,8 @@ public class SongPlayService extends Service {
             Song song,
             PendingIntent openPlayerPendingIntent,
             PendingIntent nextSongPendingIntent,
-            PendingIntent previousSongPendingIntent) {
+            PendingIntent previousSongPendingIntent
+    ) {
         return new NotificationCompat
                 .Builder(this, CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -95,11 +97,13 @@ public class SongPlayService extends Service {
                 .addAction(
                         R.drawable.ic_arrow_back_black_24dp,
                         getString(R.string.previous_song_text),
-                        previousSongPendingIntent)
+                        previousSongPendingIntent
+                )
                 .addAction(
                         R.drawable.ic_arrow_forward_black_24dp,
                         getString(R.string.next_song_text),
-                        nextSongPendingIntent)
+                        nextSongPendingIntent
+                )
                 .build();
     }
 
