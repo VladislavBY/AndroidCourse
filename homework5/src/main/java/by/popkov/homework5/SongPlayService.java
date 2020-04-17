@@ -83,6 +83,7 @@ public class SongPlayService extends Service {
                     0, previousIntent, 0);
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(song.getName())
                     .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
