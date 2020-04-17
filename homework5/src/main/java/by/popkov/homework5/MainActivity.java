@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String ADAPTER = "ADAPTER";
     static final String SONG = "SONG";
-    public static final String CHANNEL_ID = "songPlayChannel";
+    static final String CHANNEL_ID = "songPlayChannel";
     private SongAdapter songAdapter;
     private SongPlayService songPlayService;
     private ArrayList<Song> songArrayList;

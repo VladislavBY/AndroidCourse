@@ -11,20 +11,18 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import static by.popkov.homework5.MainActivity.CHANNEL_ID;
-
 
 public class SongPlayService extends Service {
-    public static final String SEND_SONG = "sendSong";
-    public static final String NEXT_SONG = "nextSong";
-    public static final String PREVIOUS_SONG = "previousSong";
+    private static final String SEND_SONG = "sendSong";
+    private static final String NEXT_SONG = "nextSong";
+    private static final String PREVIOUS_SONG = "previousSong";
+    private Song currentSong;
     private MediaPlayer mediaPlayer;
+
 
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
-
-    private Song currentSong;
 
     interface CustomOnCompletionListener {
         void onCompletion(Song song);
@@ -45,13 +43,6 @@ public class SongPlayService extends Service {
     public void setCustomOnClickPreviousListener(CustomOnClickPreviousListener customOnClickPreviousListener) {
         this.customOnClickPreviousListener = customOnClickPreviousListener;
     }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return new SongPlayServicesBinder();
-    }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -77,7 +68,6 @@ public class SongPlayService extends Service {
             startForeground(1, notification);
             startMediaPlayer(song);
         }
-
         return START_REDELIVER_INTENT;
     }
 
@@ -88,7 +78,7 @@ public class SongPlayService extends Service {
             PendingIntent previousSongPendingIntent
     ) {
         return new NotificationCompat
-                .Builder(this, CHANNEL_ID)
+                .Builder(this, MainActivity.CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(song.getName())
@@ -140,11 +130,18 @@ public class SongPlayService extends Service {
         return PendingIntent.getService(this, 0, previousIntent, 0);
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return new SongPlayServicesBinder();
+    }
+
     class SongPlayServicesBinder extends Binder {
+
         SongPlayService getService() {
             return SongPlayService.this;
         }
-    }
 
+    }
 
 }
