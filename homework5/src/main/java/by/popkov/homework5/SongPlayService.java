@@ -16,7 +16,12 @@ import static by.popkov.homework5.MainActivity.CHANNEL_ID;
 
 public class SongPlayService extends Service {
     private static final String COMMAND = "COMMAND";
+
     private MediaPlayer mediaPlayer;
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
     private Song currentSong;
 
     interface CustomOnCompletionListener {

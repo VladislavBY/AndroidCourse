@@ -14,7 +14,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
+import android.widget.SeekBar;
 
 import java.util.ArrayList;
 
@@ -24,12 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String ADAPTER = "ADAPTER";
     static final String SONG = "SONG";
     public static final String CHANNEL_ID = "songPlayChannel";
-    public static final String TAG = "TAG";
-
-
     private SongAdapter songAdapter;
     private SongPlayService songPlayService;
     private ArrayList<Song> songArrayList;
+    private SeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,28 @@ public class MainActivity extends AppCompatActivity {
         setAdapterListener();
         setPlayArrowByNotification();
         bindSongPlayService();
-        Log.d(TAG, "onCreate()");
+        seekBar = findViewById(R.id.seekBar);
+        updateSeekBar();
+    }
+
+    private void updateSeekBar() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (songPlayService != null && songPlayService.getMediaPlayer() != null) {
+                        seekBar.setMax(songPlayService.getMediaPlayer().getDuration());
+                        seekBar.setProgress(songPlayService.getMediaPlayer().getCurrentPosition());
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        thread.start();
     }
 
     private void setAdapterListener() {
