@@ -120,14 +120,14 @@ public class SongPlayService extends Service {
     private PendingIntent getNextSongPendingIntent() {
         Intent nextIntent = new Intent(this, SongPlayService.class);
         nextIntent.setAction(NEXT_SONG);
-        return PendingIntent.getService(this, 0, nextIntent, 0);
+        return PendingIntent.getService(this, 1, nextIntent, 0);
 
     }
 
     private PendingIntent getPreviousSongPendingIntent() {
         Intent previousIntent = new Intent(this, SongPlayService.class);
         previousIntent.setAction(PREVIOUS_SONG);
-        return PendingIntent.getService(this, 0, previousIntent, 0);
+        return PendingIntent.getService(this, 2, previousIntent, 0);
     }
 
     @Nullable
