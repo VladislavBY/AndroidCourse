@@ -16,6 +16,7 @@ public class SongPlayService extends Service {
     private static final String SEND_SONG = "sendSong";
     private static final String NEXT_SONG = "nextSong";
     private static final String PREVIOUS_SONG = "previousSong";
+    private static final String EXIT = "exit";
     private Song currentSong;
     private MediaPlayer mediaPlayer;
 
@@ -46,53 +47,56 @@ public class SongPlayService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String intentAction = intent.getAction();
-        if (intentAction != null) {
-            if (intentAction.equals(NEXT_SONG))
-                customOnCompletionListener.onCompletion(currentSong);
-            else if (intentAction.equals(PREVIOUS_SONG))
-                customOnClickPreviousListener.onClick(currentSong);
-        }
+        buttonAction(intent.getAction());
         final Song song = (Song) intent.getSerializableExtra(MainActivity.SONG);
         if (song != null) {
             currentSong = song;
-            PendingIntent openPlayerPendingIntent = getOpenPlayerPendingIntent();
-            PendingIntent nextSongPendingIntent = getNextSongPendingIntent();
-            PendingIntent previousSongPendingIntent = getPreviousSongPendingIntent();
-            Notification notification = getNotification(
-                    song,
-                    openPlayerPendingIntent,
-                    nextSongPendingIntent,
-                    previousSongPendingIntent
-            );
+            Notification notification = getNotification(song);
             startForeground(1, notification);
             startMediaPlayer(song);
         }
         return START_REDELIVER_INTENT;
     }
 
-    private Notification getNotification(
-            Song song,
-            PendingIntent openPlayerPendingIntent,
-            PendingIntent nextSongPendingIntent,
-            PendingIntent previousSongPendingIntent
-    ) {
+    private void buttonAction(String intentAction) {
+        if (intentAction != null) {
+            switch (intentAction) {
+                case NEXT_SONG:
+                    customOnCompletionListener.onCompletion(currentSong);
+                    break;
+                case PREVIOUS_SONG:
+                    customOnClickPreviousListener.onClick(currentSong);
+                    break;
+                case EXIT:
+                    if (mediaPlayer != null) mediaPlayer.stop();
+                    stopSelf();
+                    break;
+            }
+        }
+    }
+
+    private Notification getNotification(Song song) {
         return new NotificationCompat
                 .Builder(this, MainActivity.CHANNEL_ID)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(song.getName())
                 .setSmallIcon(R.drawable.ic_play_arrow_red_24dp)
-                .setContentIntent(openPlayerPendingIntent)
+                .setContentIntent(getOpenPlayerPendingIntent())
                 .addAction(
                         R.drawable.ic_arrow_back_black_24dp,
                         getString(R.string.previous_song_text),
-                        previousSongPendingIntent
+                        getPreviousSongPendingIntent()
                 )
                 .addAction(
                         R.drawable.ic_arrow_forward_black_24dp,
                         getString(R.string.next_song_text),
-                        nextSongPendingIntent
+                        getNextSongPendingIntent()
+                )
+                .addAction(
+                        R.drawable.ic_remove_circle_outline_black_24dp,
+                        getString(R.string.exit_song),
+                        getExitSongPendingIntent()
                 )
                 .build();
     }
@@ -128,6 +132,12 @@ public class SongPlayService extends Service {
         Intent previousIntent = new Intent(this, SongPlayService.class);
         previousIntent.setAction(PREVIOUS_SONG);
         return PendingIntent.getService(this, 2, previousIntent, 0);
+    }
+
+    private PendingIntent getExitSongPendingIntent() {
+        Intent exitIntent = new Intent(this, SongPlayService.class);
+        exitIntent.setAction(EXIT);
+        return PendingIntent.getService(this, 3, exitIntent, 0);
     }
 
     @Nullable

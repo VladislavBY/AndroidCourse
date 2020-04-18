@@ -2,4 +2,5 @@
     <string name="app_name">Music player</string>
     <string name="previous_song_text">PREVIOUS</string>
     <string name="next_song_text">NEXT</string>
+    <string name="exit_song">EXIT</string>
 </resources>
