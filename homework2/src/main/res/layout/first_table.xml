@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/headTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/green"
+            android:padding="15dp"
+            android:text="@string/poi"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/attractions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_folder_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/attractions"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/dining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_local_dining_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/dining"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/education"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_school_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/education"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/family"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_people_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/family"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/health"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_favorite_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/health"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/office"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_business_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/office"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/promotions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_shopping_cart_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/promotions"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_radio_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/radio"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/recipes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_event_note_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/recipes"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/sports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:drawableStart="@drawable/ic_fitness_center_black_30dp"
+            android:drawablePadding="30dp"
+            android:gravity="start|center_vertical"
+            android:padding="15dp"
+            android:text="@string/sports"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </TableRow>
+</TableLayout>
