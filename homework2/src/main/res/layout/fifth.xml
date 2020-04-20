@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/headConstraintLayout"
+    <TextView
+        android:id="@+id/headTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/headTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shadow_bottom"
-
-            android:drawableEnd="@drawable/ic_search_white_32dp"
-            android:padding="20dp"
-            android:text="@string/android_course"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@drawable/shadow_bottom"
+        android:drawableEnd="@drawable/ic_search_white_32dp"
+        android:padding="20dp"
+        android:text="@string/android_course"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/firstBlockConstraintLayout"
@@ -33,234 +23,165 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/shadow"
-        app:layout_constraintTop_toBottomOf="@id/headConstraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/headTextView">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/photoConstraintLayout"
+        <TextView
+            android:id="@+id/photoTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@color/gray"
+            android:gravity="center"
+            android:padding="50dp"
+            android:text="Photo"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="60sp"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/photoTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/gray"
-                android:gravity="center"
-                android:padding="50dp"
-                android:text="Photo"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="60sp"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="Certificated"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@id/photoTextView"
-                app:layout_constraintStart_toStartOf="@id/photoTextView" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/photoConstraintLayout">
+            android:layout_margin="15dp"
+            android:text="Certificated"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/photoTextView"
+            app:layout_constraintStart_toStartOf="@id/photoTextView" />
 
-            <ImageView
-                android:id="@+id/share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:src="@drawable/ic_share_black_32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_share_black_32dp"
+            app:layout_constraintEnd_toEndOf="@id/photoTextView"
+            app:layout_constraintTop_toBottomOf="@+id/photoTextView" />
 
-            <ImageView
-                android:id="@+id/turnedIn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:src="@drawable/ic_turned_in_black_32dp"
-                app:layout_constraintEnd_toStartOf="@id/share"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/turnedIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_turned_in_black_32dp"
+            app:layout_constraintEnd_toStartOf="@id/share"
+            app:layout_constraintTop_toBottomOf="@+id/photoTextView" />
 
-            <ImageView
-                android:id="@+id/like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:src="@drawable/ic_favorite_black_32dp"
-                app:layout_constraintEnd_toStartOf="@id/turnedIn"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <ImageView
+            android:id="@+id/like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_favorite_black_32dp"
+            app:layout_constraintEnd_toStartOf="@id/turnedIn"
+            app:layout_constraintTop_toBottomOf="@+id/photoTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:id="@+id/secondBlockConstraintLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/firstBlockConstraintLayout">
+        android:background="@drawable/shadow"
+        app:layout_constraintStart_toStartOf="@+id/firstBlockConstraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/firstBlockConstraintLayout">
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/secondBlockConstraintLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/shadow"
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:background="@color/gray"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/photoConstraintLayout2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <ImageView
-                    android:id="@+id/photoTextView2"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    android:background="@color/gray"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:text="Layouts"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/photoTextView2"
-                    app:layout_constraintStart_toStartOf="@id/photoTextView2" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/photoConstraintLayout2">
-
-                <ImageView
-                    android:id="@+id/share2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_share_black_32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/turnedIn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_turned_in_black_32dp"
-                    app:layout_constraintEnd_toStartOf="@id/share2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/like2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_favorite_black_32dp"
-                    app:layout_constraintEnd_toStartOf="@id/turnedIn2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/thirdBlockConstraintLayout"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/shadow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_margin="15dp"
+            android:text="@string/layouts"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/photoImageView"
+            app:layout_constraintStart_toStartOf="@id/photoImageView" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/photoConstraintLayout3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/share2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_share_black_32dp"
+            app:layout_constraintEnd_toEndOf="@+id/photoImageView"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
 
+        <ImageView
+            android:id="@+id/turnedIn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_turned_in_black_32dp"
+            app:layout_constraintEnd_toStartOf="@id/share2"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
 
-                <ImageView
-                    android:id="@+id/photoTextView3"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    android:background="@color/gray"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:text="Views"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/photoTextView3"
-                    app:layout_constraintStart_toStartOf="@id/photoTextView3" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/photoConstraintLayout3">
-
-                <ImageView
-                    android:id="@+id/share3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_share_black_32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/turnedIn3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_turned_in_black_32dp"
-                    app:layout_constraintEnd_toStartOf="@id/share3"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/like3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_favorite_black_32dp"
-                    app:layout_constraintEnd_toStartOf="@id/turnedIn3"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        <ImageView
+            android:id="@+id/like2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_favorite_black_32dp"
+            app:layout_constraintEnd_toStartOf="@id/turnedIn2"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/thirdBlockConstraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        app:layout_constraintEnd_toEndOf="@+id/firstBlockConstraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/firstBlockConstraintLayout">
+
+        <ImageView
+            android:id="@+id/photoImageView2"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:background="@color/gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="@string/views"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/photoImageView2"
+            app:layout_constraintStart_toStartOf="@id/photoImageView2" />
+
+        <ImageView
+            android:id="@+id/share3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_share_black_32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView2" />
+
+        <ImageView
+            android:id="@+id/turnedIn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_turned_in_black_32dp"
+            app:layout_constraintEnd_toStartOf="@id/share3"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView2" />
+
+        <ImageView
+            android:id="@+id/like3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:src="@drawable/ic_favorite_black_32dp"
+            app:layout_constraintEnd_toStartOf="@id/turnedIn3"
+            app:layout_constraintTop_toBottomOf="@+id/photoImageView2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

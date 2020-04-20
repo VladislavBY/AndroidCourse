@@ -34,4 +34,6 @@
     <string name="website">website</string>
     <string name="save">save</string>
     <string name="android_course">Android course</string>
+    <string name="layouts">Layouts</string>
+    <string name="views">Views</string>
 </resources>

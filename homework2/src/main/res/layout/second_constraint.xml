@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/headFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,8 +20,7 @@
             android:paddingBottom="70dp"
             android:text="@string/photo"
             android:textColor="@color/black"
-            android:textSize="70sp"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="70sp" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -30,10 +29,8 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:background="@color/gray"
-            android:src="@drawable/ic_photo_camera_white_32dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:src="@drawable/ic_photo_camera_white_32dp" />
+    </FrameLayout>
 
     <EditText
         android:id="@+id/title"
@@ -47,34 +44,34 @@
         app:layout_constraintTop_toBottomOf="@+id/headFrame" />
 
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:id="@+id/linearPriseLocation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/title">
 
         <EditText
 
             android:id="@+id/prise"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="2"
-            android:hint="@string/prise" />
-
-        <EditText
-            android:id="@+id/location"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="30dp"
             android:layout_weight="1"
+            android:hint="@string/prise" />
+
+        <EditText
+            android:id="@+id/location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_weight="2"
             android:drawableEnd="@drawable/ic_location_on_black_24dp"
             android:hint="@string/location" />
     </LinearLayout>
@@ -91,10 +88,10 @@
         app:layout_constraintTop_toBottomOf="@id/linearPriseLocation" />
 
     <FrameLayout
-        android:layout_marginTop="30dp"
         android:id="@+id/frameInventoryWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/description">
 

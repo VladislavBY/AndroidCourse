@@ -21,13 +21,13 @@ public class CustomView extends View {
     private int bigRadius;
     private int smallRadius;
 
-    int centerX;
-    int centerY;
+    private int centerX;
+    private int centerY;
 
-    int leftSideBig;
-    int rightSideBig;
-    int topSideBig;
-    int bottomSideBig;
+    private int leftSideBig;
+    private int rightSideBig;
+    private int topSideBig;
+    private int bottomSideBig;
 
     interface OnTouchEvent {
         void onTouchEvent(float eventX, float eventY);
@@ -73,52 +73,34 @@ public class CustomView extends View {
 
     private void colorChange(float eventX, float eventY) {
         if ((eventX > centerX - smallRadius && eventX < centerX + smallRadius) &&
-                (eventY > centerY - smallRadius && eventY < centerY + smallRadius)) { //Center
+                (eventY > centerY - smallRadius && eventY < centerY + smallRadius)) {
             paintLeftBottom.setColor(getRandomColor());
             paintLeftTop.setColor(getRandomColor());
             paintRightTop.setColor(getRandomColor());
             paintRightBottom.setColor(getRandomColor());
             paintCenter.setColor(getRandomColor());
-        } else if (eventX > leftSideBig && eventX < centerX) {  //Left
-            if (eventY > topSideBig && eventY < centerY) { //LeftTop
+        } else if (eventX > leftSideBig && eventX < centerX) {
+            if (eventY > topSideBig && eventY < centerY) {
                 paintLeftTop.setColor(getRandomColor());
-            } else if (eventY < bottomSideBig && eventY > centerY) { //LeftBottom
+            } else if (eventY < bottomSideBig && eventY > centerY) {
                 paintLeftBottom.setColor(getRandomColor());
             }
-        } else if (eventX > centerX && eventX < rightSideBig) { //Right
-            if (eventY > topSideBig && eventY < centerY) { // RightTop
+        } else if (eventX > centerX && eventX < rightSideBig) {
+            if (eventY > topSideBig && eventY < centerY) {
                 paintRightTop.setColor(getRandomColor());
-            } else if ((eventY < bottomSideBig && eventY > centerY)) { //RightBottom
+            } else if ((eventY < bottomSideBig && eventY > centerY)) {
                 paintRightBottom.setColor(getRandomColor());
             }
         }
     }
 
     private int getRandomColor() {
-        switch ((int) (Math.random() * 10)) {
-            case 0:
-                return Color.BLACK;
-            case 1:
-                return Color.DKGRAY;
-            case 2:
-                return Color.GRAY;
-            case 3:
-                return Color.LTGRAY;
-            case 4:
-                return Color.RED;
-            case 5:
-                return Color.GREEN;
-            case 6:
-                return Color.BLUE;
-            case 7:
-                return Color.YELLOW;
-            case 8:
-                return Color.CYAN;
-            case 9:
-                return Color.MAGENTA;
-            default:
-                return Color.WHITE;
-        }
+        return Color.argb(
+                255,
+                (int) (Math.random() * 256),
+                (int) (Math.random() * 256),
+                (int) (Math.random() * 256)
+        );
     }
 
 
