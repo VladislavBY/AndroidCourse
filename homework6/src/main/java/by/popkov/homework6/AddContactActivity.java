@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class AddContactActivity extends AppCompatActivity {
+    public static final String PUT_EXTRA = "Extra";
     private Contact contact;
 
     private ImageButton buttonAdd;
@@ -26,7 +27,6 @@ public class AddContactActivity extends AppCompatActivity {
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
 
-    public static final String PUT_EXTRA = "Extra";
 
     public static Intent newIntent(Context context) {
         return new Intent(context, AddContactActivity.class);
@@ -82,18 +82,24 @@ public class AddContactActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString();
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
                 if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
-                    if (radioButtonEmail.isChecked()) contact =
-                            new ContactEmail(name, phoneNumberOrEmail, Contact.IMAGE_ID_EMAIL);
-                    else if (radioButtonPhoneNumber.isChecked()) contact =
-                            new ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE);
+                    if (radioButtonEmail.isChecked()) {
+                        contact = new ContactEmail(name, phoneNumberOrEmail, Contact.IMAGE_ID_EMAIL);
+                    } else if (radioButtonPhoneNumber.isChecked()) {
+                        contact = new ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE);
+                    }
                     Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                     if (contact != null) {
                         result.putExtra(PUT_EXTRA, contact);
                         setResult(RESULT_OK, result);
                         finish();
                     }
-                } else
-                    Toast.makeText(AddContactActivity.this, R.string.input_data_please, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(
+                            AddContactActivity.this,
+                            R.string.input_data_please,
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
             }
         });
     }

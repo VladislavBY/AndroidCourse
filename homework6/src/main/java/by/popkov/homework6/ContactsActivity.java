@@ -18,13 +18,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class ContactsActivity extends AppCompatActivity {
-    private RecyclerView contactsRecyclerView;
-    private ContactListAdapter adapter;
-
-    private int requestCodeForAdd = 7777;
-    private int requestCodeForEdit = 1111;
+    private static final int REQUEST_CODE_FOR_ADD = 7777;
+    private static final int REQUEST_CODE_FOR_EDIT = 1111;
     public static final String ADAPTER = "adapter";
 
+    private RecyclerView contactsRecyclerView;
+    private ContactListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +88,7 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivityForResult(AddContactActivity
-                        .newIntent(ContactsActivity.this), requestCodeForAdd);
+                        .newIntent(ContactsActivity.this), REQUEST_CODE_FOR_ADD);
             }
         });
 
@@ -97,7 +96,13 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public void onClick(Contact oldContact, int positionFullList, int positionList) {
                 startActivityForResult(EditContactActivity
-                        .newIntent(ContactsActivity.this, oldContact, positionFullList, positionList), requestCodeForEdit);
+                        .newIntent(
+                                ContactsActivity.this,
+                                oldContact,
+                                positionFullList,
+                                positionList
+                        ), REQUEST_CODE_FOR_EDIT
+                );
             }
         });
     }
@@ -110,13 +115,13 @@ public class ContactsActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null) {
-            if (this.requestCodeForAdd == requestCode && resultCode == RESULT_OK) {
+        if (data != null && resultCode == RESULT_OK) {
+            if (REQUEST_CODE_FOR_ADD == requestCode) {
                 Contact contact = (Contact) data.getSerializableExtra(AddContactActivity.PUT_EXTRA);
                 if (contact != null) {
                     adapter.addContact(contact);
                 }
-            } else if (this.requestCodeForEdit == requestCode && resultCode == RESULT_OK) {
+            } else if (REQUEST_CODE_FOR_EDIT == requestCode) {
                 Contact newContact = (Contact) data.getSerializableExtra(EditContactActivity.EXTRA_NEW_CONTACT);
                 int fullListPosition = data.getIntExtra(EditContactActivity.EXTRA_FULL_LIST_POS, -202);
                 int listPosition = data.getIntExtra(EditContactActivity.EXTRA_LIST_POS, -204);
@@ -134,8 +139,10 @@ public class ContactsActivity extends AppCompatActivity {
     private void visibleSwitcher(int fullItemCount) {
         if (fullItemCount > 0) {
             contactsRecyclerView.setVisibility(View.VISIBLE);
-        } else
+        } else {
             contactsRecyclerView.setVisibility(View.INVISIBLE);
+        }
+
     }
 }
 

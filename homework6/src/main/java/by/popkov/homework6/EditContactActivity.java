@@ -17,6 +17,11 @@ import androidx.appcompat.widget.Toolbar;
 
 
 public class EditContactActivity extends AppCompatActivity {
+    public static final String EXTRA_NEW_CONTACT = "newContact";
+    public static final String EXTRA_OLD_CONTACT= "contact";
+    public static final String EXTRA_FULL_LIST_POS = "fullListPosition";
+    public static final String EXTRA_LIST_POS = "listPosition";
+
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
     private Button buttonEdit;
@@ -26,10 +31,6 @@ public class EditContactActivity extends AppCompatActivity {
     private int fullListPosition;
     private int listPosition;
 
-    public static final String EXTRA_NEW_CONTACT = "newContact";
-    public static final String EXTRA_OLD_CONTACT= "contact";
-    public static final String EXTRA_FULL_LIST_POS = "fullListPosition";
-    public static final String EXTRA_LIST_POS = "listPosition";
 
 
     public static Intent newIntent(Context context, Contact contact, int fullListPosition, int listPosition) {

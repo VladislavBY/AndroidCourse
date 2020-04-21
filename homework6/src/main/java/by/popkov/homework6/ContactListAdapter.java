@@ -44,8 +44,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     int getFullItemCount() {
-        if (contactItemList != null) return contactItemListFull.size();
-        else return 0;
+        if (contactItemList != null) {
+            return contactItemListFull.size();
+        } else {
+            return 0;
+        }
     }
 
     ContactListAdapter() {
@@ -71,8 +74,11 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public int getItemCount() {
-        if (contactItemList != null) return contactItemList.size();
-        else return 0;
+        if (contactItemList != null) {
+            return contactItemList.size();
+        } else {
+            return 0;
+        }
     }
 
     private Filter contactFilter = new Filter() {
