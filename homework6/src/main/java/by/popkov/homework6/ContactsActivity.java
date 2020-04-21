@@ -34,10 +34,6 @@ public class ContactsActivity extends AppCompatActivity {
         setToolBar();
     }
 
-    private void setToolBar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
-    }
-
     private void initContactsRecyclerView(Bundle savedInstanceState) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         if (savedInstanceState != null) {
@@ -56,6 +52,12 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        setSearchViewListener();
+        setFloatingActionButtonAddContactListener();
+        setItemListenerWithData();
+    }
+
+    private void setSearchViewListener() {
         final TextView textViewHead = findViewById(R.id.textViewHead);
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setOnSearchClickListener(new View.OnClickListener() {
@@ -83,6 +85,9 @@ public class ContactsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void setFloatingActionButtonAddContactListener() {
         FloatingActionButton floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
         floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +96,9 @@ public class ContactsActivity extends AppCompatActivity {
                         .newIntent(ContactsActivity.this), REQUEST_CODE_FOR_ADD);
             }
         });
+    }
 
+    private void setItemListenerWithData() {
         adapter.setItemListenerWithData(new ContactListAdapter.ItemListenerWithData() {
             @Override
             public void onClick(Contact oldContact, int positionFullList, int positionList) {
@@ -105,6 +112,10 @@ public class ContactsActivity extends AppCompatActivity {
                 );
             }
         });
+    }
+
+    private void setToolBar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
     }
 
     @Override
