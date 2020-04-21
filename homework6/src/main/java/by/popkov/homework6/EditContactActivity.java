@@ -1,6 +1,8 @@
 package by.popkov.homework6;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -12,6 +14,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -26,6 +29,7 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText editTextPhoneNumberOrEmail;
     private Button buttonEdit;
     private Button buttonRemove;
+    private Dialog dialog;
 
     private Contact oldContact;
     private int fullListPosition;
@@ -48,6 +52,28 @@ public class EditContactActivity extends AppCompatActivity {
         setDataInFields();
         setListeners();
         setToolBar();
+        setDialog();
+    }
+
+    private void setDialog() {
+        dialog = new AlertDialog.Builder(this)
+                .setPositiveButton(R.string.edit_contact_dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
+                        intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition);
+                        intent.putExtra(EXTRA_LIST_POS, listPosition);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.edit_contact_dialog_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).setMessage(R.string.edit_contact_dialog_massage)
+                .create();
     }
 
     private void setToolBar() {
@@ -69,16 +95,22 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+        setButtonRemoveListener();
+        setButtonEditListener();
+    }
+
+    private void setButtonRemoveListener() {
         buttonRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition);
-                intent.putExtra(EXTRA_LIST_POS, listPosition);
-                setResult(RESULT_OK, intent);
-                finish();
+                if (dialog != null) {
+                    dialog.show();
+                }
             }
         });
+    }
+
+    private void setButtonEditListener() {
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
