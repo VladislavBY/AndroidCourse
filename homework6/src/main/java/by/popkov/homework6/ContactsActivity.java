@@ -13,8 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 
 public class ContactsActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class ContactsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FOR_EDIT = 1111;
     public static final String ADAPTER = "adapter";
 
+    private MyDatabase myDatabase;
     private RecyclerView contactsRecyclerView;
     private ContactListAdapter adapter;
 
@@ -29,9 +33,38 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        connectContactDatabase();
         initContactsRecyclerView(savedInstanceState);
         setListeners();
         setToolBar();
+    }
+
+    private void connectContactDatabase() {
+        myDatabase = Room.databaseBuilder(this, MyDatabase.class, "MyDatabase")
+                .allowMainThreadQueries()
+                .build();
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for (Contact contact : adapter.getContactItemListFull()) {
+            ContactEntity contactEntity = new ContactEntity();
+            contactEntity.id = contact.getId();
+            contactEntity.name = contact.getName();
+            contactEntity.data = contact.getData();
+            contactEntity.imageID = contact.getImageID();
+            contactEntity.type = contact.name();
+            myDatabase.getContactDao().insertContact(contactEntity);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myDatabase.close();
     }
 
     private void initContactsRecyclerView(Bundle savedInstanceState) {
@@ -40,7 +73,7 @@ public class ContactsActivity extends AppCompatActivity {
             contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState
                     .getParcelable(ADAPTER));
         } else {
-            contactsRecyclerView.setAdapter(new ContactListAdapter());
+            contactsRecyclerView.setAdapter(new ContactListAdapter(contactsFromDatabase()));
         }
         contactsRecyclerView.setLayoutManager(new GridLayoutManager(ContactsActivity.this,
                 Integer.parseInt(contactsRecyclerView.getTag().toString())));
@@ -49,6 +82,24 @@ public class ContactsActivity extends AppCompatActivity {
         if (adapter != null) {
             visibleSwitcher(adapter.getFullItemCount());
         }
+    }
+
+    private ArrayList<Contact> contactsFromDatabase() {
+        ContactEntity[] contactEntities = myDatabase.getContactDao().loadAddContacts();
+        ArrayList<Contact> result = new ArrayList<>();
+        for (ContactEntity contactEntity : contactEntities) {
+            Contact contact;
+            if (contactEntity.type.equals(Contact.EMAIL.name())) {
+                contact = Contact.EMAIL;
+            } else {
+                contact = Contact.PHONE;
+            }
+            contact.setId(contactEntity.id);
+            contact.setData(contactEntity.data);
+            contact.setName(contactEntity.name);
+            result.add(contact);
+        }
+        return result;
     }
 
     private void setListeners() {

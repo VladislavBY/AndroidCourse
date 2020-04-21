@@ -8,7 +8,16 @@ enum Contact implements Serializable {
 
     private String name;
     private String data;
-    private String id = UUID.randomUUID().toString();
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public Contact setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getName() {
         return name;
