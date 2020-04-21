@@ -1,21 +1,38 @@
 package by.popkov.homework6;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-interface Contact extends Serializable {
-    int IMAGE_ID_EMAIL = R.drawable.ic_contact_mail_pink_60dp;
-    int IMAGE_ID_PHONE = R.drawable.ic_contact_phone_blue_60dp;
+enum Contact implements Serializable {
+    EMAIL, PHONE;
 
+    private String name;
+    private String data;
+    private String id = UUID.randomUUID().toString();
 
-    String getName();
+    public String getName() {
+        return name;
+    }
 
-    String getData();
+    public Contact setName(String name) {
+        this.name = name;
+        return this;
+    }
 
-    int getImageID();
+    public String getData() {
+        return data;
+    }
 
-    void setName(String name);
+    public Contact setData(String data) {
+        this.data = data;
+        return this;
+    }
 
-    void setData(String data);
-
-    void setImageID(int imageID);
+    public int getImageID() {
+        if (this == EMAIL) {
+            return R.drawable.ic_contact_mail_pink_60dp;
+        } else if (this == PHONE) {
+            return R.drawable.ic_contact_phone_blue_60dp;
+        } else return 0;
+    }
 }

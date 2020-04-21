@@ -18,7 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 public class EditContactActivity extends AppCompatActivity {
     public static final String EXTRA_NEW_CONTACT = "newContact";
-    public static final String EXTRA_OLD_CONTACT= "contact";
+    public static final String EXTRA_OLD_CONTACT = "contact";
     public static final String EXTRA_FULL_LIST_POS = "fullListPosition";
     public static final String EXTRA_LIST_POS = "listPosition";
 
@@ -30,7 +30,6 @@ public class EditContactActivity extends AppCompatActivity {
     private Contact oldContact;
     private int fullListPosition;
     private int listPosition;
-
 
 
     public static Intent newIntent(Context context, Contact contact, int fullListPosition, int listPosition) {
@@ -89,10 +88,14 @@ public class EditContactActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
-                if (oldContact instanceof ContactEmail) {
-                    newContact = new ContactEmail(name, data, Contact.IMAGE_ID_EMAIL);
+                if (oldContact == Contact.EMAIL) {
+                    newContact = Contact.EMAIL
+                            .setName(name)
+                            .setData(data);
                 } else {
-                    newContact = new ContactPhone(name, data, Contact.IMAGE_ID_PHONE);
+                    newContact = Contact.PHONE
+                            .setName(name)
+                            .setData(data);
                 }
                 intent.putExtra(EXTRA_NEW_CONTACT, newContact);
                 setResult(RESULT_OK, intent);
@@ -103,7 +106,7 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void setDataInFields() {
         if (oldContact != null) {
-            if (oldContact instanceof ContactEmail) {
+            if (oldContact == Contact.EMAIL) {
                 editTextPhoneNumberOrEmail.setHint(R.string.email);
                 editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             } else {

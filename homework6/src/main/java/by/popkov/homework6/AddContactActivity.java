@@ -83,9 +83,13 @@ public class AddContactActivity extends AppCompatActivity {
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
                 if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
                     if (radioButtonEmail.isChecked()) {
-                        contact = new ContactEmail(name, phoneNumberOrEmail, Contact.IMAGE_ID_EMAIL);
+                        contact = Contact.EMAIL
+                                .setName(name)
+                                .setData(phoneNumberOrEmail);
                     } else if (radioButtonPhoneNumber.isChecked()) {
-                        contact = new ContactPhone(name, phoneNumberOrEmail, Contact.IMAGE_ID_PHONE);
+                        contact = Contact.PHONE
+                                .setName(name)
+                                .setData(phoneNumberOrEmail);
                     }
                     Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                     if (contact != null) {
