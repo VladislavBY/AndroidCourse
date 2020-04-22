@@ -20,8 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 
 
 public class EditContactActivity extends AppCompatActivity {
-    public static final String EXTRA_NEW_CONTACT = "newContact";
-    public static final String EXTRA_OLD_CONTACT = "contact";
+    static final String EXTRA_NEW_CONTACT = "newContact";
+    static final String EXTRA_OLD_CONTACT = "contact";
 
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
@@ -30,7 +30,6 @@ public class EditContactActivity extends AppCompatActivity {
     private Dialog dialog;
 
     private Contact oldContact;
-
 
     public static Intent newIntent(Context context, Contact contact) {
         Intent intent = new Intent(context, EditContactActivity.class);
@@ -49,42 +48,27 @@ public class EditContactActivity extends AppCompatActivity {
         setDialog();
     }
 
-    private void setDialog() {
-        dialog = new AlertDialog.Builder(this)
-                .setPositiveButton(R.string.edit_contact_dialog_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                        intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                })
-                .setNegativeButton(R.string.edit_contact_dialog_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).setMessage(R.string.edit_contact_dialog_massage)
-                .create();
+    private void init() {
+        editTextName = findViewById(R.id.editTextName);
+        editTextPhoneNumberOrEmail = findViewById(R.id.editTextPhoneNumberOrEmail);
+        buttonEdit = findViewById(R.id.buttonEdit);
+        buttonRemove = findViewById(R.id.buttonRemove);
+        Intent comeIntent = getIntent();
+        oldContact = (Contact) comeIntent.getSerializableExtra(EXTRA_OLD_CONTACT);
     }
 
-    private void setToolBar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
+    private void setDataInFields() {
+        if (oldContact != null) {
+            if (oldContact.getType() == Contact.Type.EMAIL) {
+                editTextPhoneNumberOrEmail.setHint(R.string.email);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+            } else {
+                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
+                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
+            }
+            editTextName.setText(oldContact.getName());
+            editTextPhoneNumberOrEmail.setText(oldContact.getData());
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void setListeners() {
@@ -125,26 +109,41 @@ public class EditContactActivity extends AppCompatActivity {
         });
     }
 
-    private void setDataInFields() {
-        if (oldContact != null) {
-            if (oldContact.getType() == Contact.Type.EMAIL) {
-                editTextPhoneNumberOrEmail.setHint(R.string.email);
-                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            } else {
-                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
-                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
-            }
-            editTextName.setText(oldContact.getName());
-            editTextPhoneNumberOrEmail.setText(oldContact.getData());
+    private void setToolBar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
         }
     }
 
-    private void init() {
-        editTextName = findViewById(R.id.editTextName);
-        editTextPhoneNumberOrEmail = findViewById(R.id.editTextPhoneNumberOrEmail);
-        buttonEdit = findViewById(R.id.buttonEdit);
-        buttonRemove = findViewById(R.id.buttonRemove);
-        Intent comeIntent = getIntent();
-        oldContact = (Contact) comeIntent.getSerializableExtra(EXTRA_OLD_CONTACT);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setDialog() {
+        dialog = new AlertDialog.Builder(this)
+                .setPositiveButton(R.string.edit_contact_dialog_positive, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
+                        intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton(R.string.edit_contact_dialog_negative, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).setMessage(R.string.edit_contact_dialog_massage)
+                .create();
     }
 }

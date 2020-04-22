@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class AddContactActivity extends AppCompatActivity {
-    public static final String PUT_EXTRA = "Extra";
+    public static final String EXTRA_CONTACT_FOR_ADD = "EXTRA_CONTACT_FOR_ADD";
     private Contact contact;
 
     private ImageButton buttonAdd;
@@ -89,7 +89,7 @@ public class AddContactActivity extends AppCompatActivity {
                     }
                     Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                     if (contact != null) {
-                        result.putExtra(PUT_EXTRA, contact);
+                        result.putExtra(EXTRA_CONTACT_FOR_ADD, contact);
                         setResult(RESULT_OK, result);
                         finish();
                     }

@@ -23,9 +23,10 @@ import java.util.ArrayList;
 public class ContactsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FOR_ADD = 7777;
     private static final int REQUEST_CODE_FOR_EDIT = 1111;
-    public static final String ADAPTER = "adapter";
+    private static final String ADAPTER = "adapter";
+    private static final String CONTACT_DATABASE = "ContactDatabase";
 
-    private MyDatabase myDatabase;
+    private ContactDatabase contactDatabase;
     private RecyclerView contactsRecyclerView;
     private ContactListAdapter adapter;
 
@@ -40,7 +41,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void connectContactDatabase() {
-        myDatabase = Room.databaseBuilder(this, MyDatabase.class, "MyDatabase")
+        contactDatabase = Room.databaseBuilder(this, ContactDatabase.class, CONTACT_DATABASE)
                 .allowMainThreadQueries()
                 .build();
     }
@@ -63,7 +64,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private ArrayList<Contact> contactsFromDatabase() {
-        ContactEntity[] contactEntities = myDatabase.getContactDao().loadAddContacts();
+        ContactEntity[] contactEntities = contactDatabase.getContactDao().loadAddContacts();
         ArrayList<Contact> result = new ArrayList<>();
         for (ContactEntity contactEntity : contactEntities) {
             Contact contact;
@@ -151,7 +152,7 @@ public class ContactsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             if (REQUEST_CODE_FOR_ADD == requestCode) {
-                Contact contact = (Contact) data.getSerializableExtra(AddContactActivity.PUT_EXTRA);
+                Contact contact = (Contact) data.getSerializableExtra(AddContactActivity.EXTRA_CONTACT_FOR_ADD);
                 if (contact != null) {
                     adapter.addContact(contact);
                     addContactToDatabase(contact);
@@ -179,7 +180,7 @@ public class ContactsActivity extends AppCompatActivity {
         contactEntity.name = contact.getName();
         contactEntity.data = contact.getData();
         contactEntity.imageID = contact.getImageID();
-        myDatabase.getContactDao().insertContact(contactEntity);
+        contactDatabase.getContactDao().insertContact(contactEntity);
     }
 
     private void updateContactToDatabase(Contact newContact) {
@@ -189,13 +190,13 @@ public class ContactsActivity extends AppCompatActivity {
         contactEntity.name = newContact.getName();
         contactEntity.data = newContact.getData();
         contactEntity.imageID = newContact.getImageID();
-        myDatabase.getContactDao().updateContact(contactEntity);
+        contactDatabase.getContactDao().updateContact(contactEntity);
     }
 
     private void deleteContactFromDatabase(Contact contact) {
         ContactEntity contactEntity = new ContactEntity();
         contactEntity.id = contact.getId();
-        myDatabase.getContactDao().deleteContact(contactEntity);
+        contactDatabase.getContactDao().deleteContact(contactEntity);
     }
 
     private void visibleSwitcher(int fullItemCount) {
@@ -210,7 +211,7 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        myDatabase.close();
+        contactDatabase.close();
     }
 }
 
