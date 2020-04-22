@@ -17,8 +17,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.UUID;
-
 public class AddContactActivity extends AppCompatActivity {
     public static final String PUT_EXTRA = "Extra";
     private Contact contact;
@@ -85,15 +83,9 @@ public class AddContactActivity extends AppCompatActivity {
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
                 if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
                     if (radioButtonEmail.isChecked()) {
-                        contact = Contact.EMAIL
-                                .setName(name)
-                                .setData(phoneNumberOrEmail)
-                                .setId(UUID.randomUUID().toString());
+                        contact = new Contact(Contact.Type.EMAIL, name, phoneNumberOrEmail);
                     } else if (radioButtonPhoneNumber.isChecked()) {
-                        contact = Contact.PHONE
-                                .setName(name)
-                                .setData(phoneNumberOrEmail)
-                                .setId(UUID.randomUUID().toString());
+                        contact = new Contact(Contact.Type.PHONE, name, phoneNumberOrEmail);
                     }
                     Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
                     if (contact != null) {

@@ -55,7 +55,7 @@ public class ContactsActivity extends AppCompatActivity {
             contactEntity.name = contact.getName();
             contactEntity.data = contact.getData();
             contactEntity.imageID = contact.getImageID();
-            contactEntity.type = contact.name();
+            contactEntity.type = contact.getType().name();
             myDatabase.getContactDao().insertContact(contactEntity);
         }
 
@@ -89,14 +89,12 @@ public class ContactsActivity extends AppCompatActivity {
         ArrayList<Contact> result = new ArrayList<>();
         for (ContactEntity contactEntity : contactEntities) {
             Contact contact;
-            if (contactEntity.type.equals(Contact.EMAIL.name())) {
-                contact = Contact.EMAIL;
+            if (contactEntity.type.equals(Contact.Type.EMAIL.name())) {
+                contact = new Contact(Contact.Type.EMAIL, contactEntity.name, contactEntity.data);
             } else {
-                contact = Contact.PHONE;
+                contact = new Contact(Contact.Type.PHONE, contactEntity.name, contactEntity.data);
             }
             contact.setId(contactEntity.id);
-            contact.setData(contactEntity.data);
-            contact.setName(contactEntity.name);
             result.add(contact);
         }
         return result;

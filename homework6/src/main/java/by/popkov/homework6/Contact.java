@@ -3,45 +3,49 @@ package by.popkov.homework6;
 import java.io.Serializable;
 import java.util.UUID;
 
-enum Contact implements Serializable {
-    EMAIL, PHONE;
+class Contact implements Serializable {
 
-    private String name;
-    private String data;
-    private String id;
+    enum Type {
+        EMAIL, PHONE
+    }
+
+    final private Type type;
+    final private String name;
+    final private String data;
+    private String id = UUID.randomUUID().toString();
+
+    Contact(Type type, String name, String data) {
+        this.type = type;
+        this.name = name;
+        this.data = data;
+    }
+
+    Type getType() {
+        return type;
+    }
 
     public String getId() {
         return id;
     }
 
-    public Contact setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public Contact setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public String getData() {
+    String getData() {
         return data;
     }
 
-    public Contact setData(String data) {
-        this.data = data;
-        return this;
-    }
-
-    public int getImageID() {
-        if (this == EMAIL) {
+    int getImageID() {
+        if (type == Type.EMAIL) {
             return R.drawable.ic_contact_mail_pink_60dp;
-        } else if (this == PHONE) {
+        } else if (type == Type.PHONE) {
             return R.drawable.ic_contact_phone_blue_60dp;
         } else return 0;
     }
+
 }

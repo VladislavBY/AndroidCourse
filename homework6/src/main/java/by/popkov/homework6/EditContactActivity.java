@@ -120,15 +120,12 @@ public class EditContactActivity extends AppCompatActivity {
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
-                if (oldContact == Contact.EMAIL) {
-                    newContact = Contact.EMAIL
-                            .setName(name)
-                            .setData(data);
+                if (oldContact.getType() == Contact.Type.EMAIL) {
+                    newContact = new Contact(Contact.Type.EMAIL, name, data);
                 } else {
-                    newContact = Contact.PHONE
-                            .setName(name)
-                            .setData(data);
+                    newContact = new Contact(Contact.Type.PHONE, name, data);
                 }
+                newContact.setId(oldContact.getId());
                 intent.putExtra(EXTRA_NEW_CONTACT, newContact);
                 setResult(RESULT_OK, intent);
                 finish();
@@ -138,7 +135,7 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void setDataInFields() {
         if (oldContact != null) {
-            if (oldContact == Contact.EMAIL) {
+            if (oldContact.getType() == Contact.Type.EMAIL) {
                 editTextPhoneNumberOrEmail.setHint(R.string.email);
                 editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
             } else {
