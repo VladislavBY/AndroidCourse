@@ -23,7 +23,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private ArrayList<Contact> contactItemList = new ArrayList<>();
     private ArrayList<Contact> contactItemListFull = new ArrayList<>();
 
-    public ArrayList<Contact> getContactItemListFull() {
+    ArrayList<Contact> getContactItemListFull() {
         return contactItemListFull;
     }
 

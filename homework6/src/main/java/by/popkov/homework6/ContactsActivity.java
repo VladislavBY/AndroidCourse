@@ -168,7 +168,7 @@ public class ContactsActivity extends AppCompatActivity {
                     adapter.editContact(newContact, fullListPosition, listPosition);
                     updateContactToDatabase(newContact);
                 } else {
-                    deleteContactToDatabase(adapter.getContactItemListFull().get(fullListPosition));
+                    deleteContactFromDatabase(adapter.getContactItemListFull().get(fullListPosition));
                     adapter.removeContact(fullListPosition, listPosition);
                 }
             }
@@ -197,13 +197,9 @@ public class ContactsActivity extends AppCompatActivity {
         myDatabase.getContactDao().updateContact(contactEntity);
     }
 
-    private void deleteContactToDatabase(Contact contact) {
+    private void deleteContactFromDatabase(Contact contact) {
         ContactEntity contactEntity = new ContactEntity();
-        contactEntity.type = contact.getType().name();
         contactEntity.id = contact.getId();
-        contactEntity.name = contact.getName();
-        contactEntity.data = contact.getData();
-        contactEntity.imageID = contact.getImageID();
         myDatabase.getContactDao().deleteContact(contactEntity);
     }
 
