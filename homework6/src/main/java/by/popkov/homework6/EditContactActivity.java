@@ -22,8 +22,6 @@ import androidx.appcompat.widget.Toolbar;
 public class EditContactActivity extends AppCompatActivity {
     public static final String EXTRA_NEW_CONTACT = "newContact";
     public static final String EXTRA_OLD_CONTACT = "contact";
-    public static final String EXTRA_FULL_LIST_POS = "fullListPosition";
-    public static final String EXTRA_LIST_POS = "listPosition";
 
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
@@ -32,15 +30,11 @@ public class EditContactActivity extends AppCompatActivity {
     private Dialog dialog;
 
     private Contact oldContact;
-    private int fullListPosition;
-    private int listPosition;
 
 
-    public static Intent newIntent(Context context, Contact contact, int fullListPosition, int listPosition) {
+    public static Intent newIntent(Context context, Contact contact) {
         Intent intent = new Intent(context, EditContactActivity.class);
         intent.putExtra(EXTRA_OLD_CONTACT, contact);
-        intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition);
-        intent.putExtra(EXTRA_LIST_POS, listPosition);
         return intent;
     }
 
@@ -61,8 +55,7 @@ public class EditContactActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                        intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition);
-                        intent.putExtra(EXTRA_LIST_POS, listPosition);
+                        intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -115,8 +108,7 @@ public class EditContactActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra(EXTRA_FULL_LIST_POS, fullListPosition);
-                intent.putExtra(EXTRA_LIST_POS, listPosition);
+                intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
                 String name = editTextName.getText().toString().trim();
                 String data = editTextPhoneNumberOrEmail.getText().toString().trim();
                 Contact newContact;
@@ -145,8 +137,6 @@ public class EditContactActivity extends AppCompatActivity {
             editTextName.setText(oldContact.getName());
             editTextPhoneNumberOrEmail.setText(oldContact.getData());
         }
-
-
     }
 
     private void init() {
@@ -156,7 +146,5 @@ public class EditContactActivity extends AppCompatActivity {
         buttonRemove = findViewById(R.id.buttonRemove);
         Intent comeIntent = getIntent();
         oldContact = (Contact) comeIntent.getSerializableExtra(EXTRA_OLD_CONTACT);
-        fullListPosition = comeIntent.getIntExtra(EXTRA_FULL_LIST_POS, -404);
-        listPosition = comeIntent.getIntExtra(EXTRA_LIST_POS, -777);
     }
 }

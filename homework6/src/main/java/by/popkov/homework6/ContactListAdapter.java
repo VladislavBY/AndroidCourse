@@ -20,12 +20,9 @@ import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>
         implements Filterable, Parcelable {
-    private ArrayList<Contact> contactItemList = new ArrayList<>();
-    private ArrayList<Contact> contactItemListFull = new ArrayList<>();
+    private ArrayList<Contact> contactItemList;
+    private ArrayList<Contact> contactItemListFull;
 
-    ArrayList<Contact> getContactItemListFull() {
-        return contactItemListFull;
-    }
 
     void addContact(Contact contact) {
         contactItemList.add(contact);
@@ -33,17 +30,39 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         notifyDataSetChanged();
     }
 
-    void removeContact(int fullListPosition, int listPosition) {
-        contactItemListFull.remove(fullListPosition);
-        contactItemList.remove(listPosition);
+    void editContact(Contact newContact) {
+        String newContactId = newContact.getId();
+        for (int i = 0; i < contactItemListFull.size(); i++) {
+            if (contactItemListFull.get(i).getId().equals(newContactId)) {
+                contactItemListFull.remove(i);
+                contactItemListFull.add(i, newContact);
+                break;
+            }
+        }
+        for (int i = 0; i < contactItemList.size(); i++) {
+            if (contactItemList.get(i).getId().equals(newContactId)) {
+                contactItemList.remove(i);
+                contactItemList.add(i, newContact);
+                break;
+            }
+        }
         notifyDataSetChanged();
     }
 
-    void editContact(Contact newContact, int fullListPosition, int listPosition) {
-        contactItemListFull.remove(fullListPosition);
-        contactItemListFull.add(fullListPosition, newContact);
-        contactItemList.remove(listPosition);
-        contactItemList.add(listPosition, newContact);
+    void removeContact(Contact oldContact) {
+        String oldContactId = oldContact.getId();
+        for (int i = 0; i < contactItemListFull.size(); i++) {
+            if (contactItemListFull.get(i).getId().equals(oldContactId)) {
+                contactItemListFull.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < contactItemList.size(); i++) {
+            if (contactItemList.get(i).getId().equals(oldContactId)) {
+                contactItemList.remove(i);
+                break;
+            }
+        }
         notifyDataSetChanged();
     }
 
@@ -53,10 +72,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         } else {
             return 0;
         }
-    }
-
-    ContactListAdapter() {
-
     }
 
     ContactListAdapter(ArrayList<Contact> contacts) {
@@ -152,7 +167,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     private ItemListenerWithData itemListenerWithData;
 
     interface ItemListenerWithData {
-        void onClick(Contact oldContact, int positionFullList, int positionList);
+        void onClick(Contact oldContact);
     }
 
     void setItemListenerWithData(ItemListenerWithData itemListenerWithData) {
@@ -176,9 +191,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
                 public void onClick(View v) {
                     Contact clickedContact = contactItemList.get(getAdapterPosition());
                     if (itemListenerWithData != null) {
-                        itemListenerWithData.onClick(clickedContact,
-                                contactItemListFull.indexOf(clickedContact),
-                                contactItemList.indexOf(clickedContact));
+                        itemListenerWithData.onClick(clickedContact);
                     }
                 }
             });

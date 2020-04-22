@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.UUID;
 
 class Contact implements Serializable {
-
     enum Type {
         EMAIL, PHONE
     }
@@ -24,15 +23,15 @@ class Contact implements Serializable {
         return type;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 

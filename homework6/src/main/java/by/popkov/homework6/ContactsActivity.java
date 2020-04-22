@@ -128,14 +128,10 @@ public class ContactsActivity extends AppCompatActivity {
     private void setItemListenerWithData() {
         adapter.setItemListenerWithData(new ContactListAdapter.ItemListenerWithData() {
             @Override
-            public void onClick(Contact oldContact, int positionFullList, int positionList) {
-                startActivityForResult(EditContactActivity
-                        .newIntent(
-                                ContactsActivity.this,
-                                oldContact,
-                                positionFullList,
-                                positionList
-                        ), REQUEST_CODE_FOR_EDIT
+            public void onClick(Contact oldContact) {
+                startActivityForResult(
+                        EditContactActivity.newIntent(ContactsActivity.this, oldContact),
+                        REQUEST_CODE_FOR_EDIT
                 );
             }
         });
@@ -162,14 +158,13 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             } else if (REQUEST_CODE_FOR_EDIT == requestCode) {
                 Contact newContact = (Contact) data.getSerializableExtra(EditContactActivity.EXTRA_NEW_CONTACT);
-                int fullListPosition = data.getIntExtra(EditContactActivity.EXTRA_FULL_LIST_POS, -202);
-                int listPosition = data.getIntExtra(EditContactActivity.EXTRA_LIST_POS, -204);
+                Contact oldContact = (Contact) data.getSerializableExtra(EditContactActivity.EXTRA_OLD_CONTACT);
                 if (newContact != null) {
-                    adapter.editContact(newContact, fullListPosition, listPosition);
+                    adapter.editContact(newContact);
                     updateContactToDatabase(newContact);
-                } else {
-                    deleteContactFromDatabase(adapter.getContactItemListFull().get(fullListPosition));
-                    adapter.removeContact(fullListPosition, listPosition);
+                } else if (oldContact != null) {
+                    adapter.removeContact(oldContact);
+                    deleteContactFromDatabase(oldContact);
                 }
             }
             visibleSwitcher(adapter.getFullItemCount());

@@ -41,33 +41,31 @@ public class AddContactActivity extends AppCompatActivity {
         setToolBar();
     }
 
-    private void setToolBar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
-            supportActionBar.setDisplayShowHomeEnabled(true);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    private void viewsInit() {
+        buttonAdd = findViewById(R.id.buttonAdd);
+        radioButtonPhoneNumber = findViewById(R.id.radioButtonPhoneNumber);
+        radioButtonEmail = findViewById(R.id.radioButtonEmail);
+        editTextName = findViewById(R.id.editTextName);
+        editTextPhoneNumberOrEmail = findViewById(R.id.editTextPhoneNumberOrEmail);
     }
 
     private void setListeners() {
+        setRadioButtonEmailListener();
+        setRadioButtonPhoneNumberListener();
+        setButtonAddListener();
+    }
+
+    private void setRadioButtonEmailListener() {
         radioButtonEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextPhoneNumberOrEmail.setHint(R.string.email);
                 editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-
             }
         });
+    }
+
+    private void setRadioButtonPhoneNumberListener() {
         radioButtonPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +73,9 @@ public class AddContactActivity extends AppCompatActivity {
                 editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
             }
         });
+    }
 
+    private void setButtonAddListener() {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,11 +104,21 @@ public class AddContactActivity extends AppCompatActivity {
         });
     }
 
-    private void viewsInit() {
-        buttonAdd = findViewById(R.id.buttonAdd);
-        radioButtonPhoneNumber = findViewById(R.id.radioButtonPhoneNumber);
-        radioButtonEmail = findViewById(R.id.radioButtonEmail);
-        editTextName = findViewById(R.id.editTextName);
-        editTextPhoneNumberOrEmail = findViewById(R.id.editTextPhoneNumberOrEmail);
+    private void setToolBar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
