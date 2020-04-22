@@ -45,28 +45,6 @@ public class ContactsActivity extends AppCompatActivity {
                 .build();
     }
 
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        for (Contact contact : adapter.getContactItemListFull()) {
-            ContactEntity contactEntity = new ContactEntity();
-            contactEntity.id = contact.getId();
-            contactEntity.name = contact.getName();
-            contactEntity.data = contact.getData();
-            contactEntity.imageID = contact.getImageID();
-            contactEntity.type = contact.getType().name();
-            myDatabase.getContactDao().insertContact(contactEntity);
-        }
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        myDatabase.close();
-    }
-
     private void initContactsRecyclerView(Bundle savedInstanceState) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         if (savedInstanceState != null) {
@@ -180,6 +158,7 @@ public class ContactsActivity extends AppCompatActivity {
                 Contact contact = (Contact) data.getSerializableExtra(AddContactActivity.PUT_EXTRA);
                 if (contact != null) {
                     adapter.addContact(contact);
+                    addContactToDatabase(contact);
                 }
             } else if (REQUEST_CODE_FOR_EDIT == requestCode) {
                 Contact newContact = (Contact) data.getSerializableExtra(EditContactActivity.EXTRA_NEW_CONTACT);
@@ -187,13 +166,45 @@ public class ContactsActivity extends AppCompatActivity {
                 int listPosition = data.getIntExtra(EditContactActivity.EXTRA_LIST_POS, -204);
                 if (newContact != null) {
                     adapter.editContact(newContact, fullListPosition, listPosition);
+                    updateContactToDatabase(newContact);
                 } else {
+                    deleteContactToDatabase(adapter.getContactItemListFull().get(fullListPosition));
                     adapter.removeContact(fullListPosition, listPosition);
                 }
             }
             visibleSwitcher(adapter.getFullItemCount());
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void addContactToDatabase(Contact contact) {
+        ContactEntity contactEntity = new ContactEntity();
+        contactEntity.type = contact.getType().name();
+        contactEntity.id = contact.getId();
+        contactEntity.name = contact.getName();
+        contactEntity.data = contact.getData();
+        contactEntity.imageID = contact.getImageID();
+        myDatabase.getContactDao().insertContact(contactEntity);
+    }
+
+    private void updateContactToDatabase(Contact newContact) {
+        ContactEntity contactEntity = new ContactEntity();
+        contactEntity.type = newContact.getType().name();
+        contactEntity.id = newContact.getId();
+        contactEntity.name = newContact.getName();
+        contactEntity.data = newContact.getData();
+        contactEntity.imageID = newContact.getImageID();
+        myDatabase.getContactDao().updateContact(contactEntity);
+    }
+
+    private void deleteContactToDatabase(Contact contact) {
+        ContactEntity contactEntity = new ContactEntity();
+        contactEntity.type = contact.getType().name();
+        contactEntity.id = contact.getId();
+        contactEntity.name = contact.getName();
+        contactEntity.data = contact.getData();
+        contactEntity.imageID = contact.getImageID();
+        myDatabase.getContactDao().deleteContact(contactEntity);
     }
 
     private void visibleSwitcher(int fullItemCount) {
@@ -203,6 +214,12 @@ public class ContactsActivity extends AppCompatActivity {
             contactsRecyclerView.setVisibility(View.INVISIBLE);
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myDatabase.close();
     }
 }
 
