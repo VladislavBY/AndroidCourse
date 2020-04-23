@@ -23,6 +23,27 @@ public class ContactEntity {
     @ColumnInfo
     public String type;
 
+    @NonNull
+    String getId() {
+        return id;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    String getData() {
+        return data;
+    }
+
+    int getImageID() {
+        return imageID;
+    }
+
+    String getType() {
+        return type;
+    }
+
     ContactEntity setName(String name) {
         this.name = name;
         return this;

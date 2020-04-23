@@ -68,12 +68,12 @@ public class ContactsActivity extends AppCompatActivity {
         ArrayList<Contact> result = new ArrayList<>();
         for (ContactEntity contactEntity : contactEntities) {
             Contact contact;
-            if (contactEntity.type.equals(Contact.Type.EMAIL.name())) {
-                contact = new Contact(Contact.Type.EMAIL, contactEntity.name, contactEntity.data);
+            if (contactEntity.getType().equals(Contact.Type.EMAIL.name())) {
+                contact = new Contact(Contact.Type.EMAIL, contactEntity.getName(), contactEntity.getData());
             } else {
-                contact = new Contact(Contact.Type.PHONE, contactEntity.name, contactEntity.data);
+                contact = new Contact(Contact.Type.PHONE, contactEntity.getName(), contactEntity.getData());
             }
-            contact.setId(contactEntity.id);
+            contact.setId(contactEntity.getId());
             result.add(contact);
         }
         return result;
