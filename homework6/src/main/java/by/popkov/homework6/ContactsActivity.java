@@ -174,29 +174,27 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void addContactToDatabase(Contact contact) {
-        ContactEntity contactEntity = new ContactEntity();
-        contactEntity.type = contact.getType().name();
-        contactEntity.id = contact.getId();
-        contactEntity.name = contact.getName();
-        contactEntity.data = contact.getData();
-        contactEntity.imageID = contact.getImageID();
-        contactDatabase.getContactDao().insertContact(contactEntity);
+        contactDatabase.getContactDao().insertContact(
+                new ContactEntity(contact.getId())
+                        .setType(contact.getType().name())
+                        .setName(contact.getName())
+                        .setData(contact.getData())
+                        .setImageID(contact.getImageID())
+        );
     }
 
-    private void updateContactToDatabase(Contact newContact) {
-        ContactEntity contactEntity = new ContactEntity();
-        contactEntity.type = newContact.getType().name();
-        contactEntity.id = newContact.getId();
-        contactEntity.name = newContact.getName();
-        contactEntity.data = newContact.getData();
-        contactEntity.imageID = newContact.getImageID();
-        contactDatabase.getContactDao().updateContact(contactEntity);
+    private void updateContactToDatabase(Contact contact) {
+        contactDatabase.getContactDao().updateContact(
+                new ContactEntity(contact.getId())
+                        .setType(contact.getType().name())
+                        .setName(contact.getName())
+                        .setData(contact.getData())
+                        .setImageID(contact.getImageID())
+        );
     }
 
     private void deleteContactFromDatabase(Contact contact) {
-        ContactEntity contactEntity = new ContactEntity();
-        contactEntity.id = contact.getId();
-        contactDatabase.getContactDao().deleteContact(contactEntity);
+        contactDatabase.getContactDao().deleteContact(new ContactEntity(contact.getId()));
     }
 
     private void visibleSwitcher(int fullItemCount) {
