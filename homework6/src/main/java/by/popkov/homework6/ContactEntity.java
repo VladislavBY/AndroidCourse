@@ -23,11 +23,6 @@ public class ContactEntity {
     @ColumnInfo
     public String type;
 
-    ContactEntity setId(@NonNull String id) {
-        this.id = id;
-        return this;
-    }
-
     ContactEntity setName(String name) {
         this.name = name;
         return this;
