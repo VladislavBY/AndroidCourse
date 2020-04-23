@@ -11,4 +11,7 @@
     <string name="remove">Remove</string>
     <string name="edit">Edit</string>
     <string name="input_data_please">Input data please</string>
+    <string name="edit_contact_dialog_positive">Удалить</string>
+    <string name="edit_contact_dialog_negative">Отмена</string>
+    <string name="edit_contact_dialog_massage">Действительно удалить контакт?</string>
 </resources>
