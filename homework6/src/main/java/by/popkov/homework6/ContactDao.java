@@ -8,19 +8,19 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
-public interface ContactDao {
+interface ContactDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertContact(ContactEntity... contacts);
+    void insertContact(ContactEntity... contacts);
 
     @Delete
-    public void deleteContact(ContactEntity... contacts);
+    void deleteContact(ContactEntity... contacts);
 
     @Update
-    public void updateContact(ContactEntity... users);
+    void updateContact(ContactEntity... users);
 
     @Query("SELECT * FROM contactentity")
-    public ContactEntity[] loadAddContacts();
+    ContactEntity[] loadAddContacts();
 
     @Query("SELECT * FROM contactentity WHERE id = :id")
-    public ContactEntity loadContact(String id);
+    ContactEntity loadContact(String id);
 }

@@ -7,21 +7,21 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(indices = {@Index(value = {"id"}, unique = true)})
-public class ContactEntity {
+class ContactEntity {
     ContactEntity(@NonNull String id) {
         this.id = id;
     }
 
     @PrimaryKey @NonNull
-    public String id;
+    String id;
     @ColumnInfo
-    public String name;
+    String name;
     @ColumnInfo
-    public String data;
+    String data;
     @ColumnInfo
-    public int imageID;
+    int imageID;
     @ColumnInfo
-    public String type;
+    String type;
 
     @NonNull
     String getId() {
