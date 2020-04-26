@@ -8,7 +8,8 @@ import androidx.room.PrimaryKey;
 
 @Entity(indices = {@Index(value = {"id"}, unique = true)})
 class ContactEntity {
-    @PrimaryKey @NonNull
+    @PrimaryKey
+    @NonNull
     String id;
     @ColumnInfo
     String name;
@@ -19,8 +20,15 @@ class ContactEntity {
     @ColumnInfo
     String type;
 
-    ContactEntity(@NonNull String id) {
+    ContactEntity() {
+    }
+
+    private ContactEntity(@NonNull String id, String name, String data, int imageID, String type) {
         this.id = id;
+        this.name = name;
+        this.data = data;
+        this.imageID = imageID;
+        this.type = type;
     }
 
     @NonNull
@@ -44,23 +52,39 @@ class ContactEntity {
         return type;
     }
 
-    ContactEntity setName(String name) {
-        this.name = name;
-        return this;
-    }
+    static class Builder {
+        private String id;
+        private String name;
+        private String data;
+        private int imageID;
+        private String type;
 
-    ContactEntity setData(String data) {
-        this.data = data;
-        return this;
-    }
+        Builder(String id) {
+            this.id = id;
+        }
 
-    ContactEntity setImageID(int imageID) {
-        this.imageID = imageID;
-        return this;
-    }
+        Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-    ContactEntity setType(String type) {
-        this.type = type;
-        return this;
+        Builder setData(String data) {
+            this.data = data;
+            return this;
+        }
+
+        Builder setImageID(int imageID) {
+            this.imageID = imageID;
+            return this;
+        }
+
+        Builder setType(String type) {
+            this.type = type;
+            return this;
+        }
+
+        ContactEntity build() {
+            return new ContactEntity(id, name, data, imageID, type);
+        }
     }
 }

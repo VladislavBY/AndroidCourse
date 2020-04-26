@@ -175,26 +175,28 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void addContactToDatabase(Contact contact) {
         contactDatabase.getContactDao().insertContact(
-                new ContactEntity(contact.getId())
+                new ContactEntity.Builder(contact.getId())
                         .setType(contact.getType().name())
                         .setName(contact.getName())
                         .setData(contact.getData())
                         .setImageID(contact.getImageID())
+                        .build()
         );
     }
 
     private void updateContactToDatabase(Contact contact) {
         contactDatabase.getContactDao().updateContact(
-                new ContactEntity(contact.getId())
+                new ContactEntity.Builder(contact.getId())
                         .setType(contact.getType().name())
                         .setName(contact.getName())
                         .setData(contact.getData())
                         .setImageID(contact.getImageID())
+                        .build()
         );
     }
 
     private void deleteContactFromDatabase(Contact contact) {
-        contactDatabase.getContactDao().deleteContact(new ContactEntity(contact.getId()));
+        contactDatabase.getContactDao().deleteContact(new ContactEntity.Builder(contact.getId()).build());
     }
 
     private void visibleSwitcher(int fullItemCount) {
