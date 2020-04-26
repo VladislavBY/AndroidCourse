@@ -8,10 +8,6 @@ import androidx.room.PrimaryKey;
 
 @Entity(indices = {@Index(value = {"id"}, unique = true)})
 class ContactEntity {
-    ContactEntity(@NonNull String id) {
-        this.id = id;
-    }
-
     @PrimaryKey @NonNull
     String id;
     @ColumnInfo
@@ -22,6 +18,10 @@ class ContactEntity {
     int imageID;
     @ColumnInfo
     String type;
+
+    ContactEntity(@NonNull String id) {
+        this.id = id;
+    }
 
     @NonNull
     String getId() {
