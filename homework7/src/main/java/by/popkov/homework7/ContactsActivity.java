@@ -3,7 +3,6 @@ package by.popkov.homework7;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -12,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -19,6 +19,9 @@ import androidx.room.Room;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 
 public class ContactsActivity extends AppCompatActivity {
@@ -59,38 +62,43 @@ public class ContactsActivity extends AppCompatActivity {
         contactsRecyclerView.setLayoutManager(new GridLayoutManager(ContactsActivity.this,
                 Integer.parseInt(contactsRecyclerView.getTag().toString())));
         adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
-
         if (adapter != null) {
             visibleSwitcher(adapter.getFullItemCount());
         }
     }
 
     private void contactsFromDatabase() {
-        new Thread(new Runnable() {
+        CompletableFuture.supplyAsync(new Supplier<ArrayList<Contact>>() {
             @Override
-            public void run() {
-                ContactEntity[] contactEntities = contactDatabase.getContactDao().loadAddContacts();
+            public ArrayList<Contact> get() {
                 final ArrayList<Contact> result = new ArrayList<>();
-                for (ContactEntity contactEntity : contactEntities) {
+                for (ContactEntity contactEntity : contactDatabase.getContactDao().loadAllContacts()) {
                     Contact contact;
                     if (contactEntity.getType().equals(Contact.Type.EMAIL.name())) {
-                        contact = new Contact(Contact.Type.EMAIL, contactEntity.getName(), contactEntity.getData());
+                        contact = new Contact(
+                                Contact.Type.EMAIL,
+                                contactEntity.getName(),
+                                contactEntity.getData()
+                        );
                     } else {
-                        contact = new Contact(Contact.Type.PHONE, contactEntity.getName(), contactEntity.getData());
+                        contact = new Contact(
+                                Contact.Type.PHONE,
+                                contactEntity.getName(),
+                                contactEntity.getData()
+                        );
                     }
                     contact.setId(contactEntity.getId());
                     result.add(contact);
                 }
-                new Handler(getMainLooper()).post(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.setContactLists(result);
-                        visibleSwitcher(result.size());
-                    }
-                });
+                return result;
             }
-        }).start();
-
+        }).thenAcceptAsync(new Consumer<ArrayList<Contact>>() {
+            @Override
+            public void accept(ArrayList<Contact> contacts) {
+                adapter.setContactLists(contacts);
+                visibleSwitcher(contacts.size());
+            }
+        }, ContextCompat.getMainExecutor(ContactsActivity.this));
     }
 
     private void setListeners() {
@@ -222,7 +230,10 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void deleteContactFromDatabase(Contact contact) {
-        contactDatabase.getContactDao().deleteContact(new ContactEntity.Builder(contact.getId()).build());
+        contactDatabase.getContactDao().deleteContact(
+                new ContactEntity.Builder(contact.getId())
+                        .build()
+        );
     }
 
     private void visibleSwitcher(int fullItemCount) {
