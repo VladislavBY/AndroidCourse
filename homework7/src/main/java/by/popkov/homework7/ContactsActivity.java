@@ -47,7 +47,6 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void connectContactDatabase() {
         contactDatabase = Room.databaseBuilder(this, ContactDatabase.class, CONTACT_DATABASE)
-                .allowMainThreadQueries()
                 .build();
     }
 
@@ -209,7 +208,6 @@ public class ContactsActivity extends AppCompatActivity {
                 );
             }
         }).start();
-
     }
 
     private void updateContactToDatabase(final Contact contact) {
@@ -226,14 +224,18 @@ public class ContactsActivity extends AppCompatActivity {
                 );
             }
         }).start();
-
     }
 
-    private void deleteContactFromDatabase(Contact contact) {
-        contactDatabase.getContactDao().deleteContact(
-                new ContactEntity.Builder(contact.getId())
-                        .build()
-        );
+    private void deleteContactFromDatabase(final Contact contact) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                contactDatabase.getContactDao().deleteContact(
+                        new ContactEntity.Builder(contact.getId())
+                                .build()
+                );
+            }
+        }).start();
     }
 
     private void visibleSwitcher(int fullItemCount) {
