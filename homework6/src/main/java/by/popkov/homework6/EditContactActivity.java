@@ -1,4 +1,4 @@
-package by.popkov.homework3;
+package by.popkov.homework6;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 
 public class EditContactActivity extends AppCompatActivity {
     static final String EXTRA_NEW_CONTACT = "newContact";

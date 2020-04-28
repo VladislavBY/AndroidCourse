@@ -1,4 +1,4 @@
-package by.popkov.homework3;
+package by.popkov.homework6;
 
 import java.io.Serializable;
 import java.util.UUID;

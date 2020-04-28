@@ -1,4 +1,4 @@
-package by.popkov.homework3;
+package by.popkov.homework6;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +26,7 @@ public class AddContactActivity extends AppCompatActivity {
     private RadioButton radioButtonEmail;
     private EditText editTextName;
     private EditText editTextPhoneNumberOrEmail;
+
 
     public static Intent newIntent(Context context) {
         return new Intent(context, AddContactActivity.class);

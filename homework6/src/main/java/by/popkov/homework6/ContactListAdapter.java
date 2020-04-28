@@ -1,4 +1,5 @@
-package by.popkov.homework3;
+package by.popkov.homework6;
+
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,10 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>
         implements Filterable, Parcelable {
-    private ArrayList<Contact> contactItemList = new ArrayList<>();
-    private ArrayList<Contact> contactItemListFull = new ArrayList<>();
+    private ArrayList<Contact> contactItemList;
+    private ArrayList<Contact> contactItemListFull;
+
 
     void addContact(Contact contact) {
         contactItemList.add(contact);
@@ -71,7 +74,9 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         }
     }
 
-    ContactListAdapter() {
+    ContactListAdapter(ArrayList<Contact> contacts) {
+        contactItemList = new ArrayList<>(contacts);
+        contactItemListFull = new ArrayList<>(contacts);
     }
 
     private ContactListAdapter(Parcel source) {
