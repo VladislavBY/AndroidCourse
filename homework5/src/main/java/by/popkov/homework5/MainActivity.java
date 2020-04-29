@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.widget.SeekBar;
 
@@ -162,10 +163,16 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                Handler handler = new Handler(getMainLooper());
                 while (true) {
                     if (songPlayService != null && songPlayService.getMediaPlayer() != null) {
-                        seekBar.setMax(songPlayService.getMediaPlayer().getDuration());
-                        seekBar.setProgress(songPlayService.getMediaPlayer().getCurrentPosition());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                seekBar.setMax(songPlayService.getMediaPlayer().getDuration());
+                                seekBar.setProgress(songPlayService.getMediaPlayer().getCurrentPosition());
+                            }
+                        });
                     }
                     try {
                         Thread.sleep(1000);

@@ -1,4 +1,4 @@
-package by.popkov.homework6;
+package by.popkov.homework7;
 
 
 import android.content.Intent;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -18,6 +19,9 @@ import androidx.room.Room;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 
 public class ContactsActivity extends AppCompatActivity {
@@ -36,13 +40,13 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
         connectContactDatabase();
         initContactsRecyclerView(savedInstanceState);
+        contactsFromDatabase();
         setListeners();
         setToolBar();
     }
 
     private void connectContactDatabase() {
         contactDatabase = Room.databaseBuilder(this, ContactDatabase.class, CONTACT_DATABASE)
-                .allowMainThreadQueries()
                 .build();
     }
 
@@ -52,31 +56,48 @@ public class ContactsActivity extends AppCompatActivity {
             contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState
                     .getParcelable(ADAPTER));
         } else {
-            contactsRecyclerView.setAdapter(new ContactListAdapter(contactsFromDatabase()));
+            contactsRecyclerView.setAdapter(new ContactListAdapter());
         }
         contactsRecyclerView.setLayoutManager(new GridLayoutManager(ContactsActivity.this,
                 Integer.parseInt(contactsRecyclerView.getTag().toString())));
         adapter = (ContactListAdapter) contactsRecyclerView.getAdapter();
-
         if (adapter != null) {
             visibleSwitcher(adapter.getFullItemCount());
         }
     }
 
-    private ArrayList<Contact> contactsFromDatabase() {
-        ContactEntity[] contactEntities = contactDatabase.getContactDao().loadAddContacts();
-        ArrayList<Contact> result = new ArrayList<>();
-        for (ContactEntity contactEntity : contactEntities) {
-            Contact contact;
-            if (contactEntity.getType().equals(Contact.Type.EMAIL.name())) {
-                contact = new Contact(Contact.Type.EMAIL, contactEntity.getName(), contactEntity.getData());
-            } else {
-                contact = new Contact(Contact.Type.PHONE, contactEntity.getName(), contactEntity.getData());
+    private void contactsFromDatabase() {
+        CompletableFuture.supplyAsync(new Supplier<ArrayList<Contact>>() {
+            @Override
+            public ArrayList<Contact> get() {
+                final ArrayList<Contact> result = new ArrayList<>();
+                for (ContactEntity contactEntity : contactDatabase.getContactDao().loadAllContacts()) {
+                    Contact contact;
+                    if (contactEntity.getType().equals(Contact.Type.EMAIL.name())) {
+                        contact = new Contact(
+                                Contact.Type.EMAIL,
+                                contactEntity.getName(),
+                                contactEntity.getData()
+                        );
+                    } else {
+                        contact = new Contact(
+                                Contact.Type.PHONE,
+                                contactEntity.getName(),
+                                contactEntity.getData()
+                        );
+                    }
+                    contact.setId(contactEntity.getId());
+                    result.add(contact);
+                }
+                return result;
             }
-            contact.setId(contactEntity.getId());
-            result.add(contact);
-        }
-        return result;
+        }).thenAcceptAsync(new Consumer<ArrayList<Contact>>() {
+            @Override
+            public void accept(ArrayList<Contact> contacts) {
+                adapter.setContactLists(contacts);
+                visibleSwitcher(contacts.size());
+            }
+        }, ContextCompat.getMainExecutor(ContactsActivity.this));
     }
 
     private void setListeners() {
@@ -173,30 +194,48 @@ public class ContactsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void addContactToDatabase(Contact contact) {
-        contactDatabase.getContactDao().insertContact(
-                new ContactEntity.Builder(contact.getId())
-                        .setType(contact.getType().name())
-                        .setName(contact.getName())
-                        .setData(contact.getData())
-                        .setImageID(contact.getImageID())
-                        .build()
-        );
+    private void addContactToDatabase(final Contact contact) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                contactDatabase.getContactDao().insertContact(
+                        new ContactEntity.Builder(contact.getId())
+                                .setType(contact.getType().name())
+                                .setName(contact.getName())
+                                .setData(contact.getData())
+                                .setImageID(contact.getImageID())
+                                .build()
+                );
+            }
+        }).start();
     }
 
-    private void updateContactToDatabase(Contact contact) {
-        contactDatabase.getContactDao().updateContact(
-                new ContactEntity.Builder(contact.getId())
-                        .setType(contact.getType().name())
-                        .setName(contact.getName())
-                        .setData(contact.getData())
-                        .setImageID(contact.getImageID())
-                        .build()
-        );
+    private void updateContactToDatabase(final Contact contact) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                contactDatabase.getContactDao().updateContact(
+                        new ContactEntity.Builder(contact.getId())
+                                .setType(contact.getType().name())
+                                .setName(contact.getName())
+                                .setData(contact.getData())
+                                .setImageID(contact.getImageID())
+                                .build()
+                );
+            }
+        }).start();
     }
 
-    private void deleteContactFromDatabase(Contact contact) {
-        contactDatabase.getContactDao().deleteContact(new ContactEntity.Builder(contact.getId()).build());
+    private void deleteContactFromDatabase(final Contact contact) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                contactDatabase.getContactDao().deleteContact(
+                        new ContactEntity.Builder(contact.getId())
+                                .build()
+                );
+            }
+        }).start();
     }
 
     private void visibleSwitcher(int fullItemCount) {

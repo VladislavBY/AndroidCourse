@@ -1,4 +1,4 @@
-package by.popkov.homework6;
+package by.popkov.homework7;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

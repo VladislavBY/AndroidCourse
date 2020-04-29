@@ -1,4 +1,4 @@
-package by.popkov.homework6;
+package by.popkov.homework7;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -19,7 +19,7 @@ interface ContactDao {
     void updateContact(ContactEntity... users);
 
     @Query("SELECT * FROM contactentity")
-    ContactEntity[] loadAddContacts();
+    ContactEntity[] loadAllContacts();
 
     @Query("SELECT * FROM contactentity WHERE id = :id")
     ContactEntity loadContact(String id);
