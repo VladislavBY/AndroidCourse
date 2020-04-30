@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>
         implements Filterable {
-    private ArrayList<Contact> contactItemList = new ArrayList<>();
-    private ArrayList<Contact> contactItemListFull = new ArrayList<>();
+    private ArrayList<Contact> contactItemList;
+    private ArrayList<Contact> contactItemListFull;
 
     ArrayList<Contact> getContactItemList() {
         return contactItemList;
@@ -29,10 +29,8 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     void setContactLists(ArrayList<Contact> contacts) {
-        contactItemList.clear();
-        contactItemList.addAll(contacts);
-        contactItemListFull.clear();
-        contactItemListFull.addAll(contacts);
+        contactItemList = new ArrayList<>(contacts);
+        contactItemListFull = new ArrayList<>(contacts);
         notifyDataSetChanged();
     }
 
@@ -82,12 +80,14 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
         return (contactItemListFull != null) ? contactItemListFull.size() : 0;
     }
 
+    ContactListAdapter() {
+        contactItemList = new ArrayList<>();
+        contactItemListFull = new ArrayList<>();
+    }
+
     ContactListAdapter(ArrayList<Contact> contactItemList, ArrayList<Contact> contactItemListFull) {
         this.contactItemList = new ArrayList<>(contactItemList);
         this.contactItemListFull = new ArrayList<>(contactItemListFull);
-    }
-
-    ContactListAdapter() {
     }
 
     @NonNull
