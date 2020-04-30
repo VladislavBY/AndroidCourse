@@ -1,7 +1,5 @@
 package by.popkov.homework5;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +11,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder> implements Parcelable {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder> {
     private ArrayList<Song> songItemList = new ArrayList<>();
     private ArrayList<ImageView> itemImageViewsList = new ArrayList<>();
 
+    ArrayList<Song> getSongItemList() {
+        return songItemList;
+    }
+
     void setSongItemList(ArrayList<Song> songItemList) {
-        this.songItemList = songItemList;
+        this.songItemList.clear();
+        this.songItemList.addAll(songItemList);
         notifyDataSetChanged();
     }
 
-    SongAdapter() {
+    SongAdapter(ArrayList<Song> songItemList) {
+        this.songItemList.addAll(songItemList);
     }
 
     @NonNull
@@ -40,8 +44,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
 
     @Override
     public int getItemCount() {
-        if (songItemList != null) return songItemList.size();
-        else return 0;
+        return (songItemList != null) ? songItemList.size() : 0;
     }
 
     interface CustomItemClickListener {
@@ -84,31 +87,5 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
             textViewSongName.setText(song.getName());
             imageViewPlayStatus.setVisibility((song.isPlaying()) ? View.VISIBLE : View.INVISIBLE);
         }
-    }
-
-    private SongAdapter(Parcel in) {
-        songItemList = (ArrayList<Song>) in.readSerializable();
-    }
-
-    public static final Creator<SongAdapter> CREATOR = new Creator<SongAdapter>() {
-        @Override
-        public SongAdapter createFromParcel(Parcel in) {
-            return new SongAdapter(in);
-        }
-
-        @Override
-        public SongAdapter[] newArray(int size) {
-            return new SongAdapter[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeSerializable(songItemList);
     }
 }
