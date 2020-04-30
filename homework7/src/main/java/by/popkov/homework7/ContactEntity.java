@@ -1,7 +1,6 @@
 package by.popkov.homework7;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
@@ -11,13 +10,9 @@ class ContactEntity {
     @PrimaryKey
     @NonNull
     String id;
-    @ColumnInfo
     String name;
-    @ColumnInfo
     String data;
-    @ColumnInfo
     int imageID;
-    @ColumnInfo
     String type;
 
     ContactEntity() {

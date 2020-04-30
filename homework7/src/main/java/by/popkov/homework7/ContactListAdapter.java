@@ -1,8 +1,5 @@
 package by.popkov.homework7;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +16,17 @@ import java.util.List;
 
 
 public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.ItemViewHolder>
-        implements Filterable, Parcelable {
+        implements Filterable {
     private ArrayList<Contact> contactItemList = new ArrayList<>();
     private ArrayList<Contact> contactItemListFull = new ArrayList<>();
 
+    ArrayList<Contact> getContactItemList() {
+        return contactItemList;
+    }
+
+    ArrayList<Contact> getContactItemListFull() {
+        return contactItemListFull;
+    }
 
     void setContactLists(ArrayList<Contact> contacts) {
         contactItemList.clear();
@@ -75,19 +79,15 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     }
 
     int getFullItemCount() {
-        if (contactItemList != null) {
-            return contactItemListFull.size();
-        } else {
-            return 0;
-        }
+        return (contactItemListFull != null) ? contactItemListFull.size() : 0;
+    }
+
+    ContactListAdapter(ArrayList<Contact> contactItemList, ArrayList<Contact> contactItemListFull) {
+        this.contactItemList = new ArrayList<>(contactItemList);
+        this.contactItemListFull = new ArrayList<>(contactItemListFull);
     }
 
     ContactListAdapter() {
-    }
-
-    private ContactListAdapter(Parcel source) {
-        contactItemListFull = (ArrayList<Contact>) source.readSerializable();
-        contactItemList = (ArrayList<Contact>) source.readSerializable();
     }
 
     @NonNull
@@ -105,11 +105,7 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
 
     @Override
     public int getItemCount() {
-        if (contactItemList != null) {
-            return contactItemList.size();
-        } else {
-            return 0;
-        }
+        return (contactItemList != null) ? contactItemList.size() : 0;
     }
 
     private Filter contactFilter = new Filter() {
@@ -143,32 +139,6 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
     public Filter getFilter() {
         return contactFilter;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeSerializable(contactItemListFull);
-        dest.writeSerializable(contactItemList);
-    }
-
-
-    public static final Creator<ContactListAdapter> CREATOR = new Creator<ContactListAdapter>() {
-
-        @Override
-        public ContactListAdapter createFromParcel(Parcel source) {
-            return new ContactListAdapter(source);
-        }
-
-        @Override
-        public ContactListAdapter[] newArray(int size) {
-            return new ContactListAdapter[size];
-        }
-    };
-
 
     private ItemListenerWithData itemListenerWithData;
 

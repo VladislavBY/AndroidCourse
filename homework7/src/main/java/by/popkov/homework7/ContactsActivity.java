@@ -27,7 +27,8 @@ import java.util.function.Supplier;
 public class ContactsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FOR_ADD = 7777;
     private static final int REQUEST_CODE_FOR_EDIT = 1111;
-    private static final String ADAPTER = "adapter";
+    private static final String CONTACT_ITEM_LIST = "contactItemList";
+    private static final String CONTACT_ITEM_LIST_FULL = "contactItemListFull";
     private static final String CONTACT_DATABASE = "ContactDatabase";
 
     private ContactDatabase contactDatabase;
@@ -53,8 +54,10 @@ public class ContactsActivity extends AppCompatActivity {
     private void initContactsRecyclerView(Bundle savedInstanceState) {
         contactsRecyclerView = findViewById(R.id.recyclerViewContacts);
         if (savedInstanceState != null) {
-            contactsRecyclerView.setAdapter((ContactListAdapter) savedInstanceState
-                    .getParcelable(ADAPTER));
+            contactsRecyclerView.setAdapter(new ContactListAdapter(
+                    (ArrayList<Contact>) savedInstanceState.getSerializable(CONTACT_ITEM_LIST),
+                    (ArrayList<Contact>) savedInstanceState.getSerializable(CONTACT_ITEM_LIST_FULL)
+            ));
         } else {
             contactsRecyclerView.setAdapter(new ContactListAdapter());
         }
@@ -166,7 +169,8 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(ADAPTER, adapter);
+        outState.putSerializable(CONTACT_ITEM_LIST, adapter.getContactItemList());
+        outState.putSerializable(CONTACT_ITEM_LIST_FULL, adapter.getContactItemListFull());
     }
 
     @Override
