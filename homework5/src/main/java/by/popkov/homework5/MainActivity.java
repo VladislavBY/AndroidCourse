@@ -163,10 +163,9 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Handler handler = new Handler(getMainLooper());
                 while (true) {
                     if (songPlayService != null && songPlayService.getMediaPlayer() != null) {
-                        handler.post(new Runnable() {
+                        new Handler(getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
                                 seekBar.setMax(songPlayService.getMediaPlayer().getDuration());

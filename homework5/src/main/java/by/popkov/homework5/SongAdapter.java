@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder> {
-    private ArrayList<Song> songItemList = new ArrayList<>();
+    private ArrayList<Song> songItemList;
     private ArrayList<ImageView> itemImageViewsList = new ArrayList<>();
 
     ArrayList<Song> getSongItemList() {
@@ -20,13 +20,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.ItemViewHolder
     }
 
     void setSongItemList(ArrayList<Song> songItemList) {
-        this.songItemList.clear();
-        this.songItemList.addAll(songItemList);
+        this.songItemList = new ArrayList<>(songItemList);
         notifyDataSetChanged();
     }
 
     SongAdapter(ArrayList<Song> songItemList) {
-        this.songItemList.addAll(songItemList);
+        this.songItemList = new ArrayList<>(songItemList);
     }
 
     @NonNull
