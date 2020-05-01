@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String ADAPTER = "ADAPTER";
+    private static final String SONG_ITEM_LIST = "songItemList";
     static final String SONG = "SONG";
     static final String CHANNEL_ID = "songPlayChannel";
     private SongAdapter songAdapter;
@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(Bundle savedInstanceState) {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         if (savedInstanceState != null) {
-            recyclerView.setAdapter((RecyclerView.Adapter) savedInstanceState.getParcelable(ADAPTER));
+            recyclerView.setAdapter(new SongAdapter(
+                    (ArrayList<Song>) savedInstanceState.getSerializable(SONG_ITEM_LIST))
+            );
         } else {
-            SongAdapter songAdapter = new SongAdapter();
-            songAdapter.setSongItemList(songArrayList);
-            recyclerView.setAdapter(songAdapter);
+            recyclerView.setAdapter(new SongAdapter(songArrayList));
         }
         recyclerView.setLayoutManager(new LinearLayoutManager
                 (this, RecyclerView.VERTICAL, false));
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void unbindSongPlayService() {
         unbindService(serviceConnection);
-        if (songPlayService != null) songPlayService = null;
+        songPlayService = null;
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -163,10 +163,9 @@ public class MainActivity extends AppCompatActivity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                Handler handler = new Handler(getMainLooper());
                 while (true) {
                     if (songPlayService != null && songPlayService.getMediaPlayer() != null) {
-                        handler.post(new Runnable() {
+                        new Handler(getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
                                 seekBar.setMax(songPlayService.getMediaPlayer().getDuration());
@@ -194,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(ADAPTER, songAdapter);
+        outState.putSerializable(SONG_ITEM_LIST, songAdapter.getSongItemList());
     }
 
     @Override

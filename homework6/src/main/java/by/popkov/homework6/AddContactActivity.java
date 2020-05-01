@@ -19,7 +19,6 @@ import androidx.appcompat.widget.Toolbar;
 
 public class AddContactActivity extends AppCompatActivity {
     public static final String EXTRA_CONTACT_FOR_ADD = "EXTRA_CONTACT_FOR_ADD";
-    private Contact contact;
 
     private ImageButton buttonAdd;
     private RadioButton radioButtonPhoneNumber;
@@ -79,6 +78,7 @@ public class AddContactActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Contact contact = null;
                 String name = editTextName.getText().toString();
                 String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
                 if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
@@ -94,11 +94,8 @@ public class AddContactActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    Toast.makeText(
-                            AddContactActivity.this,
-                            R.string.input_data_please,
-                            Toast.LENGTH_LONG
-                    ).show();
+                    Toast.makeText(AddContactActivity.this, R.string.input_data_please, Toast.LENGTH_LONG)
+                            .show();
                 }
             }
         });
