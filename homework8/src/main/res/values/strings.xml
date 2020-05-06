@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="no_connection">No connection to weather server</string>
 </resources>
