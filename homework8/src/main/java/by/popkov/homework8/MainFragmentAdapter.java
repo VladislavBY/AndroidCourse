@@ -10,8 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import java.util.TimeZone;
 
 public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapter.ItemViewHolder> {
     private List<WeatherApiForecastListObject> weatherApiForecastList;
@@ -84,6 +89,14 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
             );
             weatherTextView.setText(weatherApiForecastListObject.getWeatherApiListWeather().get(0).getMain());
             tempTextView.setText((Math.round(weatherApiForecastListObject.getWeatherApiMain().getTemp())) + unitsSign);
+            timeTextView.setText(convertTimeToLocalTimeZone(weatherApiForecastListObject.getDt() * 1000L));
         }
+
+        private CharSequence convertTimeToLocalTimeZone(Long time) {
+            Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+            calendar.setTime(new Date(time));
+            return calendar.getTime().toString().subSequence(11, 16);
+        }
+
     }
 }
