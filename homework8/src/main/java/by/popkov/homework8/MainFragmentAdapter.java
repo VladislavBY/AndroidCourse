@@ -16,12 +16,21 @@ import java.util.List;
 public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapter.ItemViewHolder> {
     private List<WeatherApiForecastListObject> weatherApiForecastList;
     private Context context;
+    private String unitsSign;
 
-    public List<WeatherApiForecastListObject> getWeatherApiForecastList() {
+    String getUnitsSign() {
+        return unitsSign;
+    }
+
+    void setUnitsSign(String unitsSign) {
+        this.unitsSign = unitsSign;
+    }
+
+    List<WeatherApiForecastListObject> getWeatherApiForecastList() {
         return weatherApiForecastList;
     }
 
-    public void setWeatherApiForecastList(List<WeatherApiForecastListObject> weatherApiForecastList) {
+    void setWeatherApiForecastList(List<WeatherApiForecastListObject> weatherApiForecastList) {
         this.weatherApiForecastList = new ArrayList<>(weatherApiForecastList);
         notifyDataSetChanged();
     }
@@ -74,7 +83,7 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
                     )
             );
             weatherTextView.setText(weatherApiForecastListObject.getWeatherApiListWeather().get(0).getMain());
-            tempTextView.setText(weatherApiForecastListObject.getWeatherApiListWeather().get(0).getMain());
+            tempTextView.setText((Math.round(weatherApiForecastListObject.getWeatherApiMain().getTemp())) + unitsSign);
         }
     }
 }

@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +39,9 @@ public class MainFragment extends Fragment {
     private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
     static final String UNITS_IMPERIAL = "imperial";
     static final String UNITS_METRIC = "metric";
+    static final String UNITS = "UNITS";
+
+    private String unitsSing;
 
     private OkHttpClient okHttpClient = new OkHttpClient();
     private Context context;
@@ -61,6 +63,8 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
+//        setUnitsSign();
+        unitsSing = "°C";
         if (context != null) {
             showWeatherNow("London", UNITS_METRIC);
             showWeatherForecast("London", UNITS_METRIC);
@@ -69,13 +73,25 @@ public class MainFragment extends Fragment {
         makeRecyclerView();
     }
 
+    private void setUnitsSign() {
+        String argUnits = null;
+        if (getArguments() != null) {
+            argUnits = getArguments().getString(UNITS);
+        }
+        if (argUnits != null) {
+            if (argUnits.equals(MainFragment.UNITS_METRIC)) {
+                unitsSing = context.getString(R.string.UNITS_METRIC);
+            } else unitsSing = context.getString(R.string.UNITS_IMPERIAL);
+        }
+    }
+
     private void makeRecyclerView() {
         predictionRecyclerView.setAdapter(new MainFragmentAdapter(context));
         predictionRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         mainFragmentAdapter = (MainFragmentAdapter) predictionRecyclerView.getAdapter();
     }
 
-    private void showWeatherForecast(String cityName, String units) {
+    private void showWeatherForecast(String cityName, final String units) {
         Request request = new Request.Builder()
                 .url(String.format(API_WEATHER_FORECAST, cityName, units, API_KEY))
                 .build();
@@ -97,6 +113,7 @@ public class MainFragment extends Fragment {
                     new Handler(context.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
+                            mainFragmentAdapter.setUnitsSign(unitsSing);
                             mainFragmentAdapter.setWeatherApiForecastList(weatherForecast.getWeatherApiForecastList());
                         }
                     });
@@ -113,7 +130,7 @@ public class MainFragment extends Fragment {
         predictionRecyclerView = view.findViewById(R.id.predictionRecyclerView);
     }
 
-    private void showWeatherNow(final String cityName, String units) {
+    private void showWeatherNow(final String cityName, final String units) {
         Request request = new Request.Builder()
                 .url(String.format(API_WEATHER_NOW, cityName, units, API_KEY))
                 .build();
@@ -135,7 +152,7 @@ public class MainFragment extends Fragment {
                     new Handler(context.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
-                            setWeatherView(weatherNow, cityName);
+                            setWeatherView(weatherNow, cityName, units);
                         }
                     });
 
@@ -144,9 +161,9 @@ public class MainFragment extends Fragment {
         });
     }
 
-    private void setWeatherView(WeatherApi weatherNow, String cityName) {
+    private void setWeatherView(WeatherApi weatherNow, String cityName, String units) {
         cityTextView.setText(cityName);
-        tempTextView.setText(String.valueOf(weatherNow.getWeatherApiMain().getTemp()));
+        tempTextView.setText(Math.round(weatherNow.getWeatherApiMain().getTemp()) + unitsSing);
         weatherMainTextView.setText(weatherNow.getWeatherApiListWeather().get(0).getMain());
         String icon = weatherNow.getWeatherApiListWeather().get(0).getIcon();
         weatherMainImageView.setImageResource(getResources().getIdentifier("weather" + icon, "drawable", context.getPackageName()));
