@@ -11,7 +11,7 @@ class WeatherApi {
     @SerializedName("main")
     private WeatherApiMain weatherApiMain;
 
-    public WeatherApiMain getWeatherApiMain() {
+    WeatherApiMain getWeatherApiMain() {
         return weatherApiMain;
     }
 

@@ -6,7 +6,7 @@ class WeatherApiMain {
     @SerializedName("temp")
     private double temp;
 
-    public double getTemp() {
+    double getTemp() {
         return temp;
     }
 }
