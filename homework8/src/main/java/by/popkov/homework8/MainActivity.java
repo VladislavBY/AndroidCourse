@@ -30,63 +30,12 @@ public class MainActivity extends AppCompatActivity {
     static final String UNITS_IMPERIAL = "imperial";
     static final String UNITS_METRIC = "metric";
 
-    private OkHttpClient okHttpClient = new OkHttpClient();
-
-    private ImageView weatherMainImageView;
-    private TextView cityTextView;
-    private TextView tempTextView;
-    private TextView weatherMainTextView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main);
-        initViews();
-        showWeatherNow("London", UNITS_METRIC);
-    }
-
-    private void initViews() {
-        weatherMainImageView = findViewById(R.id.weatherMainImageView);
-        cityTextView = findViewById(R.id.cityTextView);
-        tempTextView = findViewById(R.id.tempTextView);
-        weatherMainTextView = findViewById(R.id.weatherMainTextView);
-    }
-
-    private void showWeatherNow(final String cityName, String units) {
-        Request request = new Request.Builder()
-                .url(String.format(API_WEATHER_NOW, cityName, UNITS_METRIC, units))
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(MainActivity.this, getString(R.string.no_connection), Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                ResponseBody body = response.body();
-                if (response.isSuccessful() && body != null) {
-                    String json = body.string();
-                    Type type = new TypeToken<WeatherApi>() {
-                    }.getType();
-                    final WeatherApi weatherNow = new Gson().fromJson(json, type);
-                    new Handler(getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            setWeatherView(weatherNow, cityName);
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    private void setWeatherView(WeatherApi weatherNow, String cityName) {
-        cityTextView.setText(cityName);
-        tempTextView.setText(String.valueOf(weatherNow.getWeatherApiList().get(0).getWeatherApiListMain().getTemp()));
-        weatherMainTextView.setText(weatherNow.getWeatherApiList().get(0).getWeatherApiListWeather().get(0).getMain());
-        String icon = weatherNow.getWeatherApiList().get(0).getWeatherApiListWeather().get(0).getIcon();
-        weatherMainImageView.setImageResource(getResources().getIdentifier("weather" + icon, "drawable", getPackageName()));
+        setContentView(R.layout.activity_main);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, new MainFragment(), "Main")
+                .commit();
     }
 }

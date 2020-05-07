@@ -5,10 +5,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 class WeatherApi {
-    @SerializedName("list")
-    private List<WeatherApiList> weatherApiList;
+    @SerializedName("weather")
+    private List<WeatherApiListWeather> weatherApiListWeather;
 
-    List<WeatherApiList> getWeatherApiList() {
-        return weatherApiList;
+    @SerializedName("main")
+    private WeatherApiMain weatherApiMain;
+
+    public WeatherApiMain getWeatherApiMain() {
+        return weatherApiMain;
+    }
+
+    List<WeatherApiListWeather> getWeatherApiListWeather() {
+        return weatherApiListWeather;
     }
 }

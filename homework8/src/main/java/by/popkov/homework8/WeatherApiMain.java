@@ -2,7 +2,7 @@ package by.popkov.homework8;
 
 import com.google.gson.annotations.SerializedName;
 
-class WeatherApiListMain {
+class WeatherApiMain {
     @SerializedName("temp")
     private double temp;
 

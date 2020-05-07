@@ -28,8 +28,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-class MainFragment extends Fragment {
-    private static final String API_WEATHER_NOW = "https://samples.openweathermap.org/data/2.5/find?q=%s&units=%s&appid=%s";
+public class MainFragment extends Fragment {
+
+    private static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
     private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
     static final String UNITS_IMPERIAL = "imperial";
     static final String UNITS_METRIC = "metric";
@@ -63,7 +64,7 @@ class MainFragment extends Fragment {
 
     private void showWeatherNow(final String cityName, String units) {
         Request request = new Request.Builder()
-                .url(String.format(API_WEATHER_NOW, cityName, UNITS_METRIC, units))
+                .url(String.format(API_WEATHER_NOW, cityName, units, API_KEY))
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -95,9 +96,9 @@ class MainFragment extends Fragment {
 
     private void setWeatherView(WeatherApi weatherNow, String cityName) {
         cityTextView.setText(cityName);
-        tempTextView.setText(String.valueOf(weatherNow.getWeatherApiList().get(0).getWeatherApiListMain().getTemp()));
-        weatherMainTextView.setText(weatherNow.getWeatherApiList().get(0).getWeatherApiListWeather().get(0).getMain());
-        String icon = weatherNow.getWeatherApiList().get(0).getWeatherApiListWeather().get(0).getIcon();
+        tempTextView.setText(String.valueOf(weatherNow.getWeatherApiMain().getTemp()));
+        weatherMainTextView.setText(weatherNow.getWeatherApiListWeather().get(0).getMain());
+        String icon = weatherNow.getWeatherApiListWeather().get(0).getIcon();
         weatherMainImageView.setImageResource(getResources().getIdentifier("weather" + icon, "drawable", getContext().getPackageName()));
     }
 }
