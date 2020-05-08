@@ -12,6 +12,8 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
     static final String UNITS_METRIC = "metric";
     static final String SHARED_PREFERENCES_NAME = "SETTINGS";
     static final String CELSIUS_CHECKED_KEY = "CELSIUS_CHECKED";
+    static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY ";
+
 
 
     private FragmentManager fragmentManager;

@@ -1,5 +1,7 @@
 package by.popkov.homework8;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +21,8 @@ public class CityFragment extends Fragment {
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
     private String selectedCity;
+    private FragmentActivity fragmentActivity;
+    private CityFragmentAdapter cityFragmentAdapter;
 
     @Nullable
     @Override
@@ -26,16 +33,43 @@ public class CityFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         initViews(view);
-        getSettings();
-        makeRecyclerView();
+        fragmentActivity = getActivity();
+        if (fragmentActivity != null) {
+            getSettings();
+            makeRecyclerView();
+        }
+
     }
 
     private void getSettings() {
+        SharedPreferences sharedPreferences
+                = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        selectedCity = sharedPreferences.getString(MainActivity.SELECTED_CITY_KEY, "0");
     }
 
     private void makeRecyclerView() {
-        recyclerView.setAdapter(new CityFragmentAdapter());
+        if (!selectedCity.equals("0")) {
+            recyclerView.setAdapter(new CityFragmentAdapter(selectedCity));
+        } else recyclerView.setAdapter(new CityFragmentAdapter());
+        recyclerView.setLayoutManager(new LinearLayoutManager(fragmentActivity, RecyclerView.VERTICAL, false));
+        cityFragmentAdapter = (CityFragmentAdapter) recyclerView.getAdapter();
+        setAdapterOnCityClickListener();
+    }
+
+    private void setAdapterOnCityClickListener() {
+        cityFragmentAdapter.setOnCityClickListener(new CityFragmentAdapter.OnCityClickListener() {
+            @Override
+            public void onClick(String cityName) {
+                SharedPreferences sharedPreferences
+                        = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+                sharedPreferences.edit()
+                        .putString(MainActivity.SELECTED_CITY_KEY, cityName)
+                        .apply();
+            }
+        });
+        fragmentActivity.getSupportFragmentManager().popBackStack();
     }
 
     private void initViews(View view) {
