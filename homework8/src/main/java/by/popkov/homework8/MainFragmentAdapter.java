@@ -20,7 +20,6 @@ import java.util.TimeZone;
 
 public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapter.ItemViewHolder> {
     private List<WeatherApiForecastListObject> weatherApiForecastList;
-    private Context context;
     private String unitsSign;
 
     String getUnitsSign() {
@@ -43,7 +42,6 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
         return new ItemViewHolder(
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_activity_main, parent, false)
@@ -77,14 +75,7 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
         }
 
         private void bindData(WeatherApiForecastListObject weatherApiForecastListObject) {
-            String icon = weatherApiForecastListObject.getWeatherApiListWeather().get(0).getIcon();
-            weatherIconImageView.setImageResource(
-                    context.getResources().getIdentifier(
-                            "weather" + icon,
-                            "drawable",
-                            context.getPackageName()
-                    )
-            );
+            weatherIconImageView.setImageResource(weatherApiForecastListObject.getWeatherApiListWeather().get(0).getIconRes());
             weatherTextView.setText(weatherApiForecastListObject.getWeatherApiListWeather().get(0).getMain());
             tempTextView.setText((Math.round(weatherApiForecastListObject.getWeatherApiMain().getTemp())) + unitsSign);
             timeTextView.setText(convertTimeToLocalTimeZone(weatherApiForecastListObject.getDt() * 1000L));

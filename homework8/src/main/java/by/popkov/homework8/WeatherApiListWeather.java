@@ -15,4 +15,14 @@ class WeatherApiListWeather {
     String getIcon() {
         return icon;
     }
+
+    private int iconRes;
+
+    int getIconRes() {
+        return iconRes;
+    }
+
+    void setIconRes(int iconRes) {
+        this.iconRes = iconRes;
+    }
 }

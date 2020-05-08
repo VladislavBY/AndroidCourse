@@ -136,6 +136,16 @@ public class MainFragment extends Fragment {
                     Type type = new TypeToken<WeatherApiForecast>() {
                     }.getType();
                     final WeatherApiForecast weatherForecast = new Gson().fromJson(json, type);
+                    for (WeatherApiForecastListObject weatherApiForecastListObject : weatherForecast.getWeatherApiForecastList()) {
+                        WeatherApiListWeather weather = weatherApiForecastListObject.getWeatherApiListWeather().get(0);
+                        String icon = weather.getIcon();
+                        weather.setIconRes(context.getResources()
+                                .getIdentifier("weather" + icon,
+                                        "drawable",
+                                        context.getPackageName()
+                                )
+                        );
+                    }
                     new Handler(context.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
