@@ -11,13 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class CityFragment extends Fragment {
+public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
     private String selectedCity;
@@ -33,7 +32,6 @@ public class CityFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         initViews(view);
         fragmentActivity = getActivity();
         if (fragmentActivity != null) {
@@ -67,13 +65,29 @@ public class CityFragment extends Fragment {
                 sharedPreferences.edit()
                         .putString(MainActivity.SELECTED_CITY_KEY, cityName)
                         .apply();
+                fragmentActivity.getSupportFragmentManager().popBackStack();
             }
         });
-        fragmentActivity.getSupportFragmentManager().popBackStack();
+
     }
 
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        floatingActionButton = view.findViewById(R.id.floatingActionButton);
+        floatingActionButton = view.findViewById(R.id.floatingActionButton4);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragmentDialog();
+            }
+        });
+    }
+
+    private void showFragmentDialog() {
+        new CityFragmentDialog().show(getChildFragmentManager(), "CityFragmentDialog");
+    }
+
+    @Override
+    public void OnPositiveButtonClick(String cityName) {
+        cityFragmentAdapter.addCityName(cityName);
     }
 }

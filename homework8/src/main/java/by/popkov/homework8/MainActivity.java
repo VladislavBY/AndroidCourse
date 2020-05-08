@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity implements OnClickButtonListener {
+public class MainActivity extends AppCompatActivity implements MainFragment.OnClickButtonListener {
     private static final String API_WEATHER_NOW = "https://samples.openweathermap.org/data/2.5/find?q=%s&units=%s&appid=%s";
     private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
     static final String UNITS_IMPERIAL = "imperial";
@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
     static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY ";
 
 
-
     private FragmentManager fragmentManager;
 
     @Override
@@ -23,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_container, new MainFragment(), "MainFragment")
                     .commit();
@@ -40,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
 
     @Override
     public void onCitySelectButtonClick() {
-
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, new CityFragment(), "CityFragment")
+                .addToBackStack("CityFragment")
+                .commit();
     }
 }

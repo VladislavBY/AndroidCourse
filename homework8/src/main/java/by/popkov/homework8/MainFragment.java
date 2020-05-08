@@ -57,6 +57,12 @@ public class MainFragment extends Fragment {
     private ImageButton settingsImageButton;
     private FloatingActionButton floatingActionButton;
 
+    interface OnClickButtonListener {
+        void onSettingsButtonClick();
+
+        void onCitySelectButtonClick();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
