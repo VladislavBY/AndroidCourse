@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -52,6 +54,8 @@ public class MainFragment extends Fragment {
     private TextView tempTextView;
     private TextView weatherMainTextView;
     private RecyclerView predictionRecyclerView;
+    private ImageButton settingsImageButton;
+    private FloatingActionButton floatingActionButton;
 
     @Nullable
     @Override
@@ -65,12 +69,28 @@ public class MainFragment extends Fragment {
         context = getContext();
 //        setUnitsSign();
         unitsSing = "°C";
+        initViews(view);
         if (context != null) {
+            setListeners();
             showWeatherNow("London", UNITS_METRIC);
             showWeatherForecast("London", UNITS_METRIC);
         }
-        initViews(view);
         makeRecyclerView();
+    }
+
+    private void setListeners() {
+        settingsImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((OnClickButtonListener) context).onSettingsButtonClick();
+            }
+        });
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((OnClickButtonListener) context).onCitySelectButtonClick();
+            }
+        });
     }
 
     private void setUnitsSign() {
@@ -128,6 +148,8 @@ public class MainFragment extends Fragment {
         tempTextView = view.findViewById(R.id.tempTextView);
         weatherMainTextView = view.findViewById(R.id.weatherMainTextView);
         predictionRecyclerView = view.findViewById(R.id.predictionRecyclerView);
+        settingsImageButton = view.findViewById(R.id.settingsImageButton);
+        floatingActionButton = view.findViewById(R.id.floatingActionButton);
     }
 
     private void showWeatherNow(final String cityName, final String units) {
