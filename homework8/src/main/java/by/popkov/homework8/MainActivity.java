@@ -3,6 +3,8 @@ package by.popkov.homework8;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnClickButtonListener {
@@ -39,8 +41,10 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnCl
 
     @Override
     public void onCitySelectButtonClick() {
+        SharedPreferences sharedPreferences = getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        String selectedCity = sharedPreferences.getString(MainActivity.SELECTED_CITY_KEY, "0");
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new CityFragment(), "CityFragment")
+                .replace(R.id.fragment_container, CityFragment.getInstance(selectedCity), "CityFragment")
                 .addToBackStack("CityFragment")
                 .commit();
     }

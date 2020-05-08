@@ -23,6 +23,17 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     private FragmentActivity fragmentActivity;
     private CityFragmentAdapter cityFragmentAdapter;
 
+    static CityFragment getInstance(String selectedCity) {
+        Bundle bundle = new Bundle();
+        bundle.putString(MainActivity.SELECTED_CITY_KEY, selectedCity);
+        CityFragment cityFragment = new CityFragment();
+        cityFragment.setArguments(bundle);
+        return cityFragment;
+    }
+
+    private CityFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -33,18 +44,18 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
+        getSettings();
         fragmentActivity = getActivity();
         if (fragmentActivity != null) {
-            getSettings();
             makeRecyclerView();
         }
 
     }
 
     private void getSettings() {
-        SharedPreferences sharedPreferences
-                = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        selectedCity = sharedPreferences.getString(MainActivity.SELECTED_CITY_KEY, "0");
+        if (getArguments() != null) {
+            selectedCity = getArguments().getString(MainActivity.SELECTED_CITY_KEY);
+        }
     }
 
     private void makeRecyclerView() {
