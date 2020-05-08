@@ -190,4 +190,9 @@ public class MainFragment extends Fragment {
         String icon = weatherNow.getWeatherApiListWeather().get(0).getIcon();
         weatherMainImageView.setImageResource(getResources().getIdentifier("weather" + icon, "drawable", context.getPackageName()));
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

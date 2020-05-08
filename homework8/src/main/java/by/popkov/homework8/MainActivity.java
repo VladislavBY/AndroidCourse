@@ -18,10 +18,11 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container, new MainFragment(), "MainFragment")
-                .addToBackStack("MainFragment")
-                .commit();
+        if (savedInstanceState == null){
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, new MainFragment(), "MainFragment")
+                    .commit();
+        }
     }
 
     @Override
@@ -35,10 +36,5 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
     @Override
     public void onCitySelectButtonClick() {
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }
