@@ -3,4 +3,6 @@
     <string name="no_connection">No connection to weather server</string>
     <string name="UNITS_METRIC">°C</string>
     <string name="UNITS_IMPERIAL">°F</string>
+    <string name="settings">Settings</string>
+    <string name="cesius">Cesius</string>
 </resources>
