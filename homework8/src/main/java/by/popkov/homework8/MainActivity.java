@@ -10,6 +10,9 @@ public class MainActivity extends AppCompatActivity implements OnClickButtonList
     private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
     static final String UNITS_IMPERIAL = "imperial";
     static final String UNITS_METRIC = "metric";
+    static final String SHARED_PREFERENCES_NAME = "SETTINGS";
+    static final String CELSIUS_CHECKED_KEY = "CELSIUS_CHECKED";
+
 
     private FragmentManager fragmentManager;
 

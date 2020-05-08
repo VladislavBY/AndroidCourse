@@ -106,7 +106,7 @@ public class MainFragment extends Fragment {
     }
 
     private void makeRecyclerView() {
-        predictionRecyclerView.setAdapter(new MainFragmentAdapter(context));
+        predictionRecyclerView.setAdapter(new MainFragmentAdapter());
         predictionRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         mainFragmentAdapter = (MainFragmentAdapter) predictionRecyclerView.getAdapter();
     }

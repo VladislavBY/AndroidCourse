@@ -40,16 +40,14 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
         notifyDataSetChanged();
     }
 
-    MainFragmentAdapter(Context context) {
-        this.context = context;
-    }
-
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_activity_main, parent, false);
-        return new ItemViewHolder(view);
+        context = parent.getContext();
+        return new ItemViewHolder(
+                LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_activity_main, parent, false)
+        );
     }
 
     @Override
