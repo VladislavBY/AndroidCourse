@@ -1,12 +1,12 @@
 package by.popkov.homework8;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class CityFragmentDialog extends AppCompatDialogFragment {
     private EditText cityEditText;
+    private CityFragmentDialogListener cityFragmentDialogListener;
 
     @NonNull
     @Override
@@ -27,17 +28,30 @@ public class CityFragmentDialog extends AppCompatDialogFragment {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 }).setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ((CityFragmentDialogListener) getParentFragment()).OnPositiveButtonClick(
-                                cityEditText.getText().toString()
-                        );
+                        cityFragmentDialogListener
+                                .OnPositiveButtonClick(cityEditText.getText().toString());
                     }
                 }).create();
 
+
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (getParentFragment() != null) {
+            try {
+                cityFragmentDialogListener = (CityFragmentDialogListener) getParentFragment();
+            } catch (ClassCastException e) {
+                throw new ClassCastException(getParentFragment().toString() +
+                        "ParentFragment must implement CityFragmentDialog.CityFragmentDialogListener");
+            }
+        }
 
     }
 
