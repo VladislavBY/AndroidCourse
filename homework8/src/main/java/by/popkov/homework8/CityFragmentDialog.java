@@ -58,4 +58,10 @@ public class CityFragmentDialog extends AppCompatDialogFragment {
     interface CityFragmentDialogListener {
         void OnPositiveButtonClick(String cityName);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cityFragmentDialogListener = null;
+    }
 }

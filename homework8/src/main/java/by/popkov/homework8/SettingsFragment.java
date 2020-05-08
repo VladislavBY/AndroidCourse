@@ -45,4 +45,10 @@ public class SettingsFragment extends Fragment {
             });
         }
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        context = null;
+    }
 }

@@ -95,6 +95,5 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
             calendar.setTime(new Date(time));
             return calendar.getTime().toString().subSequence(11, 16);
         }
-
     }
 }
