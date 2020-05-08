@@ -47,6 +47,7 @@ public class MainFragment extends Fragment {
 
     private OkHttpClient okHttpClient = new OkHttpClient();
     private Context context;
+    private OnClickButtonListener onClickButtonListener;
     private MainFragmentAdapter mainFragmentAdapter;
 
     private ImageView weatherMainImageView;
@@ -61,6 +62,15 @@ public class MainFragment extends Fragment {
         void onSettingsButtonClick();
 
         void onCitySelectButtonClick();
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnClickButtonListener) {
+            onClickButtonListener = (OnClickButtonListener) context;
+        }
     }
 
     @Nullable
@@ -85,18 +95,21 @@ public class MainFragment extends Fragment {
     }
 
     private void setListeners() {
-        settingsImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((OnClickButtonListener) context).onSettingsButtonClick();
-            }
-        });
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((OnClickButtonListener) context).onCitySelectButtonClick();
-            }
-        });
+        if (onClickButtonListener != null) {
+            settingsImageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickButtonListener.onSettingsButtonClick();
+                }
+            });
+            floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickButtonListener.onCitySelectButtonClick();
+                }
+            });
+        }
+
     }
 
     private void setUnitsSign() {
@@ -211,5 +224,6 @@ public class MainFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         context = null;
+        onClickButtonListener = null;
     }
 }
