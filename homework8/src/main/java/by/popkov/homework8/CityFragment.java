@@ -142,4 +142,10 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
             }
         }).start();
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cityDatabase.close();
+    }
 }

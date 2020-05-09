@@ -61,8 +61,8 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         context = null;
         sharedPreferences = null;
     }

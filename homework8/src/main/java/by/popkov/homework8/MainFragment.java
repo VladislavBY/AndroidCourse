@@ -223,10 +223,15 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         context = null;
-        onClickButtonListener = null;
         sharedPreferences = null;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onClickButtonListener = null;
     }
 }
