@@ -9,19 +9,28 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
+    private static String CITY_DATABASE = "CITY_DATABASE";
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
     private String selectedCity;
     private FragmentActivity fragmentActivity;
     private CityFragmentAdapter cityFragmentAdapter;
+    private CityDatabase cityDatabase;
 
     static CityFragment getInstance(String selectedCity) {
         Bundle bundle = new Bundle();
@@ -47,9 +56,13 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
         getSettings();
         fragmentActivity = getActivity();
         if (fragmentActivity != null) {
+            connectToCityDatabase();
             makeRecyclerView();
         }
+    }
 
+    private void connectToCityDatabase() {
+        cityDatabase = Room.databaseBuilder(fragmentActivity, CityDatabase.class, CITY_DATABASE).build();
     }
 
     private void getSettings() {
@@ -65,6 +78,27 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
         recyclerView.setLayoutManager(new LinearLayoutManager(fragmentActivity, RecyclerView.VERTICAL, false));
         cityFragmentAdapter = (CityFragmentAdapter) recyclerView.getAdapter();
         setAdapterOnCityClickListener();
+        setCityFromDataBase();
+    }
+
+    private void setCityFromDataBase() {
+        CompletableFuture.supplyAsync(new Supplier<ArrayList<String>>() {
+            @Override
+            public ArrayList<String> get() {
+                ArrayList<String> result = new ArrayList<>();
+                CityEntity[] cityEntities = cityDatabase.getCityDao().loadAllCity();
+                for (CityEntity cityEntity : cityEntities) {
+                    result.add(cityEntity.getName());
+                }
+                return result;
+            }
+        }).thenAcceptAsync(new Consumer<ArrayList<String>>() {
+            @Override
+            public void accept(ArrayList<String> strings) {
+                cityFragmentAdapter.setCityNames(strings);
+            }
+        }, ContextCompat.getMainExecutor(fragmentActivity));
+
     }
 
     private void setAdapterOnCityClickListener() {
@@ -98,7 +132,13 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     }
 
     @Override
-    public void OnPositiveButtonClick(String cityName) {
+    public void OnPositiveButtonClick(final String cityName) {
         cityFragmentAdapter.addCityName(cityName);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                cityDatabase.getCityDao().insertCity(new CityEntity().setName(cityName));
+            }
+        }).start();
     }
 }
