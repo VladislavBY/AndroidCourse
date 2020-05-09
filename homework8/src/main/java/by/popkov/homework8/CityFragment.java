@@ -110,7 +110,6 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
                 sharedPreferences.edit()
                         .putString(MainActivity.SELECTED_CITY_KEY, cityName)
                         .apply();
-//                ((OnCityNameClicked) fragmentActivity).onClick();
                 fragmentActivity.getSupportFragmentManager().popBackStack();
             }
         });
