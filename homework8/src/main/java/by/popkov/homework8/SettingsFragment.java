@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
     private Switch switchCelsius;
+    private SharedPreferences sharedPreferences;
 
     private Context context;
     static final String SHARED_PREFERENCES_NAME = "SETTINGS";
@@ -33,22 +34,36 @@ public class SettingsFragment extends Fragment {
         context = getContext();
         if (context != null) {
             switchCelsius = view.findViewById(R.id.switchCelsius);
-            switchCelsius.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    SharedPreferences sharedPreferences = context
-                            .getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean(CELSIUS_CHECKED_KEY, isChecked);
-                    editor.apply();
-                }
-            });
+            setCheckedStatusFromSettings();
+            setOnCheckedChangeListener();
         }
+    }
+
+    private void setCheckedStatusFromSettings() {
+        sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        String pos = sharedPreferences.getString(MainActivity.CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
+        if (pos.equals(MainActivity.UNITS_IMPERIAL)) {
+            switchCelsius.setChecked(false);
+        }
+    }
+
+    private void setOnCheckedChangeListener() {
+        switchCelsius.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                if (isChecked) {
+                    editor.putString(CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
+                } else editor.putString(CELSIUS_CHECKED_KEY, MainActivity.UNITS_IMPERIAL);
+                editor.apply();
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         context = null;
+        sharedPreferences = null;
     }
 }

@@ -1,6 +1,7 @@
 package by.popkov.homework8;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class MainFragment extends Fragment {
     private Context context;
     private OnClickButtonListener onClickButtonListener;
     private MainFragmentAdapter mainFragmentAdapter;
+    private SharedPreferences sharedPreferences;
 
     private ImageView weatherMainImageView;
     private TextView cityTextView;
@@ -83,15 +85,21 @@ public class MainFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
-//        setUnitsSign();
-        unitsSing = "°C";
         initViews(view);
         if (context != null) {
+            sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
             setListeners();
-            showWeatherNow("London", UNITS_METRIC);
-            showWeatherForecast("London", UNITS_METRIC);
+            showViewsWithCurrentSettings();
         }
         makeRecyclerView();
+    }
+
+    void showViewsWithCurrentSettings() {
+        String cityName = sharedPreferences.getString(MainActivity.SELECTED_CITY_KEY, "London");
+        String units = sharedPreferences.getString(MainActivity.CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
+        setUnitsSign(units);
+        showWeatherNow(cityName, units);
+        showWeatherForecast(cityName, units);
     }
 
     private void setListeners() {
@@ -112,16 +120,10 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void setUnitsSign() {
-        String argUnits = null;
-        if (getArguments() != null) {
-            argUnits = getArguments().getString(UNITS);
-        }
-        if (argUnits != null) {
-            if (argUnits.equals(MainFragment.UNITS_METRIC)) {
-                unitsSing = context.getString(R.string.UNITS_METRIC);
-            } else unitsSing = context.getString(R.string.UNITS_IMPERIAL);
-        }
+    private void setUnitsSign(String units) {
+        if (units.equals(MainFragment.UNITS_METRIC)) {
+            unitsSing = context.getString(R.string.UNITS_METRIC);
+        } else unitsSing = context.getString(R.string.UNITS_IMPERIAL);
     }
 
     private void makeRecyclerView() {
@@ -225,5 +227,6 @@ public class MainFragment extends Fragment {
         super.onDestroy();
         context = null;
         onClickButtonListener = null;
+        sharedPreferences = null;
     }
 }
