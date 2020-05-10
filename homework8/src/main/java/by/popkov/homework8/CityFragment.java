@@ -40,9 +40,6 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
         return cityFragment;
     }
 
-    private CityFragment() {
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
