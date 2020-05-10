@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,7 @@ public class MainFragment extends Fragment {
     private RecyclerView predictionRecyclerView;
     private ImageButton settingsImageButton;
     private FloatingActionButton floatingActionButton;
+    private ProgressBar progressBar;
 
     interface OnClickButtonListener {
         void onSettingsButtonClick();
@@ -151,21 +153,14 @@ public class MainFragment extends Fragment {
                     Type type = new TypeToken<WeatherApiForecast>() {
                     }.getType();
                     final WeatherApiForecast weatherForecast = new Gson().fromJson(json, type);
-                    for (WeatherApiForecastListObject weatherApiForecastListObject : weatherForecast.getWeatherApiForecastList()) {
-                        WeatherApiListWeather weather = weatherApiForecastListObject.getWeatherApiListWeather().get(0);
-                        String icon = weather.getIcon();
-                        weather.setIconRes(context.getResources()
-                                .getIdentifier("weather" + icon,
-                                        "drawable",
-                                        context.getPackageName()
-                                )
-                        );
-                    }
+                    generateIconId(weatherForecast);
                     new Handler(context.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
+                            progressBar.setVisibility(View.INVISIBLE);
                             mainFragmentAdapter.setUnitsSign(unitsSing);
                             mainFragmentAdapter.setWeatherApiForecastList(weatherForecast.getWeatherApiForecastList());
+
                         }
                     });
                 }
@@ -173,7 +168,21 @@ public class MainFragment extends Fragment {
         });
     }
 
+    private void generateIconId(WeatherApiForecast weatherForecast) {
+        for (WeatherApiForecastListObject weatherApiForecastListObject : weatherForecast.getWeatherApiForecastList()) {
+            WeatherApiListWeather weather = weatherApiForecastListObject.getWeatherApiListWeather().get(0);
+            String icon = weather.getIcon();
+            weather.setIconRes(context.getResources()
+                    .getIdentifier("weather" + icon,
+                            "drawable",
+                            context.getPackageName()
+                    )
+            );
+        }
+    }
+
     private void initViews(View view) {
+        progressBar = view.findViewById(R.id.progressBar);
         weatherMainImageView = view.findViewById(R.id.weatherMainImageView);
         cityTextView = view.findViewById(R.id.cityTextView);
         tempTextView = view.findViewById(R.id.tempTextView);
