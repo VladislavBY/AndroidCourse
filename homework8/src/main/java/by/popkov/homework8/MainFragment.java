@@ -106,18 +106,8 @@ public class MainFragment extends Fragment {
 
     private void setListeners() {
         if (onClickButtonListener != null) {
-            settingsImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickButtonListener.onSettingsButtonClick();
-                }
-            });
-            floatingActionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onClickButtonListener.onCitySelectButtonClick();
-                }
-            });
+            settingsImageButton.setOnClickListener(v -> onClickButtonListener.onSettingsButtonClick());
+            floatingActionButton.setOnClickListener(v -> onClickButtonListener.onCitySelectButtonClick());
         }
 
     }
@@ -154,14 +144,11 @@ public class MainFragment extends Fragment {
                     }.getType();
                     final WeatherApiForecast weatherForecast = new Gson().fromJson(json, type);
                     generateIconId(weatherForecast);
-                    new Handler(context.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            mainFragmentAdapter.setUnitsSign(unitsSing);
-                            mainFragmentAdapter.setWeatherApiForecastList(weatherForecast.getWeatherApiForecastList());
+                    new Handler(context.getMainLooper()).post(() -> {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        mainFragmentAdapter.setUnitsSign(unitsSing);
+                        mainFragmentAdapter.setWeatherApiForecastList(weatherForecast.getWeatherApiForecastList());
 
-                        }
                     });
                 }
             }
@@ -211,19 +198,14 @@ public class MainFragment extends Fragment {
                     Type type = new TypeToken<WeatherApi>() {
                     }.getType();
                     final WeatherApi weatherNow = new Gson().fromJson(json, type);
-                    new Handler(context.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            setWeatherView(weatherNow, cityName, units);
-                        }
-                    });
+                    new Handler(context.getMainLooper()).post(() -> setWeatherView(weatherNow, cityName));
 
                 }
             }
         });
     }
 
-    private void setWeatherView(WeatherApi weatherNow, String cityName, String units) {
+    private void setWeatherView(WeatherApi weatherNow, String cityName) {
         cityTextView.setText(cityName);
         tempTextView.setText(Math.round(weatherNow.getWeatherApiMain().getTemp()) + unitsSing);
         weatherMainTextView.setText(weatherNow.getWeatherApiListWeather().get(0).getMain());
