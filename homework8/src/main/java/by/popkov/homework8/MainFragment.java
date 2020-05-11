@@ -139,8 +139,9 @@ public class MainFragment extends Fragment {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(getContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT)
-                        .show();
+                new Handler(context.getMainLooper()).post(() -> {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
@@ -173,8 +174,9 @@ public class MainFragment extends Fragment {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(getContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT)
-                        .show();
+                new Handler(context.getMainLooper()).post(() -> {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
