@@ -1,28 +1,28 @@
-package by.popkov.homework8;
+package by.popkov.homework8.weather_api_data_classes;
 
 import com.google.gson.annotations.SerializedName;
 
-class WeatherApiListWeather {
+public class WeatherApiListWeather {
     @SerializedName("main")
     private String main;
     @SerializedName("icon")
     private String icon;
 
-    String getMain() {
+    public String getMain() {
         return main;
     }
 
-    String getIcon() {
+    public String getIcon() {
         return icon;
     }
 
     private int iconRes;
 
-    int getIconRes() {
+    public int getIconRes() {
         return iconRes;
     }
 
-    void setIconRes(int iconRes) {
+    public void setIconRes(int iconRes) {
         this.iconRes = iconRes;
     }
 }

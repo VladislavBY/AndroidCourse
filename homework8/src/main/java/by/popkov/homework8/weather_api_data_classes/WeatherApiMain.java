@@ -1,12 +1,12 @@
-package by.popkov.homework8;
+package by.popkov.homework8.weather_api_data_classes;
 
 import com.google.gson.annotations.SerializedName;
 
-class WeatherApiMain {
+public class WeatherApiMain {
     @SerializedName("temp")
     private double temp;
 
-    double getTemp() {
+    public double getTemp() {
         return temp;
     }
 }

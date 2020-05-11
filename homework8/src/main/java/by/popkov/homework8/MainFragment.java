@@ -28,6 +28,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+import by.popkov.homework8.weather_api_data_classes.WeatherApi;
+import by.popkov.homework8.weather_api_data_classes.WeatherApiForecast;
+import by.popkov.homework8.weather_api_data_classes.WeatherApiForecastListObject;
+import by.popkov.homework8.weather_api_data_classes.WeatherApiListWeather;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;

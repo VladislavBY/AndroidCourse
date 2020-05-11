@@ -1,21 +1,21 @@
-package by.popkov.homework8;
+package by.popkov.homework8.weather_api_data_classes;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class WeatherApi {
+public class WeatherApi {
     @SerializedName("weather")
     private List<WeatherApiListWeather> weatherApiListWeather;
 
     @SerializedName("main")
     private WeatherApiMain weatherApiMain;
 
-    WeatherApiMain getWeatherApiMain() {
+    public WeatherApiMain getWeatherApiMain() {
         return weatherApiMain;
     }
 
-    List<WeatherApiListWeather> getWeatherApiListWeather() {
+    public List<WeatherApiListWeather> getWeatherApiListWeather() {
         return weatherApiListWeather;
     }
 }

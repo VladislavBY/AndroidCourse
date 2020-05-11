@@ -2,7 +2,6 @@ package by.popkov.homework8;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,16 +25,10 @@ public class CityFragmentDialog extends AppCompatDialogFragment {
         return new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle("Enter the city name")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                }).setPositiveButton("Done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (cityFragmentDialogListener != null) {
-                            cityFragmentDialogListener.OnPositiveButtonClick(cityEditText.getText().toString());
-                        }
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                }).setPositiveButton("Done", (dialog, which) -> {
+                    if (cityFragmentDialogListener != null) {
+                        cityFragmentDialogListener.OnPositiveButtonClick(cityEditText.getText().toString());
                     }
                 }).create();
     }

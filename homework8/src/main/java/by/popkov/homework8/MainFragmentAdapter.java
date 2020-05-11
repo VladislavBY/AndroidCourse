@@ -17,6 +17,8 @@ import java.util.List;
 
 import java.util.TimeZone;
 
+import by.popkov.homework8.weather_api_data_classes.WeatherApiForecastListObject;
+
 public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapter.ItemViewHolder> {
     private List<WeatherApiForecastListObject> weatherApiForecastList;
     private String unitsSign;
