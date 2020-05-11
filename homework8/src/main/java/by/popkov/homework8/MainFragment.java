@@ -47,6 +47,8 @@ public class MainFragment extends Fragment {
     private static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
     private static final String API_WEATHER_FORECAST = "https://api.openweathermap.org/data/2.5/forecast?q=%s&units=%s&appid=%s";
     private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
+    private static final String DEFAULT_CITY = "London";
+    private static final String DEFAULT_UNITS = "metric";
 
     private String unitsSing;
 
@@ -69,7 +71,6 @@ public class MainFragment extends Fragment {
         void onSettingsButtonClick();
 
         void onCitySelectButtonClick();
-
     }
 
     @Override
@@ -99,12 +100,15 @@ public class MainFragment extends Fragment {
         makeRecyclerView();
     }
 
-    private void showViewsWithCurrentSettings() {
-        String cityName = sharedPreferences.getString(CityFragment.SELECTED_CITY_KEY, "London");
-        String units = sharedPreferences.getString(SettingsFragment.CELSIUS_CHECKED_KEY, UNITS_METRIC);
-        setUnitsSign(units);
-        showWeatherNow(cityName, units);
-        showWeatherForecast(cityName, units);
+    private void initViews(View view) {
+        progressBar = view.findViewById(R.id.progressBar);
+        weatherMainImageView = view.findViewById(R.id.weatherMainImageView);
+        cityTextView = view.findViewById(R.id.cityTextView);
+        tempTextView = view.findViewById(R.id.tempTextView);
+        weatherMainTextView = view.findViewById(R.id.weatherMainTextView);
+        predictionRecyclerView = view.findViewById(R.id.predictionRecyclerView);
+        settingsImageButton = view.findViewById(R.id.settingsImageButton);
+        floatingActionButton = view.findViewById(R.id.floatingActionButton);
     }
 
     private void setListeners() {
@@ -112,7 +116,14 @@ public class MainFragment extends Fragment {
             settingsImageButton.setOnClickListener(v -> onClickButtonListener.onSettingsButtonClick());
             floatingActionButton.setOnClickListener(v -> onClickButtonListener.onCitySelectButtonClick());
         }
+    }
 
+    private void showViewsWithCurrentSettings() {
+        String cityName = sharedPreferences.getString(CityFragment.SELECTED_CITY_KEY, DEFAULT_CITY);
+        String units = sharedPreferences.getString(SettingsFragment.SELECTED_UNITS, DEFAULT_UNITS);
+        setUnitsSign(units);
+        showWeatherNow(cityName, units);
+        showWeatherForecast(cityName, units);
     }
 
     private void setUnitsSign(String units) {
@@ -121,10 +132,38 @@ public class MainFragment extends Fragment {
         } else unitsSing = context.getString(R.string.UNITS_IMPERIAL);
     }
 
-    private void makeRecyclerView() {
-        predictionRecyclerView.setAdapter(new MainFragmentAdapter());
-        predictionRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-        mainFragmentAdapter = (MainFragmentAdapter) predictionRecyclerView.getAdapter();
+    private void showWeatherNow(final String cityName, final String units) {
+        Request request = new Request.Builder()
+                .url(String.format(API_WEATHER_NOW, cityName, units, API_KEY))
+                .build();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Toast.makeText(getContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                ResponseBody body = response.body();
+                if (response.isSuccessful() && body != null) {
+                    String json = body.string();
+                    Type type = new TypeToken<WeatherApi>() {
+                    }.getType();
+                    final WeatherApi weatherNow = new Gson().fromJson(json, type);
+                    new Handler(context.getMainLooper()).post(() -> setNowWeatherView(weatherNow, cityName));
+
+                }
+            }
+        });
+    }
+
+    private void setNowWeatherView(WeatherApi weatherNow, String cityName) {
+        cityTextView.setText(cityName);
+        tempTextView.setText(Math.round(weatherNow.getWeatherApiMain().getTemp()) + unitsSing);
+        weatherMainTextView.setText(weatherNow.getWeatherApiListWeather().get(0).getMain());
+        String icon = weatherNow.getWeatherApiListWeather().get(0).getIcon();
+        weatherMainImageView.setImageResource(getResources().getIdentifier("weather" + icon, "drawable", context.getPackageName()));
     }
 
     private void showWeatherForecast(String cityName, final String units) {
@@ -151,7 +190,6 @@ public class MainFragment extends Fragment {
                         progressBar.setVisibility(View.INVISIBLE);
                         mainFragmentAdapter.setUnitsSign(unitsSing);
                         mainFragmentAdapter.setWeatherApiForecastList(weatherForecast.getWeatherApiForecastList());
-
                     });
                 }
             }
@@ -171,49 +209,10 @@ public class MainFragment extends Fragment {
         }
     }
 
-    private void initViews(View view) {
-        progressBar = view.findViewById(R.id.progressBar);
-        weatherMainImageView = view.findViewById(R.id.weatherMainImageView);
-        cityTextView = view.findViewById(R.id.cityTextView);
-        tempTextView = view.findViewById(R.id.tempTextView);
-        weatherMainTextView = view.findViewById(R.id.weatherMainTextView);
-        predictionRecyclerView = view.findViewById(R.id.predictionRecyclerView);
-        settingsImageButton = view.findViewById(R.id.settingsImageButton);
-        floatingActionButton = view.findViewById(R.id.floatingActionButton);
-    }
-
-    private void showWeatherNow(final String cityName, final String units) {
-        Request request = new Request.Builder()
-                .url(String.format(API_WEATHER_NOW, cityName, units, API_KEY))
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(getContext(), getString(R.string.no_connection), Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                ResponseBody body = response.body();
-                if (response.isSuccessful() && body != null) {
-                    String json = body.string();
-                    Type type = new TypeToken<WeatherApi>() {
-                    }.getType();
-                    final WeatherApi weatherNow = new Gson().fromJson(json, type);
-                    new Handler(context.getMainLooper()).post(() -> setWeatherView(weatherNow, cityName));
-
-                }
-            }
-        });
-    }
-
-    private void setWeatherView(WeatherApi weatherNow, String cityName) {
-        cityTextView.setText(cityName);
-        tempTextView.setText(Math.round(weatherNow.getWeatherApiMain().getTemp()) + unitsSing);
-        weatherMainTextView.setText(weatherNow.getWeatherApiListWeather().get(0).getMain());
-        String icon = weatherNow.getWeatherApiListWeather().get(0).getIcon();
-        weatherMainImageView.setImageResource(getResources().getIdentifier("weather" + icon, "drawable", context.getPackageName()));
+    private void makeRecyclerView() {
+        predictionRecyclerView.setAdapter(new MainFragmentAdapter());
+        predictionRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        mainFragmentAdapter = (MainFragmentAdapter) predictionRecyclerView.getAdapter();
     }
 
     @Override

@@ -27,7 +27,7 @@ import by.popkov.homework8.city_database.CityEntity;
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
     static final String FRAGMENT_TAG = "CityFragment";
     private static String CITY_DATABASE = "CITY_DATABASE";
-    static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY ";
+    static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY";
     private RecyclerView recyclerView;
     private FragmentActivity fragmentActivity;
     private CityFragmentAdapter cityFragmentAdapter;
@@ -46,18 +46,28 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
         initViews(view);
         fragmentActivity = getActivity();
         if (fragmentActivity != null) {
-            getSettings();
+            getSharedPreferences();
             connectToCityDatabase();
             makeRecyclerView();
         }
     }
 
-    private void connectToCityDatabase() {
-        cityDatabase = Room.databaseBuilder(fragmentActivity, CityDatabase.class, CITY_DATABASE).build();
+    private void initViews(View view) {
+        recyclerView = view.findViewById(R.id.recyclerView);
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton4);
+        floatingActionButton.setOnClickListener(v -> showFragmentDialog());
     }
 
-    private void getSettings() {
+    private void showFragmentDialog() {
+        new CityFragmentDialog().show(getChildFragmentManager(), "CityFragmentDialog");
+    }
+
+    private void getSharedPreferences() {
         sharedPreferences = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
+
+    private void connectToCityDatabase() {
+        cityDatabase = Room.databaseBuilder(fragmentActivity, CityDatabase.class, CITY_DATABASE).build();
     }
 
     private void makeRecyclerView() {
@@ -69,18 +79,6 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
         cityFragmentAdapter = (CityFragmentAdapter) recyclerView.getAdapter();
         setAdapterOnCityClickListener();
         setCityFromDataBase();
-    }
-
-    private void setCityFromDataBase() {
-        CompletableFuture.supplyAsync(() -> {
-            ArrayList<String> result = new ArrayList<>();
-            CityEntity[] cityEntities = cityDatabase.getCityDao().loadAllCity();
-            for (CityEntity cityEntity : cityEntities) {
-                result.add(cityEntity.getName());
-            }
-            return result;
-        }).thenAcceptAsync(strings -> cityFragmentAdapter.setCityNames(strings), ContextCompat.getMainExecutor(fragmentActivity));
-
     }
 
     private void setAdapterOnCityClickListener() {
@@ -95,14 +93,16 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
 
     }
 
-    private void initViews(View view) {
-        recyclerView = view.findViewById(R.id.recyclerView);
-        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton4);
-        floatingActionButton.setOnClickListener(v -> showFragmentDialog());
-    }
+    private void setCityFromDataBase() {
+        CompletableFuture.supplyAsync(() -> {
+            ArrayList<String> result = new ArrayList<>();
+            CityEntity[] cityEntities = cityDatabase.getCityDao().loadAllCity();
+            for (CityEntity cityEntity : cityEntities) {
+                result.add(cityEntity.getName());
+            }
+            return result;
+        }).thenAcceptAsync(strings -> cityFragmentAdapter.setCityNames(strings), ContextCompat.getMainExecutor(fragmentActivity));
 
-    private void showFragmentDialog() {
-        new CityFragmentDialog().show(getChildFragmentManager(), "CityFragmentDialog");
     }
 
     @Override

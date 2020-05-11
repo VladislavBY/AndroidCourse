@@ -20,10 +20,6 @@ public class CityFragmentAdapter extends RecyclerView.Adapter<CityFragmentAdapte
         notifyDataSetChanged();
     }
 
-    ArrayList<String> getCityNames() {
-        return cityNames;
-    }
-
     void setCityNames(ArrayList<String> cityNames) {
         this.cityNames = new ArrayList<>(cityNames);
         notifyDataSetChanged();
@@ -61,7 +57,7 @@ public class CityFragmentAdapter extends RecyclerView.Adapter<CityFragmentAdapte
 
     private OnCityClickListener onCityClickListener;
 
-    public void setOnCityClickListener(OnCityClickListener onCityClickListener) {
+    void setOnCityClickListener(OnCityClickListener onCityClickListener) {
         this.onCityClickListener = onCityClickListener;
     }
 
@@ -73,12 +69,7 @@ public class CityFragmentAdapter extends RecyclerView.Adapter<CityFragmentAdapte
             super(itemView);
             cityTextView = itemView.findViewById(R.id.cityTextView);
             doneImageView = itemView.findViewById(R.id.doneImageView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onCityClickListener.onClick(cityTextView.getText().toString());
-                }
-            });
+            itemView.setOnClickListener(v -> onCityClickListener.onClick(cityTextView.getText().toString()));
         }
 
         private void bindItem(String cityName) {

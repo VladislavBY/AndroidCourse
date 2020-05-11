@@ -13,12 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
-    static final String CELSIUS_CHECKED_KEY = "CELSIUS_CHECKED";
+    static final String SELECTED_UNITS = "CELSIUS_CHECKED";
     static final String FRAGMENT_TAG = "SettingsFragment";
 
     private Switch switchCelsius;
     private SharedPreferences sharedPreferences;
-
     private Context context;
 
     @Nullable
@@ -40,7 +39,7 @@ public class SettingsFragment extends Fragment {
 
     private void setCheckedStatusFromSettings() {
         sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        String pos = sharedPreferences.getString(CELSIUS_CHECKED_KEY, MainFragment.UNITS_METRIC);
+        String pos = sharedPreferences.getString(SELECTED_UNITS, MainFragment.UNITS_METRIC);
         if (pos.equals(MainFragment.UNITS_IMPERIAL)) {
             switchCelsius.setChecked(false);
         }
@@ -50,8 +49,8 @@ public class SettingsFragment extends Fragment {
         switchCelsius.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             if (isChecked) {
-                editor.putString(CELSIUS_CHECKED_KEY, MainFragment.UNITS_METRIC);
-            } else editor.putString(CELSIUS_CHECKED_KEY, MainFragment.UNITS_IMPERIAL);
+                editor.putString(SELECTED_UNITS, MainFragment.UNITS_METRIC);
+            } else editor.putString(SELECTED_UNITS, MainFragment.UNITS_IMPERIAL);
             editor.apply();
         });
     }
