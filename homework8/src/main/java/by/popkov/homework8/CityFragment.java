@@ -110,6 +110,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
 
     @Override
     public void onDestroyView() {
+        sharedPreferences = null;
         super.onDestroyView();
         cityDatabase.close();
     }

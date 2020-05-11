@@ -40,8 +40,8 @@ public class SettingsFragment extends Fragment {
 
     private void setCheckedStatusFromSettings() {
         sharedPreferences = context.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        String pos = sharedPreferences.getString(CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
-        if (pos.equals(MainActivity.UNITS_IMPERIAL)) {
+        String pos = sharedPreferences.getString(CELSIUS_CHECKED_KEY, MainFragment.UNITS_METRIC);
+        if (pos.equals(MainFragment.UNITS_IMPERIAL)) {
             switchCelsius.setChecked(false);
         }
     }
@@ -50,8 +50,8 @@ public class SettingsFragment extends Fragment {
         switchCelsius.setOnCheckedChangeListener((buttonView, isChecked) -> {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             if (isChecked) {
-                editor.putString(CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
-            } else editor.putString(CELSIUS_CHECKED_KEY, MainActivity.UNITS_IMPERIAL);
+                editor.putString(CELSIUS_CHECKED_KEY, MainFragment.UNITS_METRIC);
+            } else editor.putString(CELSIUS_CHECKED_KEY, MainFragment.UNITS_IMPERIAL);
             editor.apply();
         });
     }

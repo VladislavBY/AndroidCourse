@@ -6,8 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnClickButtonListener {
-    static final String UNITS_IMPERIAL = "imperial";
-    static final String UNITS_METRIC = "metric";
     static final String SHARED_PREFERENCES_NAME = "SETTINGS";
 
 
