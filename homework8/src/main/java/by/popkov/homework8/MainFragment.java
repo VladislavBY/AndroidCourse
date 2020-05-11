@@ -37,13 +37,13 @@ import okhttp3.ResponseBody;
 
 public class MainFragment extends Fragment {
 
-    private static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
-    private static final String API_WEATHER_FORECAST = "https://api.openweathermap.org/data/2.5/forecast?q=%s&units=%s&appid=%s";
-
-    private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
+    static final String FRAGMENT_TAG = "MainFragment";
     static final String UNITS_IMPERIAL = "imperial";
     static final String UNITS_METRIC = "metric";
     static final String UNITS = "UNITS";
+    private static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
+    private static final String API_WEATHER_FORECAST = "https://api.openweathermap.org/data/2.5/forecast?q=%s&units=%s&appid=%s";
+    private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
 
     private String unitsSing;
 
@@ -96,9 +96,9 @@ public class MainFragment extends Fragment {
         makeRecyclerView();
     }
 
-    void showViewsWithCurrentSettings() {
-        String cityName = sharedPreferences.getString(MainActivity.SELECTED_CITY_KEY, "London");
-        String units = sharedPreferences.getString(MainActivity.CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
+    private void showViewsWithCurrentSettings() {
+        String cityName = sharedPreferences.getString(CityFragment.SELECTED_CITY_KEY, "London");
+        String units = sharedPreferences.getString(SettingsFragment.CELSIUS_CHECKED_KEY, MainActivity.UNITS_METRIC);
         setUnitsSign(units);
         showWeatherNow(cityName, units);
         showWeatherForecast(cityName, units);

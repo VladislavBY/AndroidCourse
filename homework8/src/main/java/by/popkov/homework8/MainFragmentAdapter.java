@@ -1,6 +1,5 @@
 package by.popkov.homework8;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,8 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
     private List<WeatherApiForecastListObject> weatherApiForecastList;
     private String unitsSign;
 
-    String getUnitsSign() {
-        return unitsSign;
-    }
-
     void setUnitsSign(String unitsSign) {
         this.unitsSign = unitsSign;
-    }
-
-    List<WeatherApiForecastListObject> getWeatherApiForecastList() {
-        return weatherApiForecastList;
     }
 
     void setWeatherApiForecastList(List<WeatherApiForecastListObject> weatherApiForecastList) {
@@ -84,7 +75,8 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
         private CharSequence convertTimeToLocalTimeZone(Long time) {
             Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
             calendar.setTime(new Date(time));
-            return calendar.getTime().toString().subSequence(11, 16);
+            String dateTime = calendar.getTime().toString();
+            return dateTime.substring(0, 3) + " " + dateTime.subSequence(11, 16);
         }
     }
 }

@@ -20,25 +20,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
+    static final String FRAGMENT_TAG = "CityFragment";
     private static String CITY_DATABASE = "CITY_DATABASE";
+    static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY ";
     private RecyclerView recyclerView;
-    private FloatingActionButton floatingActionButton;
-    private String selectedCity;
     private FragmentActivity fragmentActivity;
     private CityFragmentAdapter cityFragmentAdapter;
     private CityDatabase cityDatabase;
-
-    static CityFragment getInstance(String selectedCity) {
-        Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.SELECTED_CITY_KEY, selectedCity);
-        CityFragment cityFragment = new CityFragment();
-        cityFragment.setArguments(bundle);
-        return cityFragment;
-    }
+    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -50,9 +41,9 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
-        getSettings();
         fragmentActivity = getActivity();
         if (fragmentActivity != null) {
+            getSettings();
             connectToCityDatabase();
             makeRecyclerView();
         }
@@ -63,12 +54,11 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     }
 
     private void getSettings() {
-        if (getArguments() != null) {
-            selectedCity = getArguments().getString(MainActivity.SELECTED_CITY_KEY);
-        }
+        sharedPreferences = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     private void makeRecyclerView() {
+        String selectedCity = sharedPreferences.getString(SELECTED_CITY_KEY, "0");
         if (!selectedCity.equals("0")) {
             recyclerView.setAdapter(new CityFragmentAdapter(selectedCity));
         } else recyclerView.setAdapter(new CityFragmentAdapter());
@@ -79,49 +69,33 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     }
 
     private void setCityFromDataBase() {
-        CompletableFuture.supplyAsync(new Supplier<ArrayList<String>>() {
-            @Override
-            public ArrayList<String> get() {
-                ArrayList<String> result = new ArrayList<>();
-                CityEntity[] cityEntities = cityDatabase.getCityDao().loadAllCity();
-                for (CityEntity cityEntity : cityEntities) {
-                    result.add(cityEntity.getName());
-                }
-                return result;
+        CompletableFuture.supplyAsync(() -> {
+            ArrayList<String> result = new ArrayList<>();
+            CityEntity[] cityEntities = cityDatabase.getCityDao().loadAllCity();
+            for (CityEntity cityEntity : cityEntities) {
+                result.add(cityEntity.getName());
             }
-        }).thenAcceptAsync(new Consumer<ArrayList<String>>() {
-            @Override
-            public void accept(ArrayList<String> strings) {
-                cityFragmentAdapter.setCityNames(strings);
-            }
-        }, ContextCompat.getMainExecutor(fragmentActivity));
+            return result;
+        }).thenAcceptAsync(strings -> cityFragmentAdapter.setCityNames(strings), ContextCompat.getMainExecutor(fragmentActivity));
 
     }
 
     private void setAdapterOnCityClickListener() {
-        cityFragmentAdapter.setOnCityClickListener(new CityFragmentAdapter.OnCityClickListener() {
-            @Override
-            public void onClick(String cityName) {
-                SharedPreferences sharedPreferences
-                        = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-                sharedPreferences.edit()
-                        .putString(MainActivity.SELECTED_CITY_KEY, cityName)
-                        .apply();
-                fragmentActivity.getSupportFragmentManager().popBackStack();
-            }
+        cityFragmentAdapter.setOnCityClickListener(cityName -> {
+            SharedPreferences sharedPreferences
+                    = fragmentActivity.getSharedPreferences(MainActivity.SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+            sharedPreferences.edit()
+                    .putString(SELECTED_CITY_KEY, cityName)
+                    .apply();
+            fragmentActivity.getSupportFragmentManager().popBackStack();
         });
 
     }
 
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView);
-        floatingActionButton = view.findViewById(R.id.floatingActionButton4);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFragmentDialog();
-            }
-        });
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton4);
+        floatingActionButton.setOnClickListener(v -> showFragmentDialog());
     }
 
     private void showFragmentDialog() {
@@ -131,12 +105,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     @Override
     public void OnPositiveButtonClick(final String cityName) {
         cityFragmentAdapter.addCityName(cityName);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                cityDatabase.getCityDao().insertCity(new CityEntity().setName(cityName));
-            }
-        }).start();
+        new Thread(() -> cityDatabase.getCityDao().insertCity(new CityEntity().setName(cityName))).start();
     }
 
     @Override
