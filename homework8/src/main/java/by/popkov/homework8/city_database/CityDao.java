@@ -1,4 +1,4 @@
-package by.popkov.homework8;
+package by.popkov.homework8.city_database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -10,7 +10,7 @@ import androidx.room.Update;
 @Dao
 public interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCity(CityEntity... cityEntity);
+     void insertCity(CityEntity... cityEntity);
 
     @Delete
     void deleteCity(CityEntity... cityEntity);

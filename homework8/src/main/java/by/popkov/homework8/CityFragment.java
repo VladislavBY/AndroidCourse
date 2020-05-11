@@ -21,6 +21,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
+import by.popkov.homework8.city_database.CityDatabase;
+import by.popkov.homework8.city_database.CityEntity;
+
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
     static final String FRAGMENT_TAG = "CityFragment";
     private static String CITY_DATABASE = "CITY_DATABASE";
