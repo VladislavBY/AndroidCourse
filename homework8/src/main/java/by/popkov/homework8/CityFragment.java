@@ -26,8 +26,9 @@ import by.popkov.homework8.city_database.CityEntity;
 
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
     static final String FRAGMENT_TAG = "CityFragment";
-    private static String CITY_DATABASE = "CITY_DATABASE";
     static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY";
+    private static String CITY_DATABASE_NAME = "cityDatabase";
+
     private RecyclerView recyclerView;
     private FragmentActivity fragmentActivity;
     private CityFragmentAdapter cityFragmentAdapter;
@@ -67,7 +68,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     }
 
     private void connectToCityDatabase() {
-        cityDatabase = Room.databaseBuilder(fragmentActivity, CityDatabase.class, CITY_DATABASE).build();
+        cityDatabase = Room.databaseBuilder(fragmentActivity, CityDatabase.class, CITY_DATABASE_NAME).build();
     }
 
     private void makeRecyclerView() {

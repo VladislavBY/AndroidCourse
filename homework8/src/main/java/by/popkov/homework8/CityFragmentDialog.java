@@ -20,7 +20,7 @@ public class CityFragmentDialog extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_dialog_city, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_dialog_city, null, false);
         cityEditText = view.findViewById(R.id.cityEditText);
         return new AlertDialog.Builder(getContext())
                 .setView(view)

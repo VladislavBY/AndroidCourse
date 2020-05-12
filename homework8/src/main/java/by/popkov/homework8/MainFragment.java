@@ -42,8 +42,6 @@ import okhttp3.ResponseBody;
 public class MainFragment extends Fragment {
 
     static final String FRAGMENT_TAG = "MainFragment";
-    static final String UNITS_IMPERIAL = "imperial";
-    static final String UNITS_METRIC = "metric";
     private static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
     private static final String API_WEATHER_FORECAST = "https://api.openweathermap.org/data/2.5/forecast?q=%s&units=%s&appid=%s";
     private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
@@ -127,7 +125,7 @@ public class MainFragment extends Fragment {
     }
 
     private void setUnitsSign(String units) {
-        if (units.equals(MainFragment.UNITS_METRIC)) {
+        if (units.equals(SettingsFragment.UNITS_METRIC)) {
             unitsSing = context.getString(R.string.UNITS_METRIC);
         } else unitsSing = context.getString(R.string.UNITS_IMPERIAL);
     }
@@ -139,9 +137,8 @@ public class MainFragment extends Fragment {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new Handler(context.getMainLooper()).post(() -> {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                new Handler(context.getMainLooper()).post(() ->
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show());
             }
 
             @Override
@@ -174,9 +171,9 @@ public class MainFragment extends Fragment {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                new Handler(context.getMainLooper()).post(() -> {
-                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                new Handler(context.getMainLooper()).post(() ->
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show()
+                );
             }
 
             @Override
