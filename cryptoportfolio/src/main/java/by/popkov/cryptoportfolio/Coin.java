@@ -49,7 +49,14 @@ public class Coin {
         return sum;
     }
 
-    public Coin(@NonNull String symbol, @Nullable String logoUrl, @Nullable Double prise, @Nullable Double changePercent24Hour, @Nullable Double number, @Nullable Double sum) {
+    private Coin(
+            @NonNull String symbol,
+            @Nullable String logoUrl,
+            @Nullable Double prise,
+            @Nullable Double changePercent24Hour,
+            @Nullable Double number,
+            @Nullable Double sum
+    ) {
         this.symbol = symbol;
         this.logoUrl = logoUrl;
         this.prise = prise;
