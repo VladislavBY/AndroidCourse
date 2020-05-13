@@ -16,6 +16,8 @@ public class Coin {
     private Double changePercent24Hour;
     @Nullable
     private Double number;
+    @Nullable
+    private Double sum;
 
     @NonNull
     public String getSymbol() {
@@ -42,12 +44,18 @@ public class Coin {
         return number;
     }
 
-    private Coin(@NonNull String symbol, @Nullable String logoUrl, @Nullable Double prise, @Nullable Double changePercent24Hour, @Nullable Double number) {
+    @Nullable
+    public Double getSum() {
+        return sum;
+    }
+
+    public Coin(@NonNull String symbol, @Nullable String logoUrl, @Nullable Double prise, @Nullable Double changePercent24Hour, @Nullable Double number, @Nullable Double sum) {
         this.symbol = symbol;
         this.logoUrl = logoUrl;
         this.prise = prise;
         this.changePercent24Hour = changePercent24Hour;
         this.number = number;
+        this.sum = sum;
     }
 
     public static class Builder {
@@ -61,6 +69,8 @@ public class Coin {
         private Double changePercent24Hour;
         @Nullable
         private Double number;
+        @Nullable
+        private Double sum;
 
         public Builder setLogoUrl(@Nullable String logoUrl) {
             this.logoUrl = logoUrl;
@@ -82,6 +92,10 @@ public class Coin {
             return this;
         }
 
+        public Builder setSum(@Nullable Double sum) {
+            this.sum = sum;
+            return this;
+        }
 
         public Builder(@NotNull String symbol) {
             this.symbol = symbol;
@@ -89,7 +103,7 @@ public class Coin {
 
         @NonNull
         public Coin build() {
-            return new Coin(symbol, logoUrl, prise, changePercent24Hour, number);
+            return new Coin(symbol, logoUrl, prise, changePercent24Hour, number, sum);
         }
 
     }
