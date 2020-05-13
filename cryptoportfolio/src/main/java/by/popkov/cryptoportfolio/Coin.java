@@ -9,7 +9,11 @@ public class Coin {
     @NonNull
     private String symbol;
     @Nullable
+    private String logoUrl;
+    @Nullable
     private Double prise;
+    @Nullable
+    private Double changePercent24Hour;
     @Nullable
     private Double number;
 
@@ -19,8 +23,18 @@ public class Coin {
     }
 
     @Nullable
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    @Nullable
     public Double getPrise() {
         return prise;
+    }
+
+    @Nullable
+    public Double getChangePercent24Hour() {
+        return changePercent24Hour;
     }
 
     @Nullable
@@ -28,9 +42,11 @@ public class Coin {
         return number;
     }
 
-    private Coin(@NotNull String symbol, @Nullable Double prise, @Nullable Double number) {
+    private Coin(@NonNull String symbol, @Nullable String logoUrl, @Nullable Double prise, @Nullable Double changePercent24Hour, @Nullable Double number) {
         this.symbol = symbol;
+        this.logoUrl = logoUrl;
         this.prise = prise;
+        this.changePercent24Hour = changePercent24Hour;
         this.number = number;
     }
 
@@ -38,39 +54,42 @@ public class Coin {
         @NonNull
         private String symbol;
         @Nullable
+        private String logoUrl;
+        @Nullable
         private Double prise;
+        @Nullable
+        private Double changePercent24Hour;
         @Nullable
         private Double number;
 
-        public Builder(@NotNull String symbol) {
-            this.symbol = symbol;
+        public Builder setLogoUrl(@Nullable String logoUrl) {
+            this.logoUrl = logoUrl;
+            return this;
         }
 
-        @Nullable
-        public Double getPrise() {
-            return prise;
-        }
-
-        @NonNull
         public Builder setPrise(@Nullable Double prise) {
             this.prise = prise;
             return this;
         }
 
-        @Nullable
-        public Double getNumber() {
-            return number;
+        public Builder setChangePercent24Hour(@Nullable Double changePercent24Hour) {
+            this.changePercent24Hour = changePercent24Hour;
+            return this;
         }
 
-        @NonNull
         public Builder setNumber(@Nullable Double number) {
             this.number = number;
             return this;
         }
 
+
+        public Builder(@NotNull String symbol) {
+            this.symbol = symbol;
+        }
+
         @NonNull
         public Coin build() {
-            return new Coin(symbol, prise, number);
+            return new Coin(symbol, logoUrl, prise, changePercent24Hour, number);
         }
 
     }
