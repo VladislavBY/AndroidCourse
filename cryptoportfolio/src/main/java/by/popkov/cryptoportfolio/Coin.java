@@ -11,6 +11,8 @@ public class Coin {
     @Nullable
     private String logoUrl;
     @Nullable
+    private String fiatSymbol;
+    @Nullable
     private Double prise;
     @Nullable
     private Double changePercent24Hour;
@@ -27,6 +29,11 @@ public class Coin {
     @Nullable
     public String getLogoUrl() {
         return logoUrl;
+    }
+
+    @Nullable
+    public String getFiatSymbol() {
+        return fiatSymbol;
     }
 
     @Nullable
@@ -52,6 +59,7 @@ public class Coin {
     private Coin(
             @NonNull String symbol,
             @Nullable String logoUrl,
+            @Nullable String fiatSymbol,
             @Nullable Double prise,
             @Nullable Double changePercent24Hour,
             @Nullable Double number,
@@ -59,6 +67,7 @@ public class Coin {
     ) {
         this.symbol = symbol;
         this.logoUrl = logoUrl;
+        this.fiatSymbol = fiatSymbol;
         this.prise = prise;
         this.changePercent24Hour = changePercent24Hour;
         this.number = number;
@@ -70,6 +79,8 @@ public class Coin {
         private String symbol;
         @Nullable
         private String logoUrl;
+        @Nullable
+        private String fiatSymbol;
         @Nullable
         private Double prise;
         @Nullable
@@ -104,13 +115,18 @@ public class Coin {
             return this;
         }
 
+        public Builder setFiatSymbol(@Nullable String fiatSymbol) {
+            this.fiatSymbol = fiatSymbol;
+            return this;
+        }
+
         public Builder(@NotNull String symbol) {
             this.symbol = symbol;
         }
 
         @NonNull
         public Coin build() {
-            return new Coin(symbol, logoUrl, prise, changePercent24Hour, number, sum);
+            return new Coin(symbol, logoUrl, fiatSymbol, prise, changePercent24Hour, number, sum);
         }
 
     }

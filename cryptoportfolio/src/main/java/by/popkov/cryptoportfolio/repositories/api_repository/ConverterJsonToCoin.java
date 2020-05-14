@@ -9,7 +9,7 @@ import java.util.List;
 import by.popkov.cryptoportfolio.Coin;
 
 public class ConverterJsonToCoin {
-    public static List<Coin> toCoin(List<String> symbols, List<Double> numbers, String json) {
+    public static List<Coin> toCoin(List<String> symbols, List<Double> numbers, String fiatSymbol, String json) {
         List<Coin> coinsList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -17,14 +17,15 @@ public class ConverterJsonToCoin {
             for (int i = 0; i < symbols.size(); i++) {
                 String symbol = symbols.get(i);
                 JSONObject jsonCoin = raw.getJSONObject(symbol);
-                JSONObject usd = jsonCoin.getJSONObject("USD");
-                double price = usd.getDouble("PRICE");
+                JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
+                double price = fiat.getDouble("PRICE");
                 Double number = numbers.get(i);
                 Coin coin = new Coin.Builder(symbol)
-                        .setLogoUrl("https://www.cryptocompare.com" + usd.getString("IMAGEURL"))
+                        .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
+                        .setFiatSymbol(fiatSymbol)
                         .setPrise(price)
                         .setNumber(number)
-                        .setChangePercent24Hour(usd.getDouble("CHANGEPCT24HOUR"))
+                        .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                         .setSum(number * price)
                         .build();
                 coinsList.add(coin);
