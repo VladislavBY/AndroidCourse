@@ -1,6 +1,5 @@
 package by.popkov.cryptoportfolio.repositories.api_repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import by.popkov.cryptoportfolio.Coin;
@@ -19,35 +18,31 @@ public class ApiRepositoryImp implements ApiRepository {
 
     @Override
     public void getCoinsList(List<String> symbols, List<Double> numbers, String fiatSymbol, Consumer<List<Coin>> onSuccess, Consumer<Throwable> onError) {
-        final Request request = makeRequest(symbols, fiatSymbol);
+        final Request request = makeRequestFromList(symbols, fiatSymbol);
         Observable.create((ObservableOnSubscribe<Response>) emitter ->
                 emitter.onNext(okHttpClient.newCall(request).execute()))
                 .subscribeOn(Schedulers.io())
                 .map(Response::body)
-                .map(responseBody -> ConverterJsonToCoin.toCoin(symbols, numbers, fiatSymbol, responseBody.string()))
+                .map(responseBody -> ConverterJsonToCoin.toCoinList(symbols, numbers, fiatSymbol, responseBody.string()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coinList -> onSuccess.accept(coinList));
-
+                .subscribe(onSuccess);
     }
 
     @Override
     public void getCoin(String symbol, Double number, String fiatSymbol, Consumer<Coin> onSuccess, Consumer<Throwable> onError) {
-        ArrayList<String> symbols = new ArrayList<>();
-        symbols.add(symbol);
-        ArrayList<Double> numbers = new ArrayList<>();
-        numbers.add(number);
-        symbols.add(symbol);
-        Request request = makeRequest(symbols, fiatSymbol);
+        Request request = new Request.Builder()
+                .url(String.format(API_KEY, symbol, fiatSymbol))
+                .build();
         Observable.create((ObservableOnSubscribe<Response>) emitter ->
                 emitter.onNext(okHttpClient.newCall(request).execute()))
                 .subscribeOn(Schedulers.io())
                 .map(Response::body)
-                .map(responseBody -> ConverterJsonToCoin.toCoin(symbols, numbers, fiatSymbol, responseBody.string()))
+                .map(responseBody -> ConverterJsonToCoin.toCoin(symbol, number, fiatSymbol, responseBody.string()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .
+                .subscribe(coin -> onSuccess.accept(coin));
     }
 
-    private Request makeRequest(List<String> symbols, String fiatSymbol) {
+    private Request makeRequestFromList(List<String> symbols, String fiatSymbol) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < symbols.size(); i++) {
             if (i == 0) {
