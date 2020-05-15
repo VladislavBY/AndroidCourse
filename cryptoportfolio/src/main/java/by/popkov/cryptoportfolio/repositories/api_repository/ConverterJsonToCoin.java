@@ -35,4 +35,5 @@ public class ConverterJsonToCoin {
         }
         return coinsList;
     }
+    //// Make converter to one Coin
 }
