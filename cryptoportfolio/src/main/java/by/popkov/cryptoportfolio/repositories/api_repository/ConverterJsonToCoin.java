@@ -13,7 +13,7 @@ import by.popkov.cryptoportfolio.Coin;
 
 class ConverterJsonToCoin {
     @Nullable
-   static List<Coin> toCoinList(@NonNull List<String> symbols, @NonNull List<Double> numbers, @NonNull String fiatSymbol, @NonNull String json) {
+    static List<Coin> toCoinList(@NonNull List<String> symbols, @NonNull List<Double> numbers, @NonNull String fiatSymbol, @NonNull String json) {
         List<Coin> coinsList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -31,6 +31,9 @@ class ConverterJsonToCoin {
                         .setNumber(number)
                         .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                         .setSum(number * price)
+                        .setGlobalSupply(fiat.getDouble("SUPPLY"))
+                        .setMarketCap(fiat.getDouble("MKTCAP"))
+                        .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))
                         .build();
                 coinsList.add(coin);
             }
@@ -56,6 +59,9 @@ class ConverterJsonToCoin {
                     .setNumber(number)
                     .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                     .setSum(number * price)
+                    .setGlobalSupply(fiat.getDouble("SUPPLY"))
+                    .setMarketCap(fiat.getDouble("MKTCAP"))
+                    .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))
                     .build();
         } catch (JSONException e) {
             e.printStackTrace();

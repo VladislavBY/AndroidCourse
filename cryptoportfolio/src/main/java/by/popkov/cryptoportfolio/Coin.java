@@ -20,6 +20,12 @@ public class Coin {
     private Double number;
     @Nullable
     private Double sum;
+    @Nullable
+    private Double globalSupply;
+    @Nullable
+    private Double marketCap;
+    @Nullable
+    private Double market24Volume;
 
     @NonNull
     public String getSymbol() {
@@ -56,6 +62,21 @@ public class Coin {
         return sum;
     }
 
+    @Nullable
+    public Double getGlobalSupply() {
+        return globalSupply;
+    }
+
+    @Nullable
+    public Double getMarketCap() {
+        return marketCap;
+    }
+
+    @Nullable
+    public Double getMarket24Volume() {
+        return market24Volume;
+    }
+
     private Coin(
             @NonNull String symbol,
             @Nullable String logoUrl,
@@ -63,8 +84,10 @@ public class Coin {
             @Nullable Double prise,
             @Nullable Double changePercent24Hour,
             @Nullable Double number,
-            @Nullable Double sum
-    ) {
+            @Nullable Double sum,
+            @Nullable Double globalSupply,
+            @Nullable Double marketCap,
+            @Nullable Double market24Volume) {
         this.symbol = symbol;
         this.logoUrl = logoUrl;
         this.fiatSymbol = fiatSymbol;
@@ -72,6 +95,9 @@ public class Coin {
         this.changePercent24Hour = changePercent24Hour;
         this.number = number;
         this.sum = sum;
+        this.globalSupply = globalSupply;
+        this.marketCap = marketCap;
+        this.market24Volume = market24Volume;
     }
 
     public static class Builder {
@@ -89,6 +115,12 @@ public class Coin {
         private Double number;
         @Nullable
         private Double sum;
+        @Nullable
+        private Double globalSupply;
+        @Nullable
+        private Double marketCap;
+        @Nullable
+        private Double market24Volume;
 
         public Builder setLogoUrl(@Nullable String logoUrl) {
             this.logoUrl = logoUrl;
@@ -120,15 +152,39 @@ public class Coin {
             return this;
         }
 
+        public Builder setGlobalSupply(@Nullable Double globalSupply) {
+            this.globalSupply = globalSupply;
+            return this;
+        }
+
+        public Builder setMarketCap(@Nullable Double marketCap) {
+            this.marketCap = marketCap;
+            return this;
+        }
+
+        public Builder setMarket24Volume(@Nullable Double market24Volume) {
+            this.market24Volume = market24Volume;
+            return this;
+        }
+
         public Builder(@NotNull String symbol) {
             this.symbol = symbol;
         }
 
         @NonNull
         public Coin build() {
-            return new Coin(symbol, logoUrl, fiatSymbol, prise, changePercent24Hour, number, sum);
+            return new Coin(
+                    symbol,
+                    logoUrl,
+                    fiatSymbol,
+                    prise,
+                    changePercent24Hour,
+                    number,
+                    sum,
+                    globalSupply,
+                    marketCap,
+                    market24Volume
+            );
         }
-
     }
-
 }

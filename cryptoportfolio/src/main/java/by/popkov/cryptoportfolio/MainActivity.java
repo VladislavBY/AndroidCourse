@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TextView text = findViewById(R.id.text);
         ApiRepository apiRepository = new ApiRepositoryImp();
-        apiRepository.getCoin("BTC", 10.0, "RUR", coin -> text.setText(String.format("%s %s %s %s", coin.getSymbol(), coin.getPrise(), coin.getSum(), coin.getChangePercent24Hour())),
+        apiRepository.getCoin("BTC", 10.0, "USD", coin -> text.setText(String.format("%s %f %f %f", coin.getSymbol(), coin.getGlobalSupply(), coin.getMarketCap(), coin.getMarket24Volume())),
                 throwable -> Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show());
     }
 }
