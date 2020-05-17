@@ -9,10 +9,10 @@ import androidx.room.PrimaryKey;
 public class CityEntity {
     @PrimaryKey
     @NonNull
-    public  String name;
+    String name;
 
     @NonNull
-    public  String getName() {
+    public String getName() {
         return name;
     }
 
