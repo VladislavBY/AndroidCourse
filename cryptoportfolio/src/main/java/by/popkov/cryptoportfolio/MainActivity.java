@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showData() {
         ApiRepository apiRepository = new ApiRepositoryImp();
-        apiRepository.getCoin("BTC", 10.0, "USD", coin -> textView.setText(String.format("%s %f %f %f", coin.getSymbol(), coin.getGlobalSupply(), coin.getMarketCap(), coin.getMarket24Volume())),
+        apiRepository.getCoin("BTC", 10.0, "USD", coin -> textView.setText(String.format("%s %f %f %f", coin.getSymbol(), coin.getChange24Hour(), coin.getMarketCap(), coin.getMarket24Volume())),
                 throwable -> Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show());
     }
 }

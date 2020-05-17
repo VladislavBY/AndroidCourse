@@ -17,6 +17,8 @@ public class Coin {
     @Nullable
     private Double changePercent24Hour;
     @Nullable
+    private Double change24Hour;
+    @Nullable
     private Double number;
     @Nullable
     private Double sum;
@@ -77,22 +79,30 @@ public class Coin {
         return market24Volume;
     }
 
+    @Nullable
+    public Double getChange24Hour() {
+        return change24Hour;
+    }
+
     private Coin(
             @NonNull String symbol,
             @Nullable String logoUrl,
             @Nullable String fiatSymbol,
             @Nullable Double prise,
             @Nullable Double changePercent24Hour,
+            @Nullable Double change24Hour,
             @Nullable Double number,
             @Nullable Double sum,
             @Nullable Double globalSupply,
             @Nullable Double marketCap,
-            @Nullable Double market24Volume) {
+            @Nullable Double market24Volume
+    ) {
         this.symbol = symbol;
         this.logoUrl = logoUrl;
         this.fiatSymbol = fiatSymbol;
         this.prise = prise;
         this.changePercent24Hour = changePercent24Hour;
+        this.change24Hour = change24Hour;
         this.number = number;
         this.sum = sum;
         this.globalSupply = globalSupply;
@@ -111,6 +121,8 @@ public class Coin {
         private Double prise;
         @Nullable
         private Double changePercent24Hour;
+        @Nullable
+        private Double change24Hour;
         @Nullable
         private Double number;
         @Nullable
@@ -139,6 +151,11 @@ public class Coin {
 
         public Builder setNumber(@Nullable Double number) {
             this.number = number;
+            return this;
+        }
+
+        public Builder setChange24Hour(@Nullable Double change24Hour) {
+            this.change24Hour = change24Hour;
             return this;
         }
 
@@ -179,6 +196,7 @@ public class Coin {
                     fiatSymbol,
                     prise,
                     changePercent24Hour,
+                    change24Hour,
                     number,
                     sum,
                     globalSupply,
