@@ -2,12 +2,10 @@ package by.popkov.homework7;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -16,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 
 public class EditContactActivity extends AppCompatActivity {
@@ -77,40 +74,34 @@ public class EditContactActivity extends AppCompatActivity {
     }
 
     private void setButtonRemoveListener() {
-        buttonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialog != null) {
-                    dialog.show();
-                }
+        buttonRemove.setOnClickListener(v -> {
+            if (dialog != null) {
+                dialog.show();
             }
         });
     }
 
     private void setButtonEditListener() {
-        buttonEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
-                String name = editTextName.getText().toString().trim();
-                String data = editTextPhoneNumberOrEmail.getText().toString().trim();
-                Contact newContact;
-                if (oldContact.getType() == Contact.Type.EMAIL) {
-                    newContact = new Contact(Contact.Type.EMAIL, name, data);
-                } else {
-                    newContact = new Contact(Contact.Type.PHONE, name, data);
-                }
-                newContact.setId(oldContact.getId());
-                intent.putExtra(EXTRA_NEW_CONTACT, newContact);
-                setResult(RESULT_OK, intent);
-                finish();
+        buttonEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
+            intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
+            String name = editTextName.getText().toString().trim();
+            String data = editTextPhoneNumberOrEmail.getText().toString().trim();
+            Contact newContact;
+            if (oldContact.getType() == Contact.Type.EMAIL) {
+                newContact = new Contact(Contact.Type.EMAIL, name, data);
+            } else {
+                newContact = new Contact(Contact.Type.PHONE, name, data);
             }
+            newContact.setId(oldContact.getId());
+            intent.putExtra(EXTRA_NEW_CONTACT, newContact);
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
 
     private void setToolBar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        setSupportActionBar(findViewById(R.id.toolBar));
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
@@ -129,21 +120,13 @@ public class EditContactActivity extends AppCompatActivity {
 
     private void setDialog() {
         dialog = new AlertDialog.Builder(this)
-                .setPositiveButton(R.string.edit_contact_dialog_positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
-                        intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
+                .setPositiveButton(R.string.edit_contact_dialog_positive, (dialog, which) -> {
+                    Intent intent = new Intent(EditContactActivity.this, ContactsActivity.class);
+                    intent.putExtra(EXTRA_OLD_CONTACT, oldContact);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 })
-                .setNegativeButton(R.string.edit_contact_dialog_negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).setMessage(R.string.edit_contact_dialog_massage)
+                .setNegativeButton(R.string.edit_contact_dialog_negative, (dialog, which) -> dialog.cancel()).setMessage(R.string.edit_contact_dialog_massage)
                 .create();
     }
 }

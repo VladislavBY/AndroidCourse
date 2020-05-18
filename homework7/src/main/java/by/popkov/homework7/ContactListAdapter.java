@@ -162,13 +162,10 @@ public class ContactListAdapter extends RecyclerView.Adapter<ContactListAdapter.
             contactImageView = itemView.findViewById(R.id.contactImageView);
             textViewName = itemView.findViewById(R.id.textViewName);
             textViewData = itemView.findViewById(R.id.textViewData);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Contact clickedContact = contactItemList.get(getAdapterPosition());
-                    if (itemListenerWithData != null) {
-                        itemListenerWithData.onClick(clickedContact);
-                    }
+            itemView.setOnClickListener(v -> {
+                Contact clickedContact = contactItemList.get(getAdapterPosition());
+                if (itemListenerWithData != null) {
+                    itemListenerWithData.onClick(clickedContact);
                 }
             });
         }
