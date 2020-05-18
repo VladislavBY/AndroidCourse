@@ -32,7 +32,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     private RecyclerView recyclerView;
     private FragmentActivity fragmentActivity;
     private CityFragmentAdapter cityFragmentAdapter;
-    private CityDatabase cityDatabase;
+    private volatile CityDatabase cityDatabase;
     private SharedPreferences sharedPreferences;
 
     @Nullable
