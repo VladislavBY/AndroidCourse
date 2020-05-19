@@ -9,8 +9,8 @@ import androidx.room.Update;
 
 @Dao
 public interface CityDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-     void insertCity(CityEntity... cityEntity);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertCity(CityEntity... cityEntity);
 
     @Delete
     void deleteCity(CityEntity... cityEntity);

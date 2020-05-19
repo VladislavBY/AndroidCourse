@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -27,7 +26,6 @@ import by.popkov.homework8.city_database.CityEntity;
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
     static final String FRAGMENT_TAG = "CityFragment";
     static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY";
-    private static String CITY_DATABASE_NAME = "cityDatabase";
 
     private RecyclerView recyclerView;
     private FragmentActivity fragmentActivity;
@@ -68,7 +66,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     }
 
     private void connectToCityDatabase() {
-        cityDatabase = Room.databaseBuilder(fragmentActivity, CityDatabase.class, CITY_DATABASE_NAME).build();
+        cityDatabase = CityDatabase.getInstance(fragmentActivity);
     }
 
     private void makeRecyclerView() {
@@ -102,20 +100,22 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
                 result.add(cityEntity.getName());
             }
             return result;
-        }).thenAcceptAsync(strings -> cityFragmentAdapter.setCityNames(strings), ContextCompat.getMainExecutor(fragmentActivity));
+        }, cityDatabase.getExecutorService())
+                .thenAcceptAsync(strings -> cityFragmentAdapter.setCityNames(strings), ContextCompat.getMainExecutor(fragmentActivity));
 
     }
 
     @Override
     public void OnPositiveButtonClick(final String cityName) {
         cityFragmentAdapter.addCityName(cityName);
-        new Thread(() -> cityDatabase.getCityDao().insertCity(new CityEntity().setName(cityName))).start();
+        cityDatabase.getExecutorService()
+                .execute(() -> cityDatabase.getCityDao().insertCity(new CityEntity().setName(cityName)));
     }
 
     @Override
     public void onDestroyView() {
-        sharedPreferences = null;
         super.onDestroyView();
+        sharedPreferences = null;
         cityDatabase.close();
     }
 }
