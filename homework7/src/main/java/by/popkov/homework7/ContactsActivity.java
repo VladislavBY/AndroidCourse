@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,7 +25,6 @@ public class ContactsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FOR_EDIT = 1111;
     private static final String CONTACT_ITEM_LIST = "contactItemList";
     private static final String CONTACT_ITEM_LIST_FULL = "contactItemListFull";
-    private static final String CONTACT_DATABASE = "ContactDatabase";
 
     private volatile ContactDatabase contactDatabase;
     private RecyclerView contactsRecyclerView;
@@ -44,8 +42,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void connectContactDatabase() {
-        contactDatabase = Room.databaseBuilder(this, ContactDatabase.class, CONTACT_DATABASE)
-                .build();
+        contactDatabase = ContactDatabase.getInstance(this);
     }
 
     private void initContactsRecyclerView(Bundle savedInstanceState) {
@@ -88,7 +85,7 @@ public class ContactsActivity extends AppCompatActivity {
                 result.add(contact);
             }
             return result;
-        }).thenAcceptAsync(contacts -> {
+        }, contactDatabase.getExecutorService()).thenAcceptAsync(contacts -> {
             adapter.setContactLists(contacts);
             visibleSwitcher(contacts.size());
         }, ContextCompat.getMainExecutor(ContactsActivity.this));
@@ -172,32 +169,37 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void addContactToDatabase(final Contact contact) {
-        new Thread(() -> contactDatabase.getContactDao().insertContact(
-                new ContactEntity.Builder(contact.getId())
-                        .setType(contact.getType().name())
-                        .setName(contact.getName())
-                        .setData(contact.getData())
-                        .setImageID(contact.getImageID())
-                        .build()
-        )).start();
+        contactDatabase.getExecutorService().execute(
+                () -> contactDatabase.getContactDao().insertContact(
+                        new ContactEntity.Builder(contact.getId())
+                                .setType(contact.getType().name())
+                                .setName(contact.getName())
+                                .setData(contact.getData())
+                                .setImageID(contact.getImageID())
+                                .build()
+                )
+        );
     }
 
     private void updateContactToDatabase(final Contact contact) {
-        new Thread(() -> contactDatabase.getContactDao().updateContact(
-                new ContactEntity.Builder(contact.getId())
-                        .setType(contact.getType().name())
-                        .setName(contact.getName())
-                        .setData(contact.getData())
-                        .setImageID(contact.getImageID())
-                        .build()
-        )).start();
+        contactDatabase.getExecutorService().execute(
+                () -> contactDatabase.getContactDao().updateContact(
+                        new ContactEntity.Builder(contact.getId())
+                                .setType(contact.getType().name())
+                                .setName(contact.getName())
+                                .setData(contact.getData())
+                                .setImageID(contact.getImageID())
+                                .build()
+                )
+        );
     }
 
     private void deleteContactFromDatabase(final Contact contact) {
-        new Thread(() -> contactDatabase.getContactDao().deleteContact(
-                new ContactEntity.Builder(contact.getId())
-                        .build()
-        )).start();
+        contactDatabase.getExecutorService().execute(
+                () -> contactDatabase.getContactDao().deleteContact(
+                        new ContactEntity.Builder(contact.getId()).build()
+                )
+        );
     }
 
     private void visibleSwitcher(int fullItemCount) {
