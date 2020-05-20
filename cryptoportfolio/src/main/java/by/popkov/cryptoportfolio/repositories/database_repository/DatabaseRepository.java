@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.repositories.data_base_repository;
+package by.popkov.cryptoportfolio.repositories.database_repository;
 
 
 import androidx.lifecycle.LiveData;
@@ -7,7 +7,7 @@ import java.util.List;
 
 import by.popkov.cryptoportfolio.Coin;
 
-public interface DataBaseRepository {
+public interface DatabaseRepository {
     LiveData<List<Coin>> getCoinList();
     void addNewCoin(final Coin coin);
     void deleteCoin(final Coin coin);

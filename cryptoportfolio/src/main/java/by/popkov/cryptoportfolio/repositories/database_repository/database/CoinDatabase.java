@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.repositories.data_base_repository.database;
+package by.popkov.cryptoportfolio.repositories.database_repository.database;
 
 import android.content.Context;
 
