@@ -76,9 +76,10 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
         return (itemList != null) ? itemList.size() : 0;
     }
 
-    static class ItemHolder extends RecyclerView.ViewHolder {
-        ItemHolder(@NonNull View itemView, @NonNull OnCoinListClickListener onCoinListClick) {
+    class ItemHolder extends RecyclerView.ViewHolder {
+        ItemHolder(@NonNull View itemView, @NonNull OnCoinListClickListener onCoinListClickListener) {
             super(itemView);
+            itemView.setOnClickListener(v -> onCoinListClickListener.onClick(itemList.get(getAdapterPosition())));
         }
 
         private void bindItem(CoinForView coinForView) {

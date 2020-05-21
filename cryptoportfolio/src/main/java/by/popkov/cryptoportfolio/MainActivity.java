@@ -12,8 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
+import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
+import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepositoryImp;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -26,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text);
         liveDataTest();
-
+        dbTest();
 
         showData();
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.re);
@@ -34,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
             showData();
             new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 3000);
         });
+    }
+
+    private void dbTest() {
+        DatabaseRepository databaseRepository = new DatabaseRepositoryImp(this);
+        LiveData<List<Coin>> coinList = databaseRepository.getCoinList();
+        coinList.observe(this, coinList1 -> Toast.makeText(this, coinList1.get(coinList1.size()-1).getSymbol(), Toast.LENGTH_LONG).show());
+        databaseRepository.addNewCoin(new Coin.Builder("TEST").build());
     }
 
     private void liveDataTest() {
