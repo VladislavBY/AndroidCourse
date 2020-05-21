@@ -1,6 +1,7 @@
 package by.popkov.cryptoportfolio.repositories.database_repository.database;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -9,6 +10,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
+@Dao
 public interface CoinDao {
     @Query("SELECT * FROM coin")
     LiveData<List<CoinEntity>> getAll();
