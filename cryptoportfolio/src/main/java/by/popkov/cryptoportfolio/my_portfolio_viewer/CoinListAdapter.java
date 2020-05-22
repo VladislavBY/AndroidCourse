@@ -107,6 +107,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             fiatSymbol.setText(coinForView.getFiatSymbol());
             coinPrise.setText(coinForView.getPrise());
             coinPrise24HChange.setText(coinForView.getChangePercent24Hour());
+            coinPrise24HChange.setTextColor(coinForView.getChange24Color());
             coinPriseSum.setText(coinForView.getSum());
         }
     }

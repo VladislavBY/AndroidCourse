@@ -18,6 +18,7 @@ class CoinForView {
     private String changePercent24Hour;
     @Nullable
     private String change24Hour;
+    private int change24Color;
     @Nullable
     private String number;
     @Nullable
@@ -57,6 +58,10 @@ class CoinForView {
     @Nullable
     public String getChange24Hour() {
         return change24Hour;
+    }
+
+    public int getChange24Color() {
+        return change24Color;
     }
 
     @Nullable
@@ -99,6 +104,11 @@ class CoinForView {
             sum = String.valueOf(coin.getNumber() * coin.getPrise());
         } else {
             sum = "null";
+        }
+        if (coin.getChangePercent24Hour() != null) {
+            if (coin.getChangePercent24Hour() >= 0) {
+                change24Color = 0xFFDA0303;
+            } else change24Color = 0xFF19DA03;
         }
     }
 }
