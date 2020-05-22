@@ -21,8 +21,6 @@ public class Coin {
     @Nullable
     private Double number;
     @Nullable
-    private Double sum;
-    @Nullable
     private Double globalSupply;
     @Nullable
     private Double marketCap;
@@ -60,11 +58,6 @@ public class Coin {
     }
 
     @Nullable
-    public Double getSum() {
-        return sum;
-    }
-
-    @Nullable
     public Double getGlobalSupply() {
         return globalSupply;
     }
@@ -92,7 +85,6 @@ public class Coin {
             @Nullable Double changePercent24Hour,
             @Nullable Double change24Hour,
             @Nullable Double number,
-            @Nullable Double sum,
             @Nullable Double globalSupply,
             @Nullable Double marketCap,
             @Nullable Double market24Volume
@@ -104,7 +96,6 @@ public class Coin {
         this.changePercent24Hour = changePercent24Hour;
         this.change24Hour = change24Hour;
         this.number = number;
-        this.sum = sum;
         this.globalSupply = globalSupply;
         this.marketCap = marketCap;
         this.market24Volume = market24Volume;
@@ -125,8 +116,6 @@ public class Coin {
         private Double change24Hour;
         @Nullable
         private Double number;
-        @Nullable
-        private Double sum;
         @Nullable
         private Double globalSupply;
         @Nullable
@@ -156,11 +145,6 @@ public class Coin {
 
         public Builder setChange24Hour(@Nullable Double change24Hour) {
             this.change24Hour = change24Hour;
-            return this;
-        }
-
-        public Builder setSum(@Nullable Double sum) {
-            this.sum = sum;
             return this;
         }
 
@@ -198,7 +182,6 @@ public class Coin {
                     changePercent24Hour,
                     change24Hour,
                     number,
-                    sum,
                     globalSupply,
                     marketCap,
                     market24Volume

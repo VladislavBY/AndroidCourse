@@ -92,9 +92,13 @@ class CoinForView {
         this.changePercent24Hour = String.valueOf(coin.getChangePercent24Hour());
         this.change24Hour = String.valueOf(coin.getChange24Hour());
         this.number = String.valueOf(coin.getNumber());
-        this.sum = String.valueOf(coin.getSum());
         this.globalSupply = String.valueOf(coin.getGlobalSupply());
         this.marketCap = String.valueOf(coin.getMarketCap());
         this.market24Volume = String.valueOf(coin.getMarket24Volume());
+        if (coin.getNumber() != null && coin.getPrise() != null) {
+            sum = String.valueOf(coin.getNumber() * coin.getPrise());
+        } else {
+            sum = "null";
+        }
     }
 }

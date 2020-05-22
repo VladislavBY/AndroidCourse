@@ -22,16 +22,13 @@ class ConverterJsonToCoin {
                 String symbol = symbols.get(i);
                 JSONObject jsonCoin = raw.getJSONObject(symbol);
                 JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
-                double price = fiat.getDouble("PRICE");
-                Double number = numbers.get(i);
                 Coin coin = new Coin.Builder(symbol)
                         .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
                         .setFiatSymbol(fiatSymbol)
-                        .setPrise(price)
-                        .setNumber(number)
+                        .setPrise(fiat.getDouble("PRICE"))
+                        .setNumber(numbers.get(i))
                         .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                         .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
-                        .setSum(number * price)
                         .setGlobalSupply(fiat.getDouble("SUPPLY"))
                         .setMarketCap(fiat.getDouble("MKTCAP"))
                         .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))
@@ -52,15 +49,13 @@ class ConverterJsonToCoin {
             JSONObject raw = jsonObject.getJSONObject("RAW");
             JSONObject jsonCoin = raw.getJSONObject(symbol);
             JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
-            double price = fiat.getDouble("PRICE");
             return new Coin.Builder(symbol)
                     .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
                     .setFiatSymbol(fiatSymbol)
-                    .setPrise(price)
+                    .setPrise(fiat.getDouble("PRICE"))
                     .setNumber(number)
                     .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                     .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
-                    .setSum(number * price)
                     .setGlobalSupply(fiat.getDouble("SUPPLY"))
                     .setMarketCap(fiat.getDouble("MKTCAP"))
                     .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))

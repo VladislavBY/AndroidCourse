@@ -3,9 +3,13 @@ package by.popkov.cryptoportfolio.my_portfolio_viewer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,13 +81,33 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
     }
 
     class ItemHolder extends RecyclerView.ViewHolder {
+        private ImageView coinIcon;
+        private TextView coinSymbol;
+        private TextView fiatSymbol;
+        private TextView coinPrise;
+        private TextView coinPrise24HChange;
+        private TextView coinPriseSum;
+
         ItemHolder(@NonNull View itemView, @NonNull OnCoinListClickListener onCoinListClickListener) {
             super(itemView);
+            coinIcon = itemView.findViewById(R.id.coinIcon);
+            coinSymbol = itemView.findViewById(R.id.coinSymbol);
+            fiatSymbol = itemView.findViewById(R.id.fiatSymbol);
+            coinPrise = itemView.findViewById(R.id.coinPrise);
+            coinPrise24HChange = itemView.findViewById(R.id.coinPrise24HChange);
+            coinPriseSum = itemView.findViewById(R.id.coinPriseSum);
             itemView.setOnClickListener(v -> onCoinListClickListener.onClick(itemList.get(getAdapterPosition())));
         }
 
         private void bindItem(CoinForView coinForView) {
-
+            Glide.with(itemView.getContext())
+                    .load(coinForView.getLogoUrl())
+                    .into(coinIcon);
+            coinSymbol.setText(coinForView.getSymbol());
+            fiatSymbol.setText(coinForView.getFiatSymbol());
+            coinPrise.setText(coinForView.getPrise());
+            coinPrise24HChange.setText(coinForView.getChangePercent24Hour());
+            coinPriseSum.setText(coinForView.getSum());
         }
     }
 }
