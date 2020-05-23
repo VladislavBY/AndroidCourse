@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import java.util.TimeZone;
+import java.util.Locale;
 
 import by.popkov.homework8.weather_api_data_classes.WeatherApiForecastListObject;
 
@@ -74,11 +74,8 @@ public class MainFragmentAdapter extends RecyclerView.Adapter<MainFragmentAdapte
             timeTextView.setText(convertTimeToLocalTimeZone(weatherApiForecastListObject.getDt() * 1000L));
         }
 
-        private CharSequence convertTimeToLocalTimeZone(Long time) {
-            Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-            calendar.setTime(new Date(time));
-            String dateTime = calendar.getTime().toString();
-            return dateTime.substring(0, 3) + " " + dateTime.subSequence(11, 16);
+        private String convertTimeToLocalTimeZone(Long time) {
+            return new SimpleDateFormat("EEE HH:mm", Locale.getDefault()).format(new Date(time));
         }
     }
 }
