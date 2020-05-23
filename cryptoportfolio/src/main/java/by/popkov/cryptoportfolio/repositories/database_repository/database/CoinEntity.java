@@ -9,8 +9,8 @@ import androidx.room.PrimaryKey;
 public class CoinEntity {
     @PrimaryKey
     @NonNull
-    String symbol;
-    Double number;
+    private String symbol;
+    private Double number;
 
     @NonNull
     public String getSymbol() {
