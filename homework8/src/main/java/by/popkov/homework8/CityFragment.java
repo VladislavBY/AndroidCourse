@@ -109,7 +109,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     public void OnPositiveButtonClick(final String cityName) {
         cityFragmentAdapter.addCityName(cityName);
         cityDatabase.getExecutorService()
-                .execute(() -> cityDatabase.getCityDao().insertCity(new CityEntity().setName(cityName)));
+                .execute(() -> cityDatabase.getCityDao().insertCity(new CityEntity(cityName)));
     }
 
     @Override

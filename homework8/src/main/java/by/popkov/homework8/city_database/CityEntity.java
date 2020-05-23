@@ -9,15 +9,14 @@ import androidx.room.PrimaryKey;
 public class CityEntity {
     @PrimaryKey
     @NonNull
-    String name;
+    private String name;
 
     @NonNull
     public String getName() {
         return name;
     }
 
-    public  CityEntity setName(@NonNull String name) {
+    public CityEntity(@NonNull String name) {
         this.name = name;
-        return this;
     }
 }
