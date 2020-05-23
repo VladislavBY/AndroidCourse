@@ -169,36 +169,32 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void addContactToDatabase(final Contact contact) {
-        contactDatabase.getExecutorService().execute(
-                () -> contactDatabase.getContactDao().insertContact(
-                        new ContactEntity.Builder(contact.getId())
-                                .setType(contact.getType().name())
-                                .setName(contact.getName())
-                                .setData(contact.getData())
-                                .setImageID(contact.getImageID())
-                                .build()
-                )
+        contactDatabase.getExecutorService().execute(() -> {
+                    ContactEntity contactEntity = new ContactEntity(contact.getId());
+                    contactEntity.setType(contact.getType().name());
+                    contactEntity.setName(contact.getName());
+                    contactEntity.setData(contact.getData());
+                    contactEntity.setImageID(contact.getImageID());
+                    contactDatabase.getContactDao().insertContact(contactEntity);
+                }
         );
     }
 
     private void updateContactToDatabase(final Contact contact) {
-        contactDatabase.getExecutorService().execute(
-                () -> contactDatabase.getContactDao().updateContact(
-                        new ContactEntity.Builder(contact.getId())
-                                .setType(contact.getType().name())
-                                .setName(contact.getName())
-                                .setData(contact.getData())
-                                .setImageID(contact.getImageID())
-                                .build()
-                )
+        contactDatabase.getExecutorService().execute(() -> {
+                    ContactEntity contactEntity = new ContactEntity(contact.getId());
+                    contactEntity.setType(contact.getType().name());
+                    contactEntity.setName(contact.getName());
+                    contactEntity.setData(contact.getData());
+                    contactEntity.setImageID(contact.getImageID());
+                    contactDatabase.getContactDao().updateContact(contactEntity);
+                }
         );
     }
 
     private void deleteContactFromDatabase(final Contact contact) {
         contactDatabase.getExecutorService().execute(
-                () -> contactDatabase.getContactDao().deleteContact(
-                        new ContactEntity.Builder(contact.getId()).build()
-                )
+                () -> contactDatabase.getContactDao().deleteContact(new ContactEntity(contact.getId()))
         );
     }
 

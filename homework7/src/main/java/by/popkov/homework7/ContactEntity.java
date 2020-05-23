@@ -9,21 +9,14 @@ import androidx.room.PrimaryKey;
 class ContactEntity {
     @PrimaryKey
     @NonNull
-    String id;
-    String name;
-    String data;
-    int imageID;
-    String type;
+    private String id;
+    private String name;
+    private String data;
+    private int imageID;
+    private String type;
 
-    ContactEntity() {
-    }
-
-    private ContactEntity(@NonNull String id, String name, String data, int imageID, String type) {
+    ContactEntity(@NonNull String id) {
         this.id = id;
-        this.name = name;
-        this.data = data;
-        this.imageID = imageID;
-        this.type = type;
     }
 
     @NonNull
@@ -47,39 +40,19 @@ class ContactEntity {
         return type;
     }
 
-    static class Builder {
-        private String id;
-        private String name;
-        private String data;
-        private int imageID;
-        private String type;
+    void setName(String name) {
+        this.name = name;
+    }
 
-        Builder(String id) {
-            this.id = id;
-        }
+    void setData(String data) {
+        this.data = data;
+    }
 
-        Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
+    void setImageID(int imageID) {
+        this.imageID = imageID;
+    }
 
-        Builder setData(String data) {
-            this.data = data;
-            return this;
-        }
-
-        Builder setImageID(int imageID) {
-            this.imageID = imageID;
-            return this;
-        }
-
-        Builder setType(String type) {
-            this.type = type;
-            return this;
-        }
-
-        ContactEntity build() {
-            return new ContactEntity(id, name, data, imageID, type);
-        }
+    void setType(String type) {
+        this.type = type;
     }
 }
