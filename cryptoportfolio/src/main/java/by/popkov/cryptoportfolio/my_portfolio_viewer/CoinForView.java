@@ -3,8 +3,6 @@ package by.popkov.cryptoportfolio.my_portfolio_viewer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import by.popkov.cryptoportfolio.Coin;
-
 class CoinForView {
     @NonNull
     private String symbol;
