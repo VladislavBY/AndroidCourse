@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio;
+package by.popkov.cryptoportfolio.domain;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

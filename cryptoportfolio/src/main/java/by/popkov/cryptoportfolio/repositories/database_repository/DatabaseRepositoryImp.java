@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
-import by.popkov.cryptoportfolio.Coin;
+import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDao;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDatabase;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinEntity;

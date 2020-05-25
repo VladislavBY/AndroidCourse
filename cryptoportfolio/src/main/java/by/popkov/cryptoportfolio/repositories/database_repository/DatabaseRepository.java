@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import by.popkov.cryptoportfolio.Coin;
+import by.popkov.cryptoportfolio.domain.Coin;
 
 public interface DatabaseRepository {
     LiveData<List<Coin>> getCoinList();

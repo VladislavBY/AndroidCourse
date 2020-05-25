@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import by.popkov.cryptoportfolio.Coin;
+import by.popkov.cryptoportfolio.domain.Coin;
 
 class ConverterJsonToCoin {
     @Nullable

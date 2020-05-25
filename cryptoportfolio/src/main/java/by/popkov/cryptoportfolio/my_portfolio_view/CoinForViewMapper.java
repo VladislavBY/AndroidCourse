@@ -1,8 +1,8 @@
-package by.popkov.cryptoportfolio.my_portfolio_viewer;
+package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import androidx.arch.core.util.Function;
 
-import by.popkov.cryptoportfolio.Coin;
+import by.popkov.cryptoportfolio.domain.Coin;
 
 public class CoinForViewMapper implements Function<Coin, CoinForView> {
     @Override

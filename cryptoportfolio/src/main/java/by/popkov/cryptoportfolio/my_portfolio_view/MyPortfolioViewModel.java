@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_viewer;
+package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
-import by.popkov.cryptoportfolio.Coin;
+import by.popkov.cryptoportfolio.domain.Coin;
 
 public class MyPortfolioViewModel extends ViewModel {
     private MutableLiveData<Coin> newCoinLiveData = new MutableLiveData<>();

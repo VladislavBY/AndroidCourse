@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_viewer;
+package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

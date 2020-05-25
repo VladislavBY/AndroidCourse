@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;

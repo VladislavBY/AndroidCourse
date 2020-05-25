@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio;
+package by.popkov.cryptoportfolio.settings_view;
 
 import androidx.fragment.app.Fragment;
 
