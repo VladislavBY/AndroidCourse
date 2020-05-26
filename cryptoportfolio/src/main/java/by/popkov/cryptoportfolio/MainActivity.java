@@ -56,8 +56,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showData() {
-        ApiRepository apiRepository = new ApiRepositoryImp();
-        apiRepository.getCoin(new Coin.Builder("BTC", 11.5).build(), "USD", coin -> textView.setText(String.format("%s %f %f %f", coin.getSymbol(), coin.getChange24Hour(), coin.getMarketCap(), coin.getMarket24Volume())),
-                throwable -> Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show());
     }
 }

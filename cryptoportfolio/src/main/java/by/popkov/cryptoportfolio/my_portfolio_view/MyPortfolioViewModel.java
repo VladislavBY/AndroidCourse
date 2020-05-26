@@ -1,13 +1,11 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +14,7 @@ import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class MyPortfolioViewModel extends AndroidViewModel {
 
@@ -42,6 +41,13 @@ public class MyPortfolioViewModel extends AndroidViewModel {
     public void setCoinForViewListLiveData(List<Coin> coinList) {
         List<CoinForView> coinForViews = coinList.stream().map(new CoinForViewMapper()).collect(Collectors.toList());
         coinForViewListMutableLiveData.setValue(coinForViews);
+    }
+
+    public void updateCoinList(Consumer<List<Coin>> coinListConsumer) {
+        List<Coin> currentCoinListDatabase = databaseRepository.getCoinList().getValue();
+        apiRepository.getCoinsList(currentCoinListDatabase, "USD")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(coinListConsumer);
     }
 
     public void saveCoin(String symbol, Double number) {
