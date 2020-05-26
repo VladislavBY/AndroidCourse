@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/coinSymbol"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:hint="@string/hint_symbol"
+        android:inputType="text"
+        android:minWidth="60dp" />
+
+    <EditText
+        android:id="@+id/coinNumber"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:hint="@string/hint_number"
+        android:inputType="number"
+        android:minWidth="100dp" />
+</LinearLayout>

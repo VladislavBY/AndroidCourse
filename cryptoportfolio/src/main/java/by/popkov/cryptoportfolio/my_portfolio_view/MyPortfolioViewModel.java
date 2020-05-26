@@ -40,8 +40,8 @@ public class MyPortfolioViewModel extends AndroidViewModel {
                 .subscribe(this::setCoinForViewListLiveData);
     }
 
-    void saveCoin(String symbol, Double number) {
-        databaseRepository.addNewCoin(new Coin.Builder(symbol, number).build());
+    void saveCoin(String symbol, String number) {
+        databaseRepository.addNewCoin(new Coin.Builder(symbol, Double.valueOf(number)).build());
     }
 
     private void connectToRepo() {

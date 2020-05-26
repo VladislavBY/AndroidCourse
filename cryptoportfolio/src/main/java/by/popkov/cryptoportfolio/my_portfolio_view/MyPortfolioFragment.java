@@ -7,9 +7,8 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private MyPortfolioViewModel myPortfolioViewModel;
 
     @Override
-    public void OnPositiveButtonClick(String symbol, Double number) {
+    public void OnPositiveButtonClick(String symbol, String number) {
         myPortfolioViewModel.saveCoin(symbol, number);
-
     }
 
     private void initViewModel() {

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Crypto Portfolio</string>
+    <string name="hint_number">Number</string>
+    <string name="hint_symbol">Symbol</string>
+    <string name="add_button">Add</string>
+    <string name="add_dialog_title">Add new coin</string>
 </resources>
