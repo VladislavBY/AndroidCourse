@@ -43,7 +43,7 @@ public class MyPortfolioViewModel extends AndroidViewModel {
         coinForViewListMutableLiveData.setValue(coinForViews);
     }
 
-    public void updateCoinList(Consumer<List<Coin>> coinListConsumer) {
+    public void currentCoinList(Consumer<List<Coin>> coinListConsumer) {
         List<Coin> currentCoinListDatabase = databaseRepository.getCoinList().getValue();
         apiRepository.getCoinsList(currentCoinListDatabase, "USD")
                 .observeOn(AndroidSchedulers.mainThread())
