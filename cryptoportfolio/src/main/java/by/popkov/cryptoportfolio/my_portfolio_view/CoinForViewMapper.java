@@ -1,6 +1,7 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
-import androidx.arch.core.util.Function;
+
+import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.domain.Coin;
 

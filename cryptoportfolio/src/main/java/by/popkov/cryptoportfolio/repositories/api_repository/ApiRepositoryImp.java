@@ -18,7 +18,7 @@ public class ApiRepositoryImp implements ApiRepository {
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     @Override
-    public void getCoinsList(List<Coin> rawCoinList, String fiatSymbol, Consumer<List<Coin>> onSuccess, Consumer<Throwable> onError) {
+    public void getCoinsList(List<Coin> rawCoinList, String fiatSymbol, Consumer<List<Coin>> onSuccess) {
         final Request request = makeRequestFromList(rawCoinList, fiatSymbol);
         Observable.create((ObservableOnSubscribe<Response>) emitter ->
                 emitter.onNext(okHttpClient.newCall(request).execute()))
@@ -30,7 +30,7 @@ public class ApiRepositoryImp implements ApiRepository {
     }
 
     @Override
-    public void getCoin(Coin rawCoin, String fiatSymbol, Consumer<Coin> onSuccess, Consumer<Throwable> onError) {
+    public void getCoin(Coin rawCoin, String fiatSymbol, Consumer<Coin> onSuccess) {
         Request request = new Request.Builder()
                 .url(String.format(API_KEY, rawCoin.getSymbol(), fiatSymbol))
                 .build();

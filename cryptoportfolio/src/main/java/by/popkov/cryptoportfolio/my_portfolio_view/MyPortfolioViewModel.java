@@ -1,30 +1,45 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
+import android.app.Application;
+import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import by.popkov.cryptoportfolio.domain.Coin;
+import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
+import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 
-public class MyPortfolioViewModel extends ViewModel {
-    private MutableLiveData<Coin> newCoinLiveData = new MutableLiveData<>();
-    private MutableLiveData<List<Coin>> coinListLiveData = new MutableLiveData<>();
+public class MyPortfolioViewModel extends AndroidViewModel {
 
-    public LiveData<Coin> getNewCoinLiveData() {
-        return newCoinLiveData;
+    private ApiRepository apiRepository;
+    private DatabaseRepository databaseRepository;
+    private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
+
+    public MyPortfolioViewModel(@NonNull Application application, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
+        super(application);
+        this.apiRepository = apiRepository;
+        this.databaseRepository = databaseRepository;
     }
 
-    public LiveData<List<Coin>> getCoinListLiveData() {
-        return coinListLiveData;
+    public LiveData<List<CoinForView>> fetchCoin() {
+        databaseRepository.getCoinList()
+                .observe(getApplication(), coins -> apiRepository.getCoinsList(coins, "USD", this::setCoinForViewListLiveData));
+        return coinForViewListMutableLiveData;
     }
 
-    public void setNewCoinLiveData(Coin newCoin) {
-        newCoinLiveData.setValue(newCoin);
+    public void setCoinForViewListLiveData(List<Coin> coinList) {
+        List<CoinForView> coinForViews = coinList.stream().map(new CoinForViewMapper()).collect(Collectors.toList());
+        coinForViewListMutableLiveData.setValue(coinForViews);
     }
 
-    public void setCoinListLiveData(List<Coin> coinList) {
-        coinListLiveData.setValue(coinList);
+    public void saveCoin(String symbol, Double number) {
+        databaseRepository.addNewCoin(new Coin.Builder(symbol, number).build());
     }
 }
