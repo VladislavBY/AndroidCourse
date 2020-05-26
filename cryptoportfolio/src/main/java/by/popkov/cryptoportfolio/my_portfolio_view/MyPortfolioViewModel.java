@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class MyPortfolioViewModel extends AndroidViewModel {
 
@@ -30,7 +31,11 @@ public class MyPortfolioViewModel extends AndroidViewModel {
 
     public LiveData<List<CoinForView>> fetchCoin() {
         databaseRepository.getCoinList()
-                .observe(getApplication(), coins -> apiRepository.getCoinsList(coins, "USD", this::setCoinForViewListLiveData));
+                .observe(
+                        getApplication(), coins -> apiRepository.getCoinsList(coins, "USD")
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(this::setCoinForViewListLiveData)
+                );
         return coinForViewListMutableLiveData;
     }
 
