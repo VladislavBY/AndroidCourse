@@ -22,35 +22,38 @@ public class MyPortfolioViewModel extends AndroidViewModel {
     private DatabaseRepository databaseRepository;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
 
-    public MyPortfolioViewModel(@NonNull Application application, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
+    MyPortfolioViewModel(@NonNull Application application, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
         super(application);
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
     }
 
-    public LiveData<List<CoinForView>> fetchCoin() {
-        databaseRepository.getCoinList()
-                .observe(
-                        getApplication(), coins -> apiRepository.getCoinsList(coins, "USD")
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(this::setCoinForViewListLiveData)
-                );
+    LiveData<List<CoinForView>> getCoinForViewListLiveData() {
+        connectToRepo();
         return coinForViewListMutableLiveData;
     }
 
-    public void setCoinForViewListLiveData(List<Coin> coinList) {
-        List<CoinForView> coinForViews = coinList.stream().map(new CoinForViewMapper()).collect(Collectors.toList());
-        coinForViewListMutableLiveData.setValue(coinForViews);
-    }
-
-    public void currentCoinList(Consumer<List<Coin>> coinListConsumer) {
+    void updateCoinList() {
         List<Coin> currentCoinListDatabase = databaseRepository.getCoinList().getValue();
         apiRepository.getCoinsList(currentCoinListDatabase, "USD")
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coinListConsumer);
+                .subscribe(this::setCoinForViewListLiveData);
     }
 
-    public void saveCoin(String symbol, Double number) {
+    void saveCoin(String symbol, Double number) {
         databaseRepository.addNewCoin(new Coin.Builder(symbol, number).build());
+    }
+
+    private void connectToRepo() {
+        databaseRepository.getCoinList().observe(
+                getApplication(), coins -> apiRepository.getCoinsList(coins, "USD")
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::setCoinForViewListLiveData)
+        );
+    }
+
+    private void setCoinForViewListLiveData(List<Coin> coinList) {
+        List<CoinForView> coinForViews = coinList.stream().map(new CoinForViewMapper()).collect(Collectors.toList());
+        coinForViewListMutableLiveData.setValue(coinForViews);
     }
 }

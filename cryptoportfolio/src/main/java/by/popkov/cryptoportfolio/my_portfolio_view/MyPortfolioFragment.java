@@ -16,7 +16,8 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         if (getActivity() != null) {
             myPortfolioViewModel = new ViewModelProvider(this, new MyPortfolioViewModelFactory(getActivity().getApplication()))
                     .get(MyPortfolioViewModel.class);
-            myPortfolioViewModel.fetchCoin().observe(getViewLifecycleOwner(), coinList -> adaptet.setCoinList(coinList));
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(getViewLifecycleOwner(),
+                    coinList -> adaptet.setCoinList(coinList));
         }
     }
 }
