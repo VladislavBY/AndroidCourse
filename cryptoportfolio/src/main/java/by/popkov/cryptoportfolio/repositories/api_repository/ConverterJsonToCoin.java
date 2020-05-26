@@ -13,20 +13,19 @@ import by.popkov.cryptoportfolio.domain.Coin;
 
 class ConverterJsonToCoin {
     @Nullable
-    static List<Coin> toCoinList(@NonNull List<String> symbols, @NonNull List<Double> numbers, @NonNull String fiatSymbol, @NonNull String json) {
+    static List<Coin> toCoinList(@NonNull List<Coin> rawCoinList, @NonNull String fiatSymbol, @NonNull String json) {
         List<Coin> coinsList = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONObject raw = jsonObject.getJSONObject("RAW");
-            for (int i = 0; i < symbols.size(); i++) {
-                String symbol = symbols.get(i);
+            for (int i = 0; i < rawCoinList.size(); i++) {
+                String symbol = rawCoinList.get(i).getSymbol();
                 JSONObject jsonCoin = raw.getJSONObject(symbol);
                 JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
-                Coin coin = new Coin.Builder(symbol)
+                Coin coin = new Coin.Builder(symbol, rawCoinList.get(i).getNumber())
                         .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
                         .setFiatSymbol(fiatSymbol)
                         .setPrise(fiat.getDouble("PRICE"))
-                        .setNumber(numbers.get(i))
                         .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                         .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
                         .setGlobalSupply(fiat.getDouble("SUPPLY"))
@@ -43,17 +42,16 @@ class ConverterJsonToCoin {
     }
 
     @Nullable
-    static Coin toCoin(@NonNull String symbol, @NonNull Double number, @NonNull String fiatSymbol, @NonNull String json) {
+    static Coin toCoin(@NonNull Coin rawCoin, @NonNull String fiatSymbol, @NonNull String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
             JSONObject raw = jsonObject.getJSONObject("RAW");
-            JSONObject jsonCoin = raw.getJSONObject(symbol);
+            JSONObject jsonCoin = raw.getJSONObject(rawCoin.getSymbol());
             JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
-            return new Coin.Builder(symbol)
+            return new Coin.Builder(rawCoin.getSymbol(), rawCoin.getNumber())
                     .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
                     .setFiatSymbol(fiatSymbol)
                     .setPrise(fiat.getDouble("PRICE"))
-                    .setNumber(number)
                     .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
                     .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
                     .setGlobalSupply(fiat.getDouble("SUPPLY"))

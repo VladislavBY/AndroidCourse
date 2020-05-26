@@ -32,8 +32,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
             coinEntityListLiveData = coinDao.getAll();
         }
         return Transformations.map(coinEntityListLiveData, coinEntityList -> coinEntityList.stream()
-                .map(coinEntity -> new Coin.Builder(coinEntity.getSymbol())
-                        .setNumber(coinEntity.getNumber())
+                .map(coinEntity -> new Coin.Builder(coinEntity.getSymbol(), coinEntity.getNumber())
                         .build()
                 ).collect(Collectors.toList())
         );

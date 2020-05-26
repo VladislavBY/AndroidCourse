@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 public class Coin {
     @NonNull
     private String symbol;
+    @NonNull
+    private Double number;
     @Nullable
     private String logoUrl;
     @Nullable
@@ -19,8 +21,6 @@ public class Coin {
     @Nullable
     private Double change24Hour;
     @Nullable
-    private Double number;
-    @Nullable
     private Double globalSupply;
     @Nullable
     private Double marketCap;
@@ -30,6 +30,11 @@ public class Coin {
     @NonNull
     public String getSymbol() {
         return symbol;
+    }
+
+    @NonNull
+    public Double getNumber() {
+        return number;
     }
 
     @Nullable
@@ -50,11 +55,6 @@ public class Coin {
     @Nullable
     public Double getChangePercent24Hour() {
         return changePercent24Hour;
-    }
-
-    @Nullable
-    public Double getNumber() {
-        return number;
     }
 
     @Nullable
@@ -84,7 +84,7 @@ public class Coin {
             @Nullable Double prise,
             @Nullable Double changePercent24Hour,
             @Nullable Double change24Hour,
-            @Nullable Double number,
+            @NotNull Double number,
             @Nullable Double globalSupply,
             @Nullable Double marketCap,
             @Nullable Double market24Volume
@@ -104,6 +104,8 @@ public class Coin {
     public static class Builder {
         @NonNull
         private String symbol;
+        @NonNull
+        private Double number;
         @Nullable
         private String logoUrl;
         @Nullable
@@ -114,8 +116,6 @@ public class Coin {
         private Double changePercent24Hour;
         @Nullable
         private Double change24Hour;
-        @Nullable
-        private Double number;
         @Nullable
         private Double globalSupply;
         @Nullable
@@ -135,11 +135,6 @@ public class Coin {
 
         public Builder setChangePercent24Hour(@Nullable Double changePercent24Hour) {
             this.changePercent24Hour = changePercent24Hour;
-            return this;
-        }
-
-        public Builder setNumber(@Nullable Double number) {
-            this.number = number;
             return this;
         }
 
@@ -168,8 +163,9 @@ public class Coin {
             return this;
         }
 
-        public Builder(@NotNull String symbol) {
+        public Builder(@NotNull String symbol, @NonNull Double number) {
             this.symbol = symbol;
+            this.number = number;
         }
 
         @NonNull

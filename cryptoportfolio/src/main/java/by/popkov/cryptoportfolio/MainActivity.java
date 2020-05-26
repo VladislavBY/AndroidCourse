@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseRepository databaseRepository = new DatabaseRepositoryImp(this);
         LiveData<List<Coin>> coinList = databaseRepository.getCoinList();
         coinList.observe(this, coinList1 -> Toast.makeText(this, coinList1.get(coinList1.size()-1).getSymbol(), Toast.LENGTH_LONG).show());
-        databaseRepository.addNewCoin(new Coin.Builder("TEST").build());
+        databaseRepository.addNewCoin(new Coin.Builder("TEST", 0.0).build());
     }
 
     private void liveDataTest() {
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showData() {
         ApiRepository apiRepository = new ApiRepositoryImp();
-        apiRepository.getCoin("BTC", 10.0, "USD", coin -> textView.setText(String.format("%s %f %f %f", coin.getSymbol(), coin.getChange24Hour(), coin.getMarketCap(), coin.getMarket24Volume())),
+        apiRepository.getCoin(new Coin.Builder("BTC", 11.5).build(), "USD", coin -> textView.setText(String.format("%s %f %f %f", coin.getSymbol(), coin.getChange24Hour(), coin.getMarketCap(), coin.getMarket24Volume())),
                 throwable -> Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show());
     }
 }
