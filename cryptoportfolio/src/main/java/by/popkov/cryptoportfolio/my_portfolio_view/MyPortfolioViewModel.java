@@ -36,6 +36,10 @@ public class MyPortfolioViewModel extends ViewModel {
         return coinForViewListMutableLiveData;
     }
 
+    MutableLiveData<PortfolioInfo> getPortfolioInfoMutableLiveData() {
+        return portfolioInfoMutableLiveData;
+    }
+
     void saveCoin(String symbol, String number) {
         databaseRepository.addNewCoin(new Coin.Builder(symbol, Double.valueOf(number)).build());
     }
