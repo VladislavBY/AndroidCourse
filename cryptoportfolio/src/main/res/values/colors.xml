@@ -3,4 +3,8 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="yellow">#FFC107</color>
+    <color name="tool_bar_background">#FFC107</color>
+    <color name="fab_background_color">#FFC107</color>
+    <color name="fab_icon_color">#FFFFFF</color>
 </resources>
