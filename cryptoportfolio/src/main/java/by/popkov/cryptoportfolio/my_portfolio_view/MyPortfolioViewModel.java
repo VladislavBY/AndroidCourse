@@ -4,8 +4,10 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,15 +17,16 @@ import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
-public class MyPortfolioViewModel extends AndroidViewModel {
+public class MyPortfolioViewModel extends ViewModel {
 
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
+    private LifecycleOwner lifecycleOwner;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfo> portfolioInfoMutableLiveData = new MutableLiveData<>();
 
-    MyPortfolioViewModel(@NonNull Application application, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
-        super(application);
+    MyPortfolioViewModel(LifecycleOwner lifecycleOwner, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
+        this.lifecycleOwner = lifecycleOwner;
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
     }
@@ -49,7 +52,7 @@ public class MyPortfolioViewModel extends AndroidViewModel {
 
     private void connectToRepo() {
         databaseRepository.getCoinList().observe(
-                getApplication(), coins -> apiRepository.getCoinsList(coins, "USD")
+                lifecycleOwner, coins -> apiRepository.getCoinsList(coins, "USD")
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(coinList -> {
                             setCoinForViewListLiveData(coinList);

@@ -18,7 +18,7 @@ import by.popkov.cryptoportfolio.R;
 
 public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHolder> {
 
-    interface OnCoinListClickListener {
+    public interface OnCoinListClickListener {
         void onClick(CoinForView coinForView);
     }
 
@@ -66,7 +66,8 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
         return new ItemHolder(
                 LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_coin_list, parent, false),
-                onCoinListClickListener
+                onCoinListClickListener,
+                itemList
         );
     }
 
@@ -80,7 +81,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
         return (itemList != null) ? itemList.size() : 0;
     }
 
-    class ItemHolder extends RecyclerView.ViewHolder {
+    static class ItemHolder extends RecyclerView.ViewHolder {
         private ImageView coinIcon;
         private TextView coinSymbol;
         private TextView fiatSymbol;
@@ -88,7 +89,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
         private TextView coinPrise24HChange;
         private TextView coinPriseSum;
 
-        ItemHolder(@NonNull View itemView, @NonNull OnCoinListClickListener onCoinListClickListener) {
+        ItemHolder(@NonNull View itemView, @NonNull OnCoinListClickListener onCoinListClickListener, List<CoinForView> itemList) {
             super(itemView);
             coinIcon = itemView.findViewById(R.id.coinIcon);
             coinSymbol = itemView.findViewById(R.id.coinSymbol);

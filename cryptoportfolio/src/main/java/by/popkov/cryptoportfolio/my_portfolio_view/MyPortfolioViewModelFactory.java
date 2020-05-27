@@ -1,9 +1,11 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -13,17 +15,19 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepositoryImp;
 
 public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
-    private Application application;
+    private LifecycleOwner lifecycleOwner;
+    private Context context;
 
-    public MyPortfolioViewModelFactory(Application application) {
-        this.application = application;
+    public MyPortfolioViewModelFactory(LifecycleOwner lifecycleOwner, Context context) {
+        this.lifecycleOwner = lifecycleOwner;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(MyPortfolioViewModel.class)) {
-            return (T) new MyPortfolioViewModel(application, getApiRepository(), getDatabaseRepository());
+            return (T) new MyPortfolioViewModel(lifecycleOwner, getApiRepository(), getDatabaseRepository());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
@@ -33,6 +37,6 @@ public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private DatabaseRepository getDatabaseRepository() {
-        return new DatabaseRepositoryImp(application);
+        return new DatabaseRepositoryImp(context);
     }
 }
