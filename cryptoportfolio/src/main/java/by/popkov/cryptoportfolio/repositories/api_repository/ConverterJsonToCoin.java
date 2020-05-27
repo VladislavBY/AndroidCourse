@@ -12,6 +12,9 @@ import java.util.List;
 import by.popkov.cryptoportfolio.domain.Coin;
 
 class ConverterJsonToCoin {
+    private ConverterJsonToCoin() {
+    }
+
     @Nullable
     static List<Coin> toCoinList(@NonNull List<Coin> rawCoinList, @NonNull String fiatSymbol, @NonNull String json) {
         List<Coin> coinsList = new ArrayList<>();
