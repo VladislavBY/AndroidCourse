@@ -17,12 +17,15 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showMyPortfolioFragment();
+        if (savedInstanceState == null) {
+            showMyPortfolioFragment();
+        }
+
     }
 
     private void showMyPortfolioFragment() {
         getSupportFragmentManager().beginTransaction()
-                .add(new MyPortfolioFragment(), MyPortfolioFragment.TAG)
+                .add(R.id.fragmentContainer, new MyPortfolioFragment(), MyPortfolioFragment.TAG)
                 .commit();
     }
 }

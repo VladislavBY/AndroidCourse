@@ -41,7 +41,7 @@ class ConverterJsonToCoin {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return coinsList;
     }
 
     @Nullable

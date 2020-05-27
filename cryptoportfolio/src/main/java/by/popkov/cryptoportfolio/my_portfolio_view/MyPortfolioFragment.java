@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
@@ -22,6 +24,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private Context context;
     private MyPortfolioViewModel myPortfolioViewModel;
     private RecyclerView coinListRecyclerView;
+    private FloatingActionButton addCoinFab;
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
@@ -50,6 +53,13 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView(view);
         initViewModel();
+        addCoinFab = view.findViewById(R.id.addCoinFab);
+        addCoinFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddNewCoinDialogFragment().show(getChildFragmentManager(), "TAG");
+            }
+        });
     }
 
     private void initRecyclerView(View view) {
