@@ -18,6 +18,8 @@ public class AddNewCoinDialogFragment extends DialogFragment {
         void OnPositiveButtonClick(final String symbol, final String number);
     }
 
+    static final String TAG = "AddNewCoinDialogFragment";
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

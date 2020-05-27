@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
@@ -54,12 +56,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         initRecyclerView(view);
         initViewModel();
         addCoinFab = view.findViewById(R.id.addCoinFab);
-        addCoinFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AddNewCoinDialogFragment().show(getChildFragmentManager(), "TAG");
-            }
-        });
+        addCoinFab.setOnClickListener(v -> new AddNewCoinDialogFragment().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
     }
 
     private void initRecyclerView(View view) {
@@ -74,8 +71,12 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         if (getActivity() != null) {
             myPortfolioViewModel = new ViewModelProvider(this, new MyPortfolioViewModelFactory(getViewLifecycleOwner(), context))
                     .get(MyPortfolioViewModel.class);
-            myPortfolioViewModel.getCoinForViewListLiveData().observe(getViewLifecycleOwner(), coinForViews ->
-                    coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews)));
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(getViewLifecycleOwner(), new Observer<List<CoinForView>>() {
+                @Override
+                public void onChanged(List<CoinForView> coinForViews) {
+                    coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews));
+                }
+            });
         }
     }
 
