@@ -11,8 +11,7 @@ class PortfolioInfoConverter {
     static PortfolioInfo convert(List<Coin> coinList) {
         double sum = 0;
         double change24Hour = 0;
-        double changePercent24Hour = 0;
-        int change24Color = 0;
+        double changePercent24Hour;
         for (Coin coin : coinList) {
             Double coinPrise = coin.getPrise();
             Double coinNumber = coin.getNumber();

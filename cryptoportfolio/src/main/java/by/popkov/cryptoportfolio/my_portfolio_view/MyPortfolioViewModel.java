@@ -64,7 +64,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
                 .subscribe(coinList -> {
                     setCoinForViewListLiveData(coinList);
                     setPortfolioInfoForViewMutableLiveData(coinList);
-                });
+                }, this::setThrowableMutableLiveData);
     }
 
     private void connectToRepo() {
@@ -74,7 +74,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
                         .subscribe(coinList -> {
                             setCoinForViewListLiveData(coinList);
                             setPortfolioInfoForViewMutableLiveData(coinList);
-                        })
+                        }, this::setThrowableMutableLiveData)
         );
     }
 
