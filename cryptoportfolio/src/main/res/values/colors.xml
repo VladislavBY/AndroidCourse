@@ -6,5 +6,7 @@
     <color name="yellow">#FFC107</color>
     <color name="tool_bar_background">#FFC107</color>
     <color name="fab_background_color">#FFC107</color>
-    <color name="fab_icon_color">#FFFFFF</color>
+    <color name="fab_icon_color">#000000</color>
+    <color name="tool_bar_element_color">#000000</color>
+    <color name="text_color">#000000</color>
 </resources>
