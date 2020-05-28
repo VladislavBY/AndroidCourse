@@ -5,19 +5,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
@@ -28,6 +28,10 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private MyPortfolioViewModel myPortfolioViewModel;
     private RecyclerView coinListRecyclerView;
     private FloatingActionButton addCoinFab;
+    private TextView sumTextView;
+    private TextView change24PrsTextView;
+    private TextView change24TextView;
+
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
@@ -55,9 +59,16 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView(view);
+        initViews(view);
         initViewModel();
+    }
+
+    private void initViews(View view) {
         addCoinFab = view.findViewById(R.id.addCoinFab);
         addCoinFab.setOnClickListener(v -> new AddNewCoinDialogFragment().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        sumTextView = view.findViewById(R.id.sumTextView);
+        change24PrsTextView = view.findViewById(R.id.change24PrsTextView);
+        change24TextView = view.findViewById(R.id.change24TextView);
     }
 
     private void initRecyclerView(View view) {
@@ -70,12 +81,24 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
 
     private void initViewModel() {
         if (getActivity() != null) {
-            myPortfolioViewModel = new ViewModelProvider(this, new MyPortfolioViewModelFactory(getViewLifecycleOwner(), context))
+            LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
+            myPortfolioViewModel = new ViewModelProvider(
+                    this, new MyPortfolioViewModelFactory(getActivity().getApplication(), viewLifecycleOwner, context)
+            )
                     .get(MyPortfolioViewModel.class);
-            myPortfolioViewModel.getCoinForViewListLiveData().observe(getViewLifecycleOwner(), coinForViews ->
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews ->
                     coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews)));
-            myPortfolioViewModel.getThrowableMutableLiveData().observe(getViewLifecycleOwner(), throwable ->
+            myPortfolioViewModel.getThrowableMutableLiveData().observe(viewLifecycleOwner, throwable ->
                     Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_LONG).show());
+            myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
+                    portfolioInfoForView -> {
+                        sumTextView.setText(portfolioInfoForView.getSum());
+                        change24PrsTextView.setText(portfolioInfoForView.getChangePercent24Hour());
+                        change24PrsTextView.setTextColor(portfolioInfoForView.getChange24Color());
+                        change24TextView.setText(portfolioInfoForView.getChange24Hour());
+                        change24TextView.setTextColor(portfolioInfoForView.getChange24Color());
+                    }
+            );
         }
     }
 

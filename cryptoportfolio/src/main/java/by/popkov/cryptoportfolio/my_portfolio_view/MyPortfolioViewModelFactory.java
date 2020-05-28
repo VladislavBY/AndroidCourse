@@ -17,8 +17,9 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     private LifecycleOwner lifecycleOwner;
     private Context context;
+    private Application application;
 
-    public MyPortfolioViewModelFactory(LifecycleOwner lifecycleOwner, Context context) {
+    public MyPortfolioViewModelFactory(Application application, LifecycleOwner lifecycleOwner, Context context) {
         this.lifecycleOwner = lifecycleOwner;
         this.context = context;
     }
@@ -27,7 +28,7 @@ public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(MyPortfolioViewModel.class)) {
-            return (T) new MyPortfolioViewModel(lifecycleOwner, getApiRepository(), getDatabaseRepository());
+            return (T) new MyPortfolioViewModel(application, lifecycleOwner, getApiRepository(), getDatabaseRepository());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

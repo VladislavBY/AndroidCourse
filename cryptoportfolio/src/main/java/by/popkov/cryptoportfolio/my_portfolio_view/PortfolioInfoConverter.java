@@ -4,11 +4,11 @@ import java.util.List;
 
 import by.popkov.cryptoportfolio.domain.Coin;
 
-public class CoinListToPortfolioInfoConverter {
-    private CoinListToPortfolioInfoConverter() {
+class PortfolioInfoConverter {
+    private PortfolioInfoConverter() {
     }
 
-    static public PortfolioInfo convert(List<Coin> coinList) {
+    static PortfolioInfo convert(List<Coin> coinList) {
         double sum = 0;
         double change24Hour = 0;
         double changePercent24Hour = 0;
@@ -25,13 +25,6 @@ public class CoinListToPortfolioInfoConverter {
             }
         }
         changePercent24Hour = change24Hour / sum * 100;
-        if (changePercent24Hour > 0) {
-            change24Color = Colors.COLOR_UP;
-        } else if (changePercent24Hour < 0) {
-            change24Color = Colors.COLOR_DOWN;
-        } else if (changePercent24Hour == 0) {
-            change24Color = Colors.COLOR_NEUTRAL;
-        }
-        return new PortfolioInfo(sum, changePercent24Hour, change24Hour, change24Color);
+        return new PortfolioInfo(sum, changePercent24Hour, change24Hour);
     }
 }
