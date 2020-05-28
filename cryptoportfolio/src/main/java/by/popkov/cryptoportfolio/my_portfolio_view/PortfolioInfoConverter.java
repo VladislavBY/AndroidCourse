@@ -24,7 +24,7 @@ class PortfolioInfoConverter {
                 change24Hour += coinSumChange;
             }
         }
-        changePercent24Hour = change24Hour / sum * 100;
+        changePercent24Hour = change24Hour / (sum - change24Hour) * 100;
         return new PortfolioInfo(sum, changePercent24Hour, change24Hour);
     }
 }
