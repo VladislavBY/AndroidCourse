@@ -3,6 +3,7 @@ package by.popkov.cryptoportfolio.repositories.api_repository;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +16,7 @@ class ConverterJsonToCoin {
     private ConverterJsonToCoin() {
     }
 
+    @NonNull
     static List<Coin> toCoinList(@NonNull List<Coin> rawCoinList, @NonNull String fiatSymbol, @NonNull String json) {
         List<Coin> coinsList = new ArrayList<>();
         try {
@@ -47,7 +49,7 @@ class ConverterJsonToCoin {
         return coinsList;
     }
 
-    @Nullable
+    @NotNull
     static Coin toCoin(@NonNull Coin rawCoin, @NonNull String fiatSymbol, @NonNull String json) {
         try {
             JSONObject jsonObject = new JSONObject(json);
@@ -67,6 +69,6 @@ class ConverterJsonToCoin {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        throw new IllegalArgumentException("Uncorrected coin symbol");
     }
 }

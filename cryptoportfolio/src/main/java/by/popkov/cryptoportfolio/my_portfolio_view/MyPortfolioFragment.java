@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,12 +72,10 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         if (getActivity() != null) {
             myPortfolioViewModel = new ViewModelProvider(this, new MyPortfolioViewModelFactory(getViewLifecycleOwner(), context))
                     .get(MyPortfolioViewModel.class);
-            myPortfolioViewModel.getCoinForViewListLiveData().observe(getViewLifecycleOwner(), new Observer<List<CoinForView>>() {
-                @Override
-                public void onChanged(List<CoinForView> coinForViews) {
-                    coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews));
-                }
-            });
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(getViewLifecycleOwner(), coinForViews ->
+                    coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews)));
+            myPortfolioViewModel.getThrowableMutableLiveData().observe(getViewLifecycleOwner(), throwable ->
+                    Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_LONG).show());
         }
     }
 
@@ -84,5 +83,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     public void onDetach() {
         super.onDetach();
         onCoinListClickListenerOptional = Optional.empty();
+        context = null;
     }
 }
