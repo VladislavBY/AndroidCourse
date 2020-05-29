@@ -1,6 +1,7 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,9 +35,10 @@ public class AddNewCoinDialogFragment extends DialogFragment {
                     .setPositiveButton(R.string.add_button, (dialog, which) ->
                             addNewCoinDialogListener.OnPositiveButtonClick(coinSymbol.getText().toString(),
                                     coinNumber.getText().toString()))
-                    .setNeutralButton(R.string.cancel_button, (dialog, which) -> {})
+                    .setNeutralButton(R.string.cancel_button, (dialog, which) -> {
+                    })
                     .create();
         }
-        return new AlertDialog.Builder(getContext()).create();
+        throw new ActivityNotFoundException("Parent Fragment mast implement AddNewCoinDialogListener");
     }
 }
