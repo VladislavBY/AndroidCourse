@@ -34,6 +34,7 @@ public class AddNewCoinDialogFragment extends DialogFragment {
                     .setPositiveButton(R.string.add_button, (dialog, which) ->
                             addNewCoinDialogListener.OnPositiveButtonClick(coinSymbol.getText().toString(),
                                     coinNumber.getText().toString()))
+                    .setNeutralButton(R.string.cancel_button, (dialog, which) -> {})
                     .create();
         }
         return new AlertDialog.Builder(getContext()).create();

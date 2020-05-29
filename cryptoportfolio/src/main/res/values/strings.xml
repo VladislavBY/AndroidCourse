@@ -3,6 +3,7 @@
     <string name="hint_number">Number</string>
     <string name="hint_symbol">Symbol</string>
     <string name="add_button">Add</string>
+    <string name="cancel_button">Cancel</string>
     <string name="add_dialog_title">Add new coin</string>
     <string name="my_portfolio_head">PortfolioInfo</string>
     <string name="my_portfolio_toolbar_text">My Portfolio</string>
