@@ -46,7 +46,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
         return coinForViewListMutableLiveData;
     }
 
-    public LiveData<PortfolioInfoForView> getPortfolioInfoForViewLiveData() {
+    LiveData<PortfolioInfoForView> getPortfolioInfoForViewLiveData() {
         return portfolioInfoForViewMutableLiveData;
     }
 
