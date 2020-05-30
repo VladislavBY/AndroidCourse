@@ -1,6 +1,7 @@
 package by.popkov.cryptoportfolio.domain;
 
-import androidx.arch.core.util.Function;
+
+import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinEntity;
 

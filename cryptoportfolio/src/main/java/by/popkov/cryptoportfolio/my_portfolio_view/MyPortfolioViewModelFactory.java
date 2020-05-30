@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import by.popkov.cryptoportfolio.domain.CoinMapper;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
@@ -19,7 +20,7 @@ public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     private Context context;
     private Application application;
 
-    public MyPortfolioViewModelFactory(Application application, LifecycleOwner lifecycleOwner, Context context) {
+    MyPortfolioViewModelFactory(Application application, LifecycleOwner lifecycleOwner, Context context) {
         this.lifecycleOwner = lifecycleOwner;
         this.context = context;
     }
@@ -38,6 +39,6 @@ public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     }
 
     private DatabaseRepository getDatabaseRepository() {
-        return new DatabaseRepositoryImp(context);
+        return new DatabaseRepositoryImp(context, new CoinMapper());
     }
 }

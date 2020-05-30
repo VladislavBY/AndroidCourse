@@ -8,6 +8,7 @@ import androidx.lifecycle.Transformations;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import by.popkov.cryptoportfolio.domain.Coin;
@@ -19,11 +20,13 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     private CoinDao coinDao;
     private ExecutorService executorService;
     private LiveData<List<CoinEntity>> coinEntityListLiveData;
+    private Function<CoinEntity, Coin> mapper;
 
-    public DatabaseRepositoryImp(@NonNull final Context context) {
+    public DatabaseRepositoryImp(@NonNull final Context context, Function<CoinEntity, Coin> mapper) {
         CoinDatabase coinDatabase = CoinDatabase.getInstance(context);
-        coinDao = coinDatabase.getCoinDao();
-        executorService = coinDatabase.getExecutorService();
+        this.coinDao = coinDatabase.getCoinDao();
+        this.executorService = coinDatabase.getExecutorService();
+        this.mapper = mapper;
     }
 
     @Override
@@ -31,11 +34,10 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
         if (coinEntityListLiveData == null) {
             coinEntityListLiveData = coinDao.getAll();
         }
-        return Transformations.map(coinEntityListLiveData, coinEntityList -> coinEntityList.stream()
-                .map(coinEntity -> new Coin.Builder(coinEntity.getSymbol(), coinEntity.getNumber())
-                        .build()
-                ).collect(Collectors.toList())
-        );
+        return Transformations.map(coinEntityListLiveData, input -> input
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList()));
     }
 
     @Override
