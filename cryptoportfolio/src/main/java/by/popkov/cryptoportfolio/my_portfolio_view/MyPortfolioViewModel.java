@@ -22,6 +22,15 @@ class MyPortfolioViewModel extends AndroidViewModel {
     private LifecycleOwner lifecycleOwner;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Throwable> throwableMutableLiveData = new MutableLiveData<>();
+
+    MyPortfolioViewModel(Application application, LifecycleOwner lifecycleOwner, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
+        super(application);
+        this.lifecycleOwner = lifecycleOwner;
+        this.apiRepository = apiRepository;
+        this.databaseRepository = databaseRepository;
+        connectToRepo();
+    }
 
     LiveData<Throwable> getThrowableMutableLiveData() {
         return throwableMutableLiveData;
@@ -31,18 +40,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
         this.throwableMutableLiveData.setValue(throwable);
     }
 
-    private MutableLiveData<Throwable> throwableMutableLiveData = new MutableLiveData<>();
-
-
-    MyPortfolioViewModel(Application application, LifecycleOwner lifecycleOwner, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
-        super(application);
-        this.lifecycleOwner = lifecycleOwner;
-        this.apiRepository = apiRepository;
-        this.databaseRepository = databaseRepository;
-    }
-
     LiveData<List<CoinForView>> getCoinForViewListLiveData() {
-        connectToRepo();
         return coinForViewListMutableLiveData;
     }
 
