@@ -51,7 +51,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
     }
 
     void saveCoin(String symbol, String number) {
-        Coin coin = new Coin.Builder(symbol.toUpperCase(), Double.valueOf(number)).build();
+        Coin coin = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coin, "USD")
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coin1 -> databaseRepository.addNewCoin(coin), this::setThrowableMutableLiveData);
