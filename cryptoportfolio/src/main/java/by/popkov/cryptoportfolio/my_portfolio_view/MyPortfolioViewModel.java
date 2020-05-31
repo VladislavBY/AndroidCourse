@@ -37,11 +37,11 @@ class MyPortfolioViewModel extends AndroidViewModel {
         this.throwableMutableLiveData.setValue(throwable);
     }
 
-    LiveData<List<CoinForView>> getCoinForViewListLiveData(LifecycleOwner lifecycleOwner) {
+    LiveData<List<CoinForView>> getCoinForViewListLiveData() {
         return coinForViewListMutableLiveData;
     }
 
-    LiveData<PortfolioInfoForView> getPortfolioInfoForViewLiveData(LifecycleOwner lifecycleOwner) {
+    LiveData<PortfolioInfoForView> getPortfolioInfoForViewLiveData() {
         return portfolioInfoForViewMutableLiveData;
     }
 
