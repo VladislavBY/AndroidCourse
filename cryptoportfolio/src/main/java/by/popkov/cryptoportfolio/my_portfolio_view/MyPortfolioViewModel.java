@@ -19,17 +19,14 @@ class MyPortfolioViewModel extends AndroidViewModel {
 
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
-    private LifecycleOwner lifecycleOwner;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Throwable> throwableMutableLiveData = new MutableLiveData<>();
 
-    MyPortfolioViewModel(Application application, LifecycleOwner lifecycleOwner, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
+    MyPortfolioViewModel(Application application, ApiRepository apiRepository, DatabaseRepository databaseRepository) {
         super(application);
-        this.lifecycleOwner = lifecycleOwner;
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
-        connectToRepo();
     }
 
     LiveData<Throwable> getThrowableMutableLiveData() {
@@ -40,11 +37,11 @@ class MyPortfolioViewModel extends AndroidViewModel {
         this.throwableMutableLiveData.setValue(throwable);
     }
 
-    LiveData<List<CoinForView>> getCoinForViewListLiveData() {
+    LiveData<List<CoinForView>> getCoinForViewListLiveData(LifecycleOwner lifecycleOwner) {
         return coinForViewListMutableLiveData;
     }
 
-    LiveData<PortfolioInfoForView> getPortfolioInfoForViewLiveData() {
+    LiveData<PortfolioInfoForView> getPortfolioInfoForViewLiveData(LifecycleOwner lifecycleOwner) {
         return portfolioInfoForViewMutableLiveData;
     }
 
@@ -65,7 +62,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
                 }, this::setThrowableMutableLiveData);
     }
 
-    private void connectToRepo() {
+    void connectToRepo(LifecycleOwner lifecycleOwner) {
         databaseRepository.getCoinList().observe(
                 lifecycleOwner, coins -> apiRepository.getCoinsList(coins, "USD")
                         .observeOn(AndroidSchedulers.mainThread())
@@ -75,6 +72,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
                         }, this::setThrowableMutableLiveData)
         );
     }
+
 
     private void setCoinForViewListLiveData(List<Coin> coinList) {
         List<CoinForView> coinForViews = coinList.stream().map(new CoinForViewMapper()).collect(Collectors.toList());
