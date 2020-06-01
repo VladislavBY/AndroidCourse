@@ -88,11 +88,11 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
                     this, new MyPortfolioViewModelFactory(getActivity().getApplication(), context))
                     .get(MyPortfolioViewModel.class);
             myPortfolioViewModel.connectToRepo(viewLifecycleOwner);
-            myPortfolioViewModel.getCoinForViewListLiveData(viewLifecycleOwner).observe(viewLifecycleOwner, coinForViews ->
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews ->
                     coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews)));
             myPortfolioViewModel.getThrowableMutableLiveData().observe(viewLifecycleOwner, throwable ->
                     Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_LONG).show());
-            myPortfolioViewModel.getPortfolioInfoForViewLiveData(viewLifecycleOwner).observe(viewLifecycleOwner,
+            myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
                     portfolioInfoForView -> {
                         sumTextView.setText(portfolioInfoForView.getSum());
                         change24PrsTextView.setText(portfolioInfoForView.getChangePercent24Hour());
