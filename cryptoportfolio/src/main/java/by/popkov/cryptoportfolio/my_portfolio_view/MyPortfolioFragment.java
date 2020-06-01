@@ -60,9 +60,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         super.onViewCreated(view, savedInstanceState);
         initRecyclerView(view);
         initViews(view);
-        LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
         initViewModel();
-
     }
 
     private void initViews(View view) {

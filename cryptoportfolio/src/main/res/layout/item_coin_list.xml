@@ -5,8 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/defaultMargin"
-    android:layout_marginEnd="@dimen/defaultMargin"
-    android:layout_marginBottom="@dimen/defaultMargin">
+    android:layout_marginEnd="@dimen/defaultMargin">
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/text_color"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/coinIcon"
@@ -14,7 +22,7 @@
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/divider"
         tools:src="@drawable/ic_account_balance_wallet_black_24dp" />
 
     <TextView
@@ -25,7 +33,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/coinIcon"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider"
         tools:text="BTCE" />
 
     <TextView
@@ -35,7 +43,6 @@
         android:layout_marginStart="8dp"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/coinIcon"
         app:layout_constraintTop_toBottomOf="@id/coinSymbol"
         tools:text="/ USD" />
@@ -48,7 +55,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/coinPrise24HChange"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider"
         tools:text="90000$" />
 
     <TextView
@@ -58,7 +65,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/divider"
         tools:text="+21,1%" />
 
     <TextView
@@ -68,8 +75,8 @@
         android:layout_marginStart="8dp"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/coinPrise24HChange"
         tools:text="SUM: 1000000$" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
