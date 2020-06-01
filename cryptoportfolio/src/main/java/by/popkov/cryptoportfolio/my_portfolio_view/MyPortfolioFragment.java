@@ -15,6 +15,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -61,6 +62,15 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         initRecyclerView(view);
         initViews(view);
         initViewModel();
+        initSwipeRefreshLayout(view);
+    }
+
+    private void initSwipeRefreshLayout(View view) {
+        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(() -> {
+            myPortfolioViewModel.updateCoinList();
+            refreshLayout.setRefreshing(false);
+        });
     }
 
     private void initViews(View view) {

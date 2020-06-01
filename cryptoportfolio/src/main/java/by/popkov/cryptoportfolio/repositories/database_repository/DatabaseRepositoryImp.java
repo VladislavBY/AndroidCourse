@@ -7,7 +7,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -32,9 +35,17 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     @Override
     public LiveData<List<Coin>> getCoinList() {
         if (coinEntityListLiveData == null) {
-            coinEntityListLiveData = coinDao.getAll();
+            coinEntityListLiveData = coinDao.getAllLiveData();
         }
         return Transformations.map(coinEntityListLiveData, input -> input
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList()));
+    }
+
+    @Override
+    public Future<List<Coin>> getCoinListFuture() {
+        return executorService.submit(() -> coinDao.getAll()
                 .stream()
                 .map(mapper)
                 .collect(Collectors.toList()));

@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import by.popkov.cryptoportfolio.domain.Coin;
@@ -53,13 +54,17 @@ class MyPortfolioViewModel extends AndroidViewModel {
     }
 
     void updateCoinList() {
-        List<Coin> currentCoinListDatabase = databaseRepository.getCoinList().getValue();
-        apiRepository.getCoinsList(currentCoinListDatabase, "USD")
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coinList -> {
-                    setCoinForViewListLiveData(coinList);
-                    setPortfolioInfoForViewMutableLiveData(coinList);
-                }, this::setThrowableMutableLiveData);
+        try {
+            List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();
+            apiRepository.getCoinsList(currentCoinListDatabase, "USD")
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(coinList -> {
+                        setCoinForViewListLiveData(coinList);
+                        setPortfolioInfoForViewMutableLiveData(coinList);
+                    }, this::setThrowableMutableLiveData);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     void connectToRepo(LifecycleOwner lifecycleOwner) {
