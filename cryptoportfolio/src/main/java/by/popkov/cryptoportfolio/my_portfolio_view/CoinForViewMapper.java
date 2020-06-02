@@ -22,7 +22,7 @@ public class CoinForViewMapper implements Function<Coin, CoinForView> {
                 .setMarketCap(String.format(locale, numberFormat, coin.getMarketCap()))
                 .setMarket24Volume(String.format(locale, numberFormat, coin.getMarket24Volume()));
         if (coin.getNumber() != null && coin.getPrise() != null) {
-            builder.setSum("Sum: " + String.format(locale, numberFormat, coin.getNumber() * coin.getPrise()));
+            builder.setSum(String.format(locale, numberFormat, coin.getNumber() * coin.getPrise()));
         } else {
             builder.setSum("null");
         }
