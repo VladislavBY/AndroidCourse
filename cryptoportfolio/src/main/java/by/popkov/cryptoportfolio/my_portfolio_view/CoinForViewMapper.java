@@ -26,6 +26,11 @@ public class CoinForViewMapper implements Function<Coin, CoinForView> {
         } else {
             builder.setSum("null");
         }
+        if (coin.getNumber() != null && coin.getChange24Hour() != null) {
+            builder.setChangeSum24Hour(String.format(locale, numberFormat, coin.getNumber() * coin.getChange24Hour()));
+        } else {
+            builder.setChangeSum24Hour("null");
+        }
         if (coin.getChangePercent24Hour() != null) {
             if (coin.getChangePercent24Hour() > 0) {
                 builder.setChange24Color(Colors.COLOR_UP);

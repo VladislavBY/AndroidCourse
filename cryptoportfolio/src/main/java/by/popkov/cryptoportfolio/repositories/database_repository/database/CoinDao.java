@@ -18,6 +18,9 @@ public interface CoinDao {
     @Query("SELECT * FROM coin")
     List<CoinEntity> getAll();
 
+    @Query("SELECT * FROM coin WHERE symbol =:symbol")
+    CoinEntity getCoin(String symbol);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CoinEntity coinEntity);
 

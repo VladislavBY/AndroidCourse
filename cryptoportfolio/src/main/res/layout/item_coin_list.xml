@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="@color/text_color"
+        android:background="@color/divider_color"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,6 +20,7 @@
         android:id="@+id/coinIcon"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/divider"
@@ -30,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:textSize="28sp"
+        android:textSize="@dimen/coinListItemTextSize"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/coinIcon"
         app:layout_constraintTop_toTopOf="@+id/divider"
@@ -41,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:textSize="28sp"
+        android:textSize="@dimen/coinListItemTextSize"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/coinIcon"
         app:layout_constraintTop_toBottomOf="@id/coinSymbol"
@@ -52,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginEnd="8dp"
-        android:textSize="28sp"
+        android:textSize="@dimen/coinListItemTextSize"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/coinPrise24HChange"
         app:layout_constraintTop_toTopOf="@+id/divider"
@@ -62,22 +63,32 @@
         android:id="@+id/coinPrise24HChange"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textSize="28sp"
+        android:textSize="@dimen/coinListItemTextSize"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/divider"
         tools:text="+21,1%" />
 
     <TextView
-        android:text="@string/sum"
         android:id="@+id/coinPriseSum"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:textSize="28sp"
+        android:textSize="@dimen/coinListItemTextSize"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coinPrise24HChange"
-        tools:text="SUM: 1000000$" />
+        tools:text="1000000$" />
+
+    <TextView
+        android:id="@+id/sum"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:text="@string/sum_coin_list"
+        android:textSize="@dimen/coinListItemTextSize"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/coinPriseSum"
+        app:layout_constraintTop_toBottomOf="@id/coinPrise24HChange" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

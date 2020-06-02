@@ -22,6 +22,8 @@ public class CoinForView {
     @Nullable
     private String sum;
     @Nullable
+    private String changeSum24Hour;
+    @Nullable
     private String globalSupply;
     @Nullable
     private String marketCap;
@@ -73,6 +75,12 @@ public class CoinForView {
     }
 
     @Nullable
+    public String getChangeSum24Hour() {
+        return changeSum24Hour;
+    }
+
+
+    @Nullable
     public String getGlobalSupply() {
         return globalSupply;
     }
@@ -97,6 +105,7 @@ public class CoinForView {
             int change24Color,
             @Nullable String number,
             @Nullable String sum,
+            @Nullable String changeSum24Hour,
             @Nullable String globalSupply,
             @Nullable String marketCap,
             @Nullable String market24Volume
@@ -110,6 +119,7 @@ public class CoinForView {
         this.change24Color = change24Color;
         this.number = number;
         this.sum = sum;
+        this.changeSum24Hour = changeSum24Hour;
         this.globalSupply = globalSupply;
         this.marketCap = marketCap;
         this.market24Volume = market24Volume;
@@ -133,6 +143,8 @@ public class CoinForView {
         private String number;
         @Nullable
         private String sum;
+        @Nullable
+        private String changeSum24Hour;
         @Nullable
         private String globalSupply;
         @Nullable
@@ -184,6 +196,11 @@ public class CoinForView {
             return this;
         }
 
+        public Builder setChangeSum24Hour(@Nullable String changeSum24Hour) {
+            this.changeSum24Hour = changeSum24Hour;
+            return this;
+        }
+
         public Builder setGlobalSupply(@Nullable String globalSupply) {
             this.globalSupply = globalSupply;
             return this;
@@ -210,6 +227,7 @@ public class CoinForView {
                     change24Color,
                     number,
                     sum,
+                    changeSum24Hour,
                     globalSupply,
                     marketCap,
                     market24Volume
