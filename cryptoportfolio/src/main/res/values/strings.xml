@@ -18,4 +18,5 @@
     <string name="market_cap">Cap:</string>
     <string name="volume">Volume:</string>
     <string name="supply">Supply:</string>
+    <string name="change_24h">Change 24h:</string>
 </resources>
