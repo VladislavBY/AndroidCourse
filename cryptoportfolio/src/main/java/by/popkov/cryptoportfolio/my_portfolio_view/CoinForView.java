@@ -3,7 +3,9 @@ package by.popkov.cryptoportfolio.my_portfolio_view;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class CoinForView {
+import java.io.Serializable;
+
+public class CoinForView implements Serializable {
     @NonNull
     private String symbol;
     @Nullable
