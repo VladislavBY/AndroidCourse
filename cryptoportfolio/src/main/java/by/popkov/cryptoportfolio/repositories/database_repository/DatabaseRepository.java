@@ -11,6 +11,7 @@ import by.popkov.cryptoportfolio.domain.Coin;
 public interface DatabaseRepository {
     LiveData<List<Coin>> getCoinList();
     Future<List<Coin>> getCoinListFuture();
+    Future <Coin> getCoin(String symbol);
     void addNewCoin(final Coin coin);
     void deleteCoin(final Coin coin);
     void updateCoin(final Coin coin);

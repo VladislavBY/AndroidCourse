@@ -14,11 +14,14 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 
 import com.bumptech.glide.Glide;
+
+import org.jetbrains.annotations.NotNull;
 
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
@@ -48,6 +51,7 @@ public class CoinInfoFragment extends Fragment {
     private Button editBtn;
     private Button deleteBtn;
 
+    @NotNull
     public static CoinInfoFragment getInstance(CoinForView coinForView) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_COIN_FOR_VIEW, coinForView);
@@ -76,7 +80,11 @@ public class CoinInfoFragment extends Fragment {
         setHasOptionsMenu(true);
         initViews(view);
         setViewsData(extractCoinForView());
+        setBtnListeners();
         setToolBar();
+    }
+
+    private void setBtnListeners() {
     }
 
     private void setViewsData(CoinForView coinForView) {

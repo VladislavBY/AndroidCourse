@@ -52,6 +52,11 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
+    public Future<Coin> getCoin(String symbol) {
+        return executorService.submit(() -> mapper.apply(coinDao.getCoin(symbol)));
+    }
+
+    @Override
     public void addNewCoin(Coin coin) {
         executorService.execute(() -> coinDao.insert(new CoinEntity(coin.getSymbol(), coin.getNumber())));
     }
