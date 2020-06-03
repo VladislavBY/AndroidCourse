@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+
+import com.bumptech.glide.Glide;
 
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
@@ -26,10 +31,22 @@ public class CoinInfoFragment extends Fragment {
     public static final String TAG = "CoinInfoFragment";
 
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
-    private CoinForView coinForView;
     private OnHomeClickListener onHomeClickListener;
 
     private Toolbar toolbar;
+    private ImageView coinIcon;
+    private TextView coinSymbol;
+    private TextView coinNumberData;
+    private TextView coinSumData;
+    private TextView coinChangeSum24HourData;
+    private TextView coinPriseData;
+    private TextView coinChangePercent24HourData;
+    private TextView coinChange24HourData;
+    private TextView coinMarketCapData;
+    private TextView coinMarket24VolumeData;
+    private TextView coinGlobalSupplyData;
+    private Button editBtn;
+    private Button deleteBtn;
 
     public static CoinInfoFragment getInstance(CoinForView coinForView) {
         Bundle bundle = new Bundle();
@@ -57,19 +74,52 @@ public class CoinInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        extractArguments();
         initViews(view);
+        setViewsData(extractCoinForView());
         setToolBar();
+    }
+
+    private void setViewsData(CoinForView coinForView) {
+        Glide.with(this)
+                .load(coinForView.getLogoUrl())
+                .into(coinIcon);
+        coinSymbol.setText(coinForView.getSymbol());
+        coinNumberData.setText(coinForView.getNumber());
+        coinSumData.setText(coinForView.getSum());
+        coinChangeSum24HourData.setText(coinForView.getChangeSum24Hour());
+        coinChangeSum24HourData.setTextColor(coinForView.getChange24Color());
+        coinPriseData.setText(coinForView.getPrise());
+        coinChangePercent24HourData.setText(coinForView.getChangePercent24Hour());
+        coinChangePercent24HourData.setTextColor(coinForView.getChange24Color());
+        coinChange24HourData.setText(coinForView.getChange24Hour());
+        coinChange24HourData.setTextColor(coinForView.getChange24Color());
+        coinMarketCapData.setText(coinForView.getMarketCap());
+        coinMarket24VolumeData.setText(coinForView.getMarket24Volume());
+        coinGlobalSupplyData.setText(coinForView.getGlobalSupply());
+    }
+
+    private CoinForView extractCoinForView() {
+        if (getArguments() != null) {
+            return (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
+        }
+        throw new IllegalArgumentException("Not found CoinForView in Arguments");
     }
 
     private void initViews(@NonNull View view) {
         toolbar = view.findViewById(R.id.toolBar);
-    }
-
-    private void extractArguments() {
-        if (getArguments() != null) {
-            coinForView = (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
-        }
+        coinIcon = view.findViewById(R.id.coinIcon);
+        coinSymbol = view.findViewById(R.id.coinSymbol);
+        coinNumberData = view.findViewById(R.id.coinNumberData);
+        coinSumData = view.findViewById(R.id.coinSumData);
+        coinChangeSum24HourData = view.findViewById(R.id.coinChangeSum24HourData);
+        coinPriseData = view.findViewById(R.id.coinPriseData);
+        coinChangePercent24HourData = view.findViewById(R.id.coinChangePercent24HourData);
+        coinChange24HourData = view.findViewById(R.id.coinChange24HourData);
+        coinMarketCapData = view.findViewById(R.id.coinMarketCapData);
+        coinMarket24VolumeData = view.findViewById(R.id.coinMarket24VolumeData);
+        coinGlobalSupplyData = view.findViewById(R.id.coinGlobalSupplyData);
+        editBtn = view.findViewById(R.id.editBtn);
+        deleteBtn = view.findViewById(R.id.deleteBtn);
     }
 
     private void setToolBar() {
