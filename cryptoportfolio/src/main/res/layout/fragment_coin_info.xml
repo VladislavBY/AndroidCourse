@@ -327,5 +327,31 @@
             app:layout_constraintTop_toBottomOf="@id/coinGlobalSupplyDivider"
             tools:text="103.33$" />
 
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_width="160dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:background="@drawable/button_background_red"
+            android:backgroundTint="@color/edit_btn_color"
+            android:text="@string/edit_btn"
+            android:textSize="@dimen/coinInfoTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coinGlobalSupply" />
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="160dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
+            android:background="@drawable/button_background_red"
+            android:backgroundTint="@color/delete_btn_color"
+            android:text="@string/delete_btn"
+            android:textSize="@dimen/coinInfoTextSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coinGlobalSupply" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

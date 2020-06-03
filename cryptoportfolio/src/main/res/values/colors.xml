@@ -12,4 +12,6 @@
     <color name="divider_color">#000000</color>
     <color name="text_color_hint">#000000</color>
     <color name="edit_text_background_tint">#000000</color>
+    <color name="edit_btn_color">#3F51B5</color>
+    <color name="delete_btn_color">#F44336</color>
 </resources>

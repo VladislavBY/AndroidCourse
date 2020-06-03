@@ -19,4 +19,6 @@
     <string name="volume">Volume:</string>
     <string name="supply">Supply:</string>
     <string name="change_24h">Change 24h:</string>
+    <string name="edit_btn">Edit</string>
+    <string name="delete_btn">Delete</string>
 </resources>
