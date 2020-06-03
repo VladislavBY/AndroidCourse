@@ -56,9 +56,20 @@ public class CoinInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         extractArguments();
         initViews(view);
         setToolBar();
+    }
+
+    private void initViews(@NonNull View view) {
+        toolbar = view.findViewById(R.id.toolBar);
+    }
+
+    private void extractArguments() {
+        if (getArguments() != null) {
+            coinForView = (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
+        }
     }
 
     private void setToolBar() {
@@ -80,15 +91,5 @@ public class CoinInfoFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void initViews(View view) {
-        toolbar = view.findViewById(R.id.toolBar);
-    }
-
-    private void extractArguments() {
-        if (getArguments() != null) {
-            coinForView = (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
-        }
     }
 }
