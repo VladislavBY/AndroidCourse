@@ -9,7 +9,15 @@ import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinListAdapter;
 import by.popkov.cryptoportfolio.my_portfolio_view.MyPortfolioFragment;
 
-public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener {
+public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
+        CoinInfoFragment.OnHomeClickListener {
+
+
+    @Override
+    public void onHomeClick() {
+        getSupportFragmentManager().popBackStack();
+    }
+
     @Override
     public void onClick(CoinForView coinForView) {
         getSupportFragmentManager().beginTransaction()

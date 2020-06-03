@@ -1,7 +1,10 @@
 package by.popkov.cryptoportfolio.coin_info_view;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toolbar;
@@ -16,10 +19,15 @@ import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
 
 public class CoinInfoFragment extends Fragment {
+    public interface OnHomeClickListener {
+        void onHomeClick();
+    }
+
     public static final String TAG = "CoinInfoFragment";
 
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
     private CoinForView coinForView;
+    private OnHomeClickListener onHomeClickListener;
 
     private Toolbar toolbar;
 
@@ -29,6 +37,14 @@ public class CoinInfoFragment extends Fragment {
         CoinInfoFragment coinInfoFragment = new CoinInfoFragment();
         coinInfoFragment.setArguments(bundle);
         return coinInfoFragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnHomeClickListener) {
+            onHomeClickListener = (OnHomeClickListener) context;
+        }
     }
 
     @Nullable
@@ -49,10 +65,21 @@ public class CoinInfoFragment extends Fragment {
         FragmentActivity activity = getActivity();
         if (activity != null) {
             activity.setActionBar(toolbar);
-            if (activity.getActionBar() != null) {
-                activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+            ActionBar actionBar = activity.getActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                actionBar.setDisplayShowHomeEnabled(true);
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onHomeClickListener.onHomeClick();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViews(View view) {
