@@ -15,13 +15,15 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 class CoinInfoFragmentViewModel extends ViewModel {
+    interface ShowThrowable {
+        void show(Throwable throwable);
+    }
+
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
     private Function<Coin, CoinForView> mapper;
     private CoinForView coinForView;
-
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
-    private MutableLiveData<Throwable> throwableMutableLiveData = new MutableLiveData<>();
 
     CoinInfoFragmentViewModel(CoinForView coinForView, ApiRepository apiRepository, DatabaseRepository databaseRepository, Function<Coin, CoinForView> mapper) {
         this.apiRepository = apiRepository;
@@ -29,15 +31,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
         this.mapper = mapper;
         this.coinForView = coinForView;
     }
-
-    LiveData<Throwable> getThrowableLiveData() {
-        return throwableMutableLiveData;
-    }
-
-    private void setThrowableMutableLiveData(Throwable throwable) {
-        throwableMutableLiveData.setValue(throwable);
-    }
-
+    
     private void setCoinForViewMutableLiveData(CoinForView coinForView) {
         coinForViewMutableLiveData.setValue(coinForView);
     }
@@ -46,24 +40,24 @@ class CoinInfoFragmentViewModel extends ViewModel {
         return coinForViewMutableLiveData;
     }
 
-    void refreshCoinData() {
+    void refreshCoinData(ShowThrowable showThrowable) {
         try {
             Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
             apiRepository.getCoin(currentCoinDatabase, "USD")
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(coin -> mapper.apply(coin))
-                    .subscribe(this::setCoinForViewMutableLiveData, this::setThrowableMutableLiveData);
+                    .subscribe(this::setCoinForViewMutableLiveData, showThrowable::show);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    void connectToRepo(LifecycleOwner lifecycleOwner) {
+    void connectToRepo(LifecycleOwner lifecycleOwner, ShowThrowable showThrowable) {
         databaseRepository.getCoinLiveData(coinForView.getSymbol()).observe(
                 lifecycleOwner, coin -> apiRepository.getCoin(coin, "USD")
                         .map(coin1 -> mapper.apply(coin1))
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::setCoinForViewMutableLiveData, this::setThrowableMutableLiveData)
+                        .subscribe(this::setCoinForViewMutableLiveData, showThrowable::show)
         );
     }
 

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -19,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 
@@ -30,7 +30,12 @@ import org.jetbrains.annotations.NotNull;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
 
-public class CoinInfoFragment extends Fragment {
+public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewModel.ShowThrowable {
+    @Override
+    public void show(Throwable throwable) {
+        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+    }
+
     public interface OnHomeClickListener {
         void onHomeClick();
     }
@@ -93,7 +98,7 @@ public class CoinInfoFragment extends Fragment {
     private void initViewModel() {
         coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(extractCoinForView(), context))
                 .get(CoinInfoFragmentViewModel.class);
-        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner());
+        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner(), this);
         coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
     }
 
