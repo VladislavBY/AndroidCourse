@@ -91,9 +91,8 @@ public class CoinInfoFragment extends Fragment {
     }
 
     private void initViewModel() {
-        coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(context))
+        coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(extractCoinForView(), context))
                 .get(CoinInfoFragmentViewModel.class);
-        coinInfoFragmentViewModel.setCoinForViewMutableLiveData(extractCoinForView());
         coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner());
         coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
     }

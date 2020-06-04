@@ -20,16 +20,18 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 
 public class CoinInfoFragmentViewModelFactory implements ViewModelProvider.Factory {
     private Context context;
+    private CoinForView coinForView;
 
-    CoinInfoFragmentViewModelFactory(Context context) {
+    CoinInfoFragmentViewModelFactory(CoinForView coinForView, Context context) {
         this.context = context;
+        this.coinForView = coinForView;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(CoinInfoFragmentViewModel.class)) {
-            return (T) new CoinInfoFragmentViewModel(getApiRepository(), getDatabaseRepository(), getMapper());
+            return (T) new CoinInfoFragmentViewModel(coinForView, getApiRepository(), getDatabaseRepository(), getMapper());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }

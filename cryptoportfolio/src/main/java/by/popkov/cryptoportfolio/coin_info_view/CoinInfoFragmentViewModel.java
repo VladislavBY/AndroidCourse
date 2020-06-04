@@ -18,14 +18,16 @@ class CoinInfoFragmentViewModel extends ViewModel {
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
     private Function<Coin, CoinForView> mapper;
+    private CoinForView coinForView;
 
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<Throwable> throwableMutableLiveData = new MutableLiveData<>();
 
-    CoinInfoFragmentViewModel(ApiRepository apiRepository, DatabaseRepository databaseRepository, Function<Coin, CoinForView> mapper) {
+    CoinInfoFragmentViewModel(CoinForView coinForView, ApiRepository apiRepository, DatabaseRepository databaseRepository, Function<Coin, CoinForView> mapper) {
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
         this.mapper = mapper;
+        this.coinForView = coinForView;
     }
 
     LiveData<Throwable> getThrowableLiveData() {
@@ -36,7 +38,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
         throwableMutableLiveData.setValue(throwable);
     }
 
-    void setCoinForViewMutableLiveData(CoinForView coinForView) {
+    private void setCoinForViewMutableLiveData(CoinForView coinForView) {
         coinForViewMutableLiveData.setValue(coinForView);
     }
 
@@ -45,44 +47,32 @@ class CoinInfoFragmentViewModel extends ViewModel {
     }
 
     void refreshCoinData() {
-        CoinForView value = coinForViewMutableLiveData.getValue();
-        if (value != null) {
-            try {
-                Coin currentCoinDatabase = databaseRepository.getCoin(value.getSymbol()).get();
-                apiRepository.getCoin(currentCoinDatabase, "USD")
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .map(coin -> mapper.apply(coin))
-                        .subscribe(this::setCoinForViewMutableLiveData, this::setThrowableMutableLiveData);
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
+            apiRepository.getCoin(currentCoinDatabase, "USD")
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .map(coin -> mapper.apply(coin))
+                    .subscribe(this::setCoinForViewMutableLiveData, this::setThrowableMutableLiveData);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
     void connectToRepo(LifecycleOwner lifecycleOwner) {
-        CoinForView value = coinForViewMutableLiveData.getValue();
-        if (value != null) {
-            databaseRepository.getCoinLiveData(value.getSymbol()).observe(
-                    lifecycleOwner, coin -> apiRepository.getCoin(coin, "USD")
-                            .map(coin1 -> mapper.apply(coin1))
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(this::setCoinForViewMutableLiveData, this::setThrowableMutableLiveData)
-            );
-        }
+        databaseRepository.getCoinLiveData(coinForView.getSymbol()).observe(
+                lifecycleOwner, coin -> apiRepository.getCoin(coin, "USD")
+                        .map(coin1 -> mapper.apply(coin1))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this::setCoinForViewMutableLiveData, this::setThrowableMutableLiveData)
+        );
     }
 
     void updateCoin(Double number) {
-        CoinForView value = coinForViewMutableLiveData.getValue();
-        if (value != null) {
-            databaseRepository.updateCoin(new Coin.Builder(value.getSymbol(), number).build());
-        }
+        databaseRepository.updateCoin(new Coin.Builder(coinForView.getSymbol(), number).build());
     }
 
     void deleteCoin() {
-        CoinForView value = coinForViewMutableLiveData.getValue();
-        if (value != null) {
-            databaseRepository.deleteCoin(new Coin.Builder(value.getSymbol(), 0.0).build());
-        }
+        databaseRepository.deleteCoin(new Coin.Builder(coinForView.getSymbol(), 0.0).build());
     }
 
 }
