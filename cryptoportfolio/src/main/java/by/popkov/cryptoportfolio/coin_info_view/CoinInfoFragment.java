@@ -14,9 +14,10 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.bumptech.glide.Glide;
@@ -35,6 +36,8 @@ public class CoinInfoFragment extends Fragment {
 
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
     private OnHomeClickListener onHomeClickListener;
+    private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
+    private Context context;
 
     private Toolbar toolbar;
     private ImageView coinIcon;
@@ -63,6 +66,7 @@ public class CoinInfoFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        this.context = context;
         if (context instanceof OnHomeClickListener) {
             onHomeClickListener = (OnHomeClickListener) context;
         }
@@ -77,11 +81,17 @@ public class CoinInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
         initViews(view);
-        setViewsData(extractCoinForView());
         setBtnListeners();
         setToolBar();
+        initViewModel();
+    }
+
+    private void initViewModel() {
+        coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(context))
+                .get(CoinInfoFragmentViewModel.class);
+        coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
+        coinInfoFragmentViewModel.setCoinForViewMutableLiveData(extractCoinForView());
     }
 
     private void setBtnListeners() {

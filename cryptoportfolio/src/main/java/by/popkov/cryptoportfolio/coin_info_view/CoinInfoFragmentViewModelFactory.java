@@ -7,7 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.function.Function;
+
+import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.domain.CoinMapper;
+import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
+import by.popkov.cryptoportfolio.my_portfolio_view.CoinForViewMapper;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
@@ -16,7 +21,7 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 public class CoinInfoFragmentViewModelFactory implements ViewModelProvider.Factory {
     private Context context;
 
-    CoinInfoFragmentViewModelFactory(Application application, Context context) {
+    CoinInfoFragmentViewModelFactory(Context context) {
         this.context = context;
     }
 
@@ -24,7 +29,7 @@ public class CoinInfoFragmentViewModelFactory implements ViewModelProvider.Facto
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(CoinInfoFragmentViewModel.class)) {
-            return (T) new CoinInfoFragmentViewModel(getApiRepository(), getDatabaseRepository());
+            return (T) new CoinInfoFragmentViewModel(getApiRepository(), getDatabaseRepository(), getMapper());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
@@ -35,5 +40,9 @@ public class CoinInfoFragmentViewModelFactory implements ViewModelProvider.Facto
 
     private DatabaseRepository getDatabaseRepository() {
         return new DatabaseRepositoryImp(context, new CoinMapper());
+    }
+
+    private Function<Coin, CoinForView> getMapper() {
+        return new CoinForViewMapper();
     }
 }
