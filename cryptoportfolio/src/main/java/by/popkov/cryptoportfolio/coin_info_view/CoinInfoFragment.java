@@ -99,10 +99,20 @@ public class CoinInfoFragment extends Fragment {
     }
 
     private void setBtnListeners() {
-        deleteBtn.setOnClickListener(v -> new AlertDialog.Builder(context).setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
-            coinInfoFragmentViewModel.deleteCoin();
-            onHomeClickListener.onHomeClick();
-        }).create().show());
+        deleteBtn.setOnClickListener(v -> showDeleteDialog());
+    }
+
+    private void showDeleteDialog() {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.delete_dialog_title)
+                .setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
+                    coinInfoFragmentViewModel.deleteCoin();
+                    onHomeClickListener.onHomeClick();
+                })
+                .setNeutralButton(R.string.delete_dialog_negative, ((dialog, which) -> {
+                }))
+                .create()
+                .show();
     }
 
     private void setViewsData(CoinForView coinForView) {
