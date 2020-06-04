@@ -86,21 +86,21 @@ public class CoinInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         setToolBar();
-        initViewModel(savedInstanceState);
+        initViewModel();
         setBtnListeners();
     }
 
-    private void initViewModel(Bundle savedInstanceState) {
+    private void initViewModel() {
         coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(context))
                 .get(CoinInfoFragmentViewModel.class);
-        if (savedInstanceState == null) {
-            coinInfoFragmentViewModel.setCoinForViewMutableLiveData(extractCoinForView());
-        } else coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner());
+        coinInfoFragmentViewModel.setCoinForViewMutableLiveData(extractCoinForView());
+        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner());
         coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
     }
 
     private void setBtnListeners() {
         deleteBtn.setOnClickListener(v -> showDeleteDialog());
+        editBtn.setOnClickListener(v -> showEditDialog());
     }
 
     private void showEditDialog() {
