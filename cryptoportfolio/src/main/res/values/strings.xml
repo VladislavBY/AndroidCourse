@@ -21,4 +21,6 @@
     <string name="change_24h">Change 24h:</string>
     <string name="edit_btn">Edit</string>
     <string name="delete_btn">Delete</string>
+    <string name="delete_dialog_positive">Delete</string>
+    <string name="delete_dialog_negative">Cancel</string>
 </resources>

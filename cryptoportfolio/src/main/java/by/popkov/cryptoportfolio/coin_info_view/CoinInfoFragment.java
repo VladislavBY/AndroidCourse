@@ -2,6 +2,7 @@ package by.popkov.cryptoportfolio.coin_info_view;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModel;
@@ -82,9 +84,9 @@ public class CoinInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
-        setBtnListeners();
         setToolBar();
         initViewModel(savedInstanceState);
+        setBtnListeners();
     }
 
     private void initViewModel(Bundle savedInstanceState) {
@@ -97,6 +99,10 @@ public class CoinInfoFragment extends Fragment {
     }
 
     private void setBtnListeners() {
+        deleteBtn.setOnClickListener(v -> new AlertDialog.Builder(context).setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
+            coinInfoFragmentViewModel.deleteCoin();
+            onHomeClickListener.onHomeClick();
+        }).create().show());
     }
 
     private void setViewsData(CoinForView coinForView) {

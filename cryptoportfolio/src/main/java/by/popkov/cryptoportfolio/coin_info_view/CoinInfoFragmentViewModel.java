@@ -44,7 +44,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
         return coinForViewMutableLiveData;
     }
 
-    void updateCoinData() {
+    void refreshCoinData() {
         CoinForView value = coinForViewMutableLiveData.getValue();
         if (value != null) {
             try {
@@ -70,4 +70,19 @@ class CoinInfoFragmentViewModel extends ViewModel {
             );
         }
     }
+
+    void updateCoin(Double number) {
+        CoinForView value = coinForViewMutableLiveData.getValue();
+        if (value != null) {
+            databaseRepository.updateCoin(new Coin.Builder(value.getSymbol(), number).build());
+        }
+    }
+
+    void deleteCoin() {
+        CoinForView value = coinForViewMutableLiveData.getValue();
+        if (value != null) {
+            databaseRepository.deleteCoin(new Coin.Builder(value.getSymbol(), 0.0).build());
+        }
+    }
+
 }
