@@ -9,8 +9,9 @@ import java.util.concurrent.Future;
 import by.popkov.cryptoportfolio.domain.Coin;
 
 public interface DatabaseRepository {
-    LiveData<List<Coin>> getCoinList();
+    LiveData<List<Coin>> getCoinListLiveData();
     Future<List<Coin>> getCoinListFuture();
+    LiveData<Coin> getCoinLiveData(String symbol);
     Future <Coin> getCoin(String symbol);
     void addNewCoin(final Coin coin);
     void deleteCoin(final Coin coin);

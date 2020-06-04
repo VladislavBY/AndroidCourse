@@ -23,6 +23,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     private CoinDao coinDao;
     private ExecutorService executorService;
     private LiveData<List<CoinEntity>> coinEntityListLiveData;
+    private LiveData<CoinEntity> coinEntityLiveData;
     private Function<CoinEntity, Coin> mapper;
 
     public DatabaseRepositoryImp(@NonNull final Context context, Function<CoinEntity, Coin> mapper) {
@@ -33,7 +34,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public LiveData<List<Coin>> getCoinList() {
+    public LiveData<List<Coin>> getCoinListLiveData() {
         if (coinEntityListLiveData == null) {
             coinEntityListLiveData = coinDao.getAllLiveData();
         }
@@ -41,6 +42,13 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
                 .stream()
                 .map(mapper)
                 .collect(Collectors.toList()));
+    }
+
+    @Override
+    public LiveData<Coin> getCoinLiveData(String symbol) {
+        if (coinEntityLiveData == null){
+            coinEntityLiveData = coinDao.getCoinLiveData(symbol);
+        }
     }
 
     @Override

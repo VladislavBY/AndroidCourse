@@ -68,7 +68,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
     }
 
     void connectToRepo(LifecycleOwner lifecycleOwner) {
-        databaseRepository.getCoinList().observe(
+        databaseRepository.getCoinListLiveData().observe(
                 lifecycleOwner, coins -> apiRepository.getCoinsList(coins, "USD")
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(coinList -> {

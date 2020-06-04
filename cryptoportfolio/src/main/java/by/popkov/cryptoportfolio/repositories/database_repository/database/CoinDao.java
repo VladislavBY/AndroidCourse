@@ -10,6 +10,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import by.popkov.cryptoportfolio.domain.Coin;
+
 @Dao
 public interface CoinDao {
     @Query("SELECT * FROM coin")
@@ -17,6 +19,9 @@ public interface CoinDao {
 
     @Query("SELECT * FROM coin")
     List<CoinEntity> getAll();
+
+    @Query("SELECT * FROM coin WHERE symbol =:symbol")
+    LiveData<CoinEntity> getCoinLiveData(String symbol);
 
     @Query("SELECT * FROM coin WHERE symbol =:symbol")
     CoinEntity getCoin(String symbol);
