@@ -48,7 +48,7 @@ class ConverterJsonToCoin {
                 e.printStackTrace();
             }
         }
-        throw new IllegalArgumentException("Portfolio is empty");
+        return coinsList;
     }
 
     @NotNull

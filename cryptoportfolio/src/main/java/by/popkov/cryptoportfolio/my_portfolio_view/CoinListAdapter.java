@@ -52,7 +52,8 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
     }
 
     void setCoinItemList(List<CoinForView> listCoinForView) {
-        itemList = new ArrayList<>(listCoinForView);
+        itemList.clear();
+        itemList.addAll(listCoinForView);
         notifyDataSetChanged();
     }
 
@@ -97,7 +98,12 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             coinPrise = itemView.findViewById(R.id.coinPrise);
             coinPrise24HChange = itemView.findViewById(R.id.coinPrise24HChange);
             coinPriseSum = itemView.findViewById(R.id.coinPriseSum);
-            itemView.setOnClickListener(v -> onCoinListClickListener.onClick(itemList.get(getAdapterPosition())));
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCoinListClickListener.onClick(itemList.get(ItemHolder.this.getAdapterPosition()));
+                }
+            });
         }
 
         private void bindItem(CoinForView coinForView) {
