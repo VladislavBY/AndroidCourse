@@ -25,4 +25,8 @@
     <string name="delete_dialog_negative">Cancel</string>
     <string name="delete_dialog_title">Do you want delete coin from portfolio?</string>
     <string name="portfolio_is_empty">Portfolio is empty</string>
+    <string name="input_new_coin_s_number">Input new coin\'s number</string>
+    <string name="edit_dialog_title">Edit coin\'s number</string>
+    <string name="edit_dialog_positive">Edit</string>
+    <string name="edit_dialog_negative">Cancel</string>
 </resources>

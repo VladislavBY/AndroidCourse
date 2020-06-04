@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
@@ -100,6 +101,20 @@ public class CoinInfoFragment extends Fragment {
 
     private void setBtnListeners() {
         deleteBtn.setOnClickListener(v -> showDeleteDialog());
+    }
+
+    private void showEditDialog() {
+        View view = LayoutInflater.from(context).inflate(R.layout.edit_dialog_view, null, false);
+        EditText editText = view.findViewById(R.id.newNumber);
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.edit_dialog_title)
+                .setView(view)
+                .setPositiveButton(R.string.edit_dialog_positive,
+                        (dialog, which) -> coinInfoFragmentViewModel.updateCoin(Double.valueOf(editText.getText().toString())))
+                .setNegativeButton(R.string.edit_dialog_negative, (dialog, which) -> {
+                })
+                .create()
+                .show();
     }
 
     private void showDeleteDialog() {
