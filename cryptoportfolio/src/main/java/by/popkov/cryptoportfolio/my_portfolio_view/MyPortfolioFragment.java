@@ -24,7 +24,18 @@ import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
 
-public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFragment.AddNewCoinDialogListener {
+public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFragment.AddNewCoinDialogListener,
+        MyPortfolioViewModel.ShowThrowable {
+    @Override
+    public void show(Throwable throwable) {
+        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void OnPositiveButtonClick(String symbol, String number) {
+        myPortfolioViewModel.saveCoin(symbol, number, this);
+    }
+
     public static String TAG = "MyPortfolioFragment";
     private Context context;
     private MyPortfolioViewModel myPortfolioViewModel;
@@ -33,15 +44,11 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private TextView sumTextView;
     private TextView change24PrsTextView;
     private TextView change24TextView;
+
     private TextView portfolioIsEmpty;
-
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
-    private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
-    @Override
-    public void OnPositiveButtonClick(String symbol, String number) {
-        myPortfolioViewModel.saveCoin(symbol, number);
-    }
+    private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -70,7 +77,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private void initSwipeRefreshLayout(View view) {
         SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         refreshLayout.setOnRefreshListener(() -> {
-            myPortfolioViewModel.updateCoinList();
+            myPortfolioViewModel.updateCoinList(this);
             refreshLayout.setRefreshing(false);
         });
     }
@@ -108,24 +115,24 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
             myPortfolioViewModel = new ViewModelProvider(
                     this, new MyPortfolioViewModelFactory(getActivity().getApplication(), context))
                     .get(MyPortfolioViewModel.class);
-            myPortfolioViewModel.connectToRepo(viewLifecycleOwner);
+            myPortfolioViewModel.connectToRepo(viewLifecycleOwner, this);
             myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {
                         coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews));
                         portfolioIsEmptyVisibleSwitcher(coinForViews);
                     }
             );
-            myPortfolioViewModel.getThrowableMutableLiveData().observe(viewLifecycleOwner, throwable ->
-                    Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_LONG).show());
             myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
-                    portfolioInfoForView -> {
-                        sumTextView.setText(portfolioInfoForView.getSum());
-                        change24PrsTextView.setText(portfolioInfoForView.getChangePercent24Hour());
-                        change24PrsTextView.setTextColor(portfolioInfoForView.getChange24Color());
-                        change24TextView.setText(portfolioInfoForView.getChange24Hour());
-                        change24TextView.setTextColor(portfolioInfoForView.getChange24Color());
-                    }
+                    this::setPortfolioViewData
             );
         }
+    }
+
+    private void setPortfolioViewData(PortfolioInfoForView portfolioInfoForView) {
+        sumTextView.setText(portfolioInfoForView.getSum());
+        change24PrsTextView.setText(portfolioInfoForView.getChangePercent24Hour());
+        change24PrsTextView.setTextColor(portfolioInfoForView.getChange24Color());
+        change24TextView.setText(portfolioInfoForView.getChange24Hour());
+        change24TextView.setTextColor(portfolioInfoForView.getChange24Color());
     }
 
     @Override
