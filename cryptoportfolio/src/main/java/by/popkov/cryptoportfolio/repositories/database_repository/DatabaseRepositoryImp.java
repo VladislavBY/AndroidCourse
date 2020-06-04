@@ -49,6 +49,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
         if (coinEntityLiveData == null){
             coinEntityLiveData = coinDao.getCoinLiveData(symbol);
         }
+        return Transformations.map(coinEntityLiveData, input -> mapper.apply(input));
     }
 
     @Override
