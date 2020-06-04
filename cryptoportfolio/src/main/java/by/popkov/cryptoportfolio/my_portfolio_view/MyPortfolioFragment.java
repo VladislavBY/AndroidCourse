@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
@@ -32,6 +33,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private TextView sumTextView;
     private TextView change24PrsTextView;
     private TextView change24TextView;
+    private TextView portfolioIsEmpty;
 
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
@@ -79,6 +81,17 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         sumTextView = view.findViewById(R.id.sumTextView);
         change24PrsTextView = view.findViewById(R.id.change24PrsTextView);
         change24TextView = view.findViewById(R.id.change24TextView);
+        portfolioIsEmpty = view.findViewById(R.id.portfolioIsEmpty);
+    }
+
+    void portfolioIsEmptyVisibleSwitcher(List<CoinForView> coinForViewList) {
+        if (coinForViewList.isEmpty()) {
+            portfolioIsEmpty.setVisibility(View.VISIBLE);
+            sumTextView.setVisibility(View.INVISIBLE);
+        } else {
+            portfolioIsEmpty.setVisibility(View.INVISIBLE);
+            sumTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initRecyclerView(View view) {
@@ -96,8 +109,11 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
                     this, new MyPortfolioViewModelFactory(getActivity().getApplication(), context))
                     .get(MyPortfolioViewModel.class);
             myPortfolioViewModel.connectToRepo(viewLifecycleOwner);
-            myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews ->
-                    coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews)));
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {
+                        coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews));
+                        portfolioIsEmptyVisibleSwitcher(coinForViews);
+                    }
+            );
             myPortfolioViewModel.getThrowableMutableLiveData().observe(viewLifecycleOwner, throwable ->
                     Toast.makeText(context, throwable.getMessage(), Toast.LENGTH_LONG).show());
             myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
