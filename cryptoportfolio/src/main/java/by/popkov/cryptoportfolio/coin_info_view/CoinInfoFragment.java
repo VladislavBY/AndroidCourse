@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 
@@ -56,6 +57,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private Button editBtn;
     private Button deleteBtn;
     private ImageButton homeBtn;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @NotNull
     public static CoinInfoFragment getInstance(CoinForView coinForView) {
@@ -87,6 +89,15 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         initViews(view);
         initViewModel();
         setBtnListeners();
+        setSwipeRefreshLayout();
+    }
+
+    private void setSwipeRefreshLayout() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            coinInfoFragmentViewModel.refreshCoinData(this);
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
     }
 
     private void initViewModel() {
@@ -170,5 +181,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         editBtn = view.findViewById(R.id.editBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
         homeBtn = view.findViewById(R.id.homeBtn);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
     }
 }
