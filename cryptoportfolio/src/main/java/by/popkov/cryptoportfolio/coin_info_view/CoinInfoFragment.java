@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +62,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private TextView coinGlobalSupplyData;
     private Button editBtn;
     private Button deleteBtn;
+    private ImageButton homeBtn;
 
     @NotNull
     public static CoinInfoFragment getInstance(CoinForView coinForView) {
@@ -90,7 +92,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
-        setToolBar();
         initViewModel();
         setBtnListeners();
     }
@@ -105,6 +106,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private void setBtnListeners() {
         deleteBtn.setOnClickListener(v -> showDeleteDialog());
         editBtn.setOnClickListener(v -> showEditDialog());
+        homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick());
     }
 
     private void showEditDialog() {
@@ -175,26 +177,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         coinGlobalSupplyData = view.findViewById(R.id.coinGlobalSupplyData);
         editBtn = view.findViewById(R.id.editBtn);
         deleteBtn = view.findViewById(R.id.deleteBtn);
-    }
-
-    private void setToolBar() {
-        FragmentActivity activity = getActivity();
-        if (activity != null) {
-            activity.setActionBar(toolbar);
-            ActionBar actionBar = activity.getActionBar();
-            if (actionBar != null) {
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                actionBar.setDisplayShowHomeEnabled(true);
-            }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onHomeClickListener.onHomeClick();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        homeBtn = view.findViewById(R.id.homeBtn);
     }
 }
