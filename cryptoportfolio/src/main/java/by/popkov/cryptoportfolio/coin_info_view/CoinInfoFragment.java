@@ -1,11 +1,8 @@
 package by.popkov.cryptoportfolio.coin_info_view;
 
-import android.app.ActionBar;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,15 +11,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
-
 
 import com.bumptech.glide.Glide;
 
@@ -48,7 +42,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
 
-    private Toolbar toolbar;
     private ImageView coinIcon;
     private TextView coinSymbol;
     private TextView coinNumberData;
@@ -163,7 +156,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     }
 
     private void initViews(@NonNull View view) {
-        toolbar = view.findViewById(R.id.toolBar);
         coinIcon = view.findViewById(R.id.coinIcon);
         coinSymbol = view.findViewById(R.id.coinSymbol);
         coinNumberData = view.findViewById(R.id.coinNumberData);
