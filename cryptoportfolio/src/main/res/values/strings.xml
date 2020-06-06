@@ -5,10 +5,8 @@
     <string name="add_button">Add</string>
     <string name="cancel_button">Cancel</string>
     <string name="add_dialog_title">Add new coin</string>
-    <string name="my_portfolio_head">PortfolioInfo</string>
     <string name="my_portfolio_toolbar_text">My Portfolio</string>
     <string name="sum_coin_list">Sum:</string>
-    <string name="coin_info">Coin info</string>
     <string name="coin_info_tool_bar">Coin info</string>
     <string name="prise">Prise:</string>
     <string name="change_24_hour_prc">Change 24h%:</string>

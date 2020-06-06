@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Крипто Портфель</string>
+    <string name="hint_number">Количество</string>
+    <string name="hint_symbol">Символ</string>
+    <string name="add_button">Добавить</string>
+    <string name="cancel_button">Отменить</string>
+    <string name="add_dialog_title">Добавить монету</string>
+    <string name="my_portfolio_toolbar_text">My Portfolio</string>
+    <string name="sum_coin_list">Сум:</string>
+    <string name="coin_info_tool_bar">Информация об монете</string>
+    <string name="prise">Цена:</string>
+    <string name="change_24_hour_prc">Изм. 24ч%:</string>
+    <string name="change_24_hour">Изм 24ч:</string>
+    <string name="my_coins">Мои монеты:</string>
+    <string name="my_coins_sum">Сум:</string>
+    <string name="market_cap">Кап.:</string>
+    <string name="volume">Объем:</string>
+    <string name="supply">Всего:</string>
+    <string name="change_24h">Изм. 24ч:</string>
+    <string name="edit_btn">Изменить</string>
+    <string name="delete_btn">Удалить</string>
+    <string name="delete_dialog_positive">Удалить</string>
+    <string name="delete_dialog_negative">Отменить</string>
+    <string name="delete_dialog_title">Хотите удалить монету из портфеля?</string>
+    <string name="portfolio_is_empty">Портфель пустой</string>
+    <string name="input_new_coin_s_number">Введите новое количество монет</string>
+    <string name="edit_dialog_title">Изменить количество монет</string>
+    <string name="edit_dialog_positive">Изменить</string>
+    <string name="edit_dialog_negative">Отменить</string>
+</resources>
