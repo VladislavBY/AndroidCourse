@@ -28,4 +28,14 @@
     <string name="edit_dialog_title">Изменить количество монет</string>
     <string name="edit_dialog_positive">Изменить</string>
     <string name="edit_dialog_negative">Отменить</string>
+    <string name="settings_tool_bar_text">Настройки</string>
+    <string name="select_symbol_to_convert">Выберите валютю для счёта</string>
+    <string name="usd">USD</string>
+    <string name="eur">EUR</string>
+    <string name="rub">RUB</string>
+    <string name="gbp">GBP</string>
+    <string name="byn">BYN</string>
+    <string name="btc">BTC</string>
+    <string name="eth">ETH</string>
+    <string name="krw">KRW</string>
 </resources>

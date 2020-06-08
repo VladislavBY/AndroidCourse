@@ -27,4 +27,15 @@
     <string name="edit_dialog_title">Edit coin\'s number</string>
     <string name="edit_dialog_positive">Edit</string>
     <string name="edit_dialog_negative">Cancel</string>
+    <string name="settings_tool_bar_text">Settings</string>
+    <string name="select_symbol_to_convert">Select symbol to convert</string>
+    <string name="usd">USD</string>
+    <string name="eur">EUR</string>
+    <string name="rub">RUB</string>
+    <string name="gbp">GBP</string>
+    <string name="jpy">JPY</string>
+    <string name="byn">BYN</string>
+    <string name="btc">BTC</string>
+    <string name="eth">ETH</string>
+    <string name="krw">KRW</string>
 </resources>
