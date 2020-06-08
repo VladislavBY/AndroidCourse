@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
+import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
 
@@ -30,10 +31,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     @Override
     public void show(Throwable throwable) {
         Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-    }
-
-    public interface OnHomeClickListener {
-        void onHomeClick();
     }
 
     public static final String TAG = "CoinInfoFragment";
@@ -182,5 +179,12 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         deleteBtn = view.findViewById(R.id.deleteBtn);
         homeBtn = view.findViewById(R.id.homeBtn);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onHomeClickListener = null;
+        context = null;
     }
 }

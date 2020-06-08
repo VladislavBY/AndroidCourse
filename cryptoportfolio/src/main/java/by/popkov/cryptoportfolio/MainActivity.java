@@ -10,7 +10,7 @@ import by.popkov.cryptoportfolio.my_portfolio_view.CoinListAdapter;
 import by.popkov.cryptoportfolio.my_portfolio_view.MyPortfolioFragment;
 
 public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
-        CoinInfoFragment.OnHomeClickListener {
+        OnHomeClickListener {
 
 
     @Override
