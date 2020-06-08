@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,12 +46,14 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private MyPortfolioViewModel myPortfolioViewModel;
     private RecyclerView coinListRecyclerView;
     private FloatingActionButton addCoinFab;
+    private ImageButton settingsImageButton;
     private TextView sumTextView;
     private TextView change24PrsTextView;
     private TextView change24TextView;
 
     private TextView portfolioIsEmpty;
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
+    private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
 
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
@@ -60,6 +63,9 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         this.context = context;
         if (context instanceof CoinListAdapter.OnCoinListClickListener) {
             onCoinListClickListenerOptional = Optional.of((CoinListAdapter.OnCoinListClickListener) context);
+        }
+        if (context instanceof OnSettingsBtnClickListener) {
+            onSettingsBtnClickListenerOptional = Optional.of((OnSettingsBtnClickListener) context);
         }
     }
 
@@ -88,11 +94,18 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
 
     private void initViews(View view) {
         addCoinFab = view.findViewById(R.id.addCoinFab);
-        addCoinFab.setOnClickListener(v -> new AddNewCoinDialogFragment().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        settingsImageButton = view.findViewById(R.id.settingsImageButton);
         sumTextView = view.findViewById(R.id.sumTextView);
         change24PrsTextView = view.findViewById(R.id.change24PrsTextView);
         change24TextView = view.findViewById(R.id.change24TextView);
         portfolioIsEmpty = view.findViewById(R.id.portfolioIsEmpty);
+        setBtnListeners();
+    }
+
+    private void setBtnListeners() {
+        addCoinFab.setOnClickListener(v -> new AddNewCoinDialogFragment().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        onSettingsBtnClickListenerOptional.ifPresent(onSettingsBtnClickListener ->
+                settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
     }
 
     void portfolioIsEmptyVisibleSwitcher(List<CoinForView> coinForViewList) {

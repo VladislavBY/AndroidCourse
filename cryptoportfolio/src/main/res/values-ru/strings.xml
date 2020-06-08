@@ -29,7 +29,7 @@
     <string name="edit_dialog_positive">Изменить</string>
     <string name="edit_dialog_negative">Отменить</string>
     <string name="settings_tool_bar_text">Настройки</string>
-    <string name="select_symbol_to_convert">Выберите валютю для счёта</string>
+    <string name="select_symbol_to_convert">Выберите валюту для счёта</string>
     <string name="usd">USD</string>
     <string name="eur">EUR</string>
     <string name="rub">RUB</string>

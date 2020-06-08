@@ -44,8 +44,16 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initViews(view);
+    }
+
+    private void initViews(View view) {
+        selectedSymbol = view.findViewById(R.id.selectedSymbol);
+        homeBtn = view.findViewById(R.id.homeBtn);
         setHomeBtnListener();
     }
+
 
     private void setHomeBtnListener() {
         onHomeClickListenerOptional.ifPresent(onHomeClickListener ->
