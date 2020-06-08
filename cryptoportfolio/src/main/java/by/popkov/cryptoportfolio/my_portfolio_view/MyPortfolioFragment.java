@@ -26,6 +26,10 @@ import by.popkov.cryptoportfolio.R;
 
 public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFragment.AddNewCoinDialogListener,
         MyPortfolioViewModel.ShowThrowable {
+    public interface OnSettingsBtnClickListener {
+        void onClickSettings();
+    }
+
     @Override
     public void show(Throwable throwable) {
         Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();

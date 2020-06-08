@@ -8,10 +8,19 @@ import by.popkov.cryptoportfolio.coin_info_view.CoinInfoFragment;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinListAdapter;
 import by.popkov.cryptoportfolio.my_portfolio_view.MyPortfolioFragment;
+import by.popkov.cryptoportfolio.settings_view.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
-        OnHomeClickListener {
+        OnHomeClickListener, MyPortfolioFragment.OnSettingsBtnClickListener {
 
+
+    @Override
+    public void onClickSettings() {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragmentContainer, new SettingsFragment(), SettingsFragment.TAG)
+                .addToBackStack(null)
+                .commit();
+    }
 
     @Override
     public void onHomeClick() {
@@ -19,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
     }
 
     @Override
-    public void onClick(CoinForView coinForView) {
+    public void onItemClick(CoinForView coinForView) {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragmentContainer, CoinInfoFragment.getInstance(coinForView), CoinInfoFragment.TAG)
                 .addToBackStack(null)
@@ -41,4 +50,5 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
                 .add(R.id.fragmentContainer, new MyPortfolioFragment(), MyPortfolioFragment.TAG)
                 .commit();
     }
+
 }

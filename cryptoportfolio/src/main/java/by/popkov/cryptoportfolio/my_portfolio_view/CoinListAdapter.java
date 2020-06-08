@@ -19,7 +19,7 @@ import by.popkov.cryptoportfolio.R;
 public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHolder> {
 
     public interface OnCoinListClickListener {
-        void onClick(CoinForView coinForView);
+        void onItemClick(CoinForView coinForView);
     }
 
     private OnCoinListClickListener onCoinListClickListener;
@@ -101,7 +101,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onCoinListClickListener.onClick(itemList.get(ItemHolder.this.getAdapterPosition()));
+                    onCoinListClickListener.onItemClick(itemList.get(ItemHolder.this.getAdapterPosition()));
                 }
             });
         }

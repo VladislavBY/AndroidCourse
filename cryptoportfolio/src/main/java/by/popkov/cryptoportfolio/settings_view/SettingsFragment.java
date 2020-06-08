@@ -16,9 +16,9 @@ import java.util.Optional;
 
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
-import by.popkov.cryptoportfolio.coin_info_view.CoinInfoFragment;
 
 public class SettingsFragment extends Fragment {
+    public static final String TAG = "SettingsFragment";
     private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
     private Context context;
 
@@ -44,6 +44,18 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHomeBtnListener();
+    }
 
+    private void setHomeBtnListener() {
+        onHomeClickListenerOptional.ifPresent(onHomeClickListener ->
+                homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick()));
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        onHomeClickListenerOptional = Optional.empty();
+        context = null;
     }
 }
