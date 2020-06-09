@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
     @Override
     public void onClickSettings() {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, new SettingsFragment(), SettingsFragment.TAG)
+                .replace(R.id.fragmentContainer, new SettingsFragment(), SettingsFragment.TAG)
                 .addToBackStack(null)
                 .commit();
     }
