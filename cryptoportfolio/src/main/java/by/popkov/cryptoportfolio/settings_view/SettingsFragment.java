@@ -12,7 +12,6 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.Optional;
@@ -20,7 +19,6 @@ import java.util.Optional;
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
-import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
