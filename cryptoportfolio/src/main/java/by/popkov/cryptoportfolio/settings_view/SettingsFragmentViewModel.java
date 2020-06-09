@@ -5,18 +5,18 @@ import androidx.lifecycle.ViewModel;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 
 class SettingsFragmentViewModel extends ViewModel {
-    private SettingsRepository sharedPreferences;
+    private SettingsRepository settingsRepository;
 
     SettingsFragmentViewModel(SettingsRepository sharedPreferences) {
-        this.sharedPreferences = sharedPreferences;
+        this.settingsRepository = sharedPreferences;
     }
 
     String getFiatSettings() {
-        return sharedPreferences.getFiatSetting();
+        return settingsRepository.getFiatSetting();
     }
 
     void saveFiatSetting(String fiatSymbol) {
-        sharedPreferences.saveFiatSetting(fiatSymbol);
+        settingsRepository.saveFiatSetting(fiatSymbol);
     }
 
 }
