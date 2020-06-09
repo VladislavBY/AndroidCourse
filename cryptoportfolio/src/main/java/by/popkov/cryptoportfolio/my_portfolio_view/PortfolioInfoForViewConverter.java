@@ -2,6 +2,8 @@ package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import java.util.Locale;
 
+import by.popkov.cryptoportfolio.utils.ShortSymbolConverter;
+
 class PortfolioInfoForViewConverter {
     private PortfolioInfoForViewConverter() {
     }
@@ -19,9 +21,11 @@ class PortfolioInfoForViewConverter {
         } else if (changePercent24Hour == 0) {
             change24Color = Colors.COLOR_NEUTRAL;
         }
-        String sumForView = String.format(locale, numberFormat, portfolioInfo.getSum());
+        String fiatSymbol = portfolioInfo.getFiatSymbol();
+        String shortSymbol = ShortSymbolConverter.getShortSymbol(fiatSymbol);
+        String sumForView = String.format(locale, numberFormat, portfolioInfo.getSum()) + shortSymbol;
         String changePercent24HourForView = String.format(locale, numberFormat, portfolioInfo.getChangePercent24Hour()) + "%";
-        String change24HourForView = String.format(locale, numberFormat, portfolioInfo.getChange24Hour());
-        return new PortfolioInfoForView(sumForView, changePercent24HourForView, change24HourForView, change24Color);
+        String change24HourForView = String.format(locale, numberFormat, portfolioInfo.getChange24Hour()) + shortSymbol;
+        return new PortfolioInfoForView(sumForView, changePercent24HourForView, change24HourForView, change24Color, fiatSymbol);
     }
 }
