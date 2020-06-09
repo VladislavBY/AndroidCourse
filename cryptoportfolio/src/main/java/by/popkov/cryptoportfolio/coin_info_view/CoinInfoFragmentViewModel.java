@@ -12,6 +12,7 @@ import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
+import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 class CoinInfoFragmentViewModel extends ViewModel {
@@ -21,17 +22,25 @@ class CoinInfoFragmentViewModel extends ViewModel {
 
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
+    private SettingsRepository settingsRepository;
     private Function<Coin, CoinForView> mapper;
     private CoinForView coinForView;
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
 
-    CoinInfoFragmentViewModel(CoinForView coinForView, ApiRepository apiRepository, DatabaseRepository databaseRepository, Function<Coin, CoinForView> mapper) {
+    CoinInfoFragmentViewModel(
+            CoinForView coinForView,
+            ApiRepository apiRepository,
+            DatabaseRepository databaseRepository,
+            SettingsRepository settingsRepository,
+            Function<Coin, CoinForView> mapper
+    ) {
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
+        this.settingsRepository = settingsRepository;
         this.mapper = mapper;
         this.coinForView = coinForView;
     }
-    
+
     private void setCoinForViewMutableLiveData(CoinForView coinForView) {
         coinForViewMutableLiveData.setValue(coinForView);
     }
@@ -43,7 +52,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
     void refreshCoinData(ShowThrowable showThrowable) {
         try {
             Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
-            apiRepository.getCoin(currentCoinDatabase, "USD")
+            apiRepository.getCoin(currentCoinDatabase, settingsRepository.getFiatSetting())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(coin -> mapper.apply(coin))
                     .subscribe(this::setCoinForViewMutableLiveData, showThrowable::show);
@@ -54,7 +63,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
 
     void connectToRepo(LifecycleOwner lifecycleOwner, ShowThrowable showThrowable) {
         databaseRepository.getCoinLiveData(coinForView.getSymbol()).observe(
-                lifecycleOwner, coin -> apiRepository.getCoin(coin, "USD")
+                lifecycleOwner, coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                         .map(coin1 -> mapper.apply(coin1))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::setCoinForViewMutableLiveData, showThrowable::show)

@@ -130,7 +130,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         if (getActivity() != null) {
             LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
             myPortfolioViewModel = new ViewModelProvider(
-                    this, new MyPortfolioViewModelFactory(getActivity().getApplication(), context))
+                    this, new MyPortfolioViewModelFactory(context))
                     .get(MyPortfolioViewModel.class);
             myPortfolioViewModel.connectToRepo(viewLifecycleOwner, this);
             myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {

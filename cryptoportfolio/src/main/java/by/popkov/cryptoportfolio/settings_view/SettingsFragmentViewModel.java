@@ -7,8 +7,8 @@ import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsReposi
 class SettingsFragmentViewModel extends ViewModel {
     private SettingsRepository settingsRepository;
 
-    SettingsFragmentViewModel(SettingsRepository sharedPreferences) {
-        this.settingsRepository = sharedPreferences;
+    SettingsFragmentViewModel(SettingsRepository settingsRepository) {
+        this.settingsRepository = settingsRepository;
     }
 
     String getFiatSettings() {
