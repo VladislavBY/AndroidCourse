@@ -10,4 +10,13 @@ class SettingsFragmentViewModel extends ViewModel {
     SettingsFragmentViewModel(SettingsRepository sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
     }
+
+    String getFiatSettings() {
+        return sharedPreferences.getFiatSetting();
+    }
+
+    void saveFiatSetting(String fiatSymbol) {
+        sharedPreferences.saveFiatSetting(fiatSymbol);
+    }
+
 }

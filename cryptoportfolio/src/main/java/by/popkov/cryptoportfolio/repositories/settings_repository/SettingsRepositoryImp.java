@@ -5,11 +5,14 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
+
 public class SettingsRepositoryImp implements SettingsRepository {
 
     private static final String SETTINGS_SHARED_PREFERENCES_NAME = "settingsSharedPreferencesName";
     private static final String FIAT_SYMBOL_KEY = "fiatSymbolKey";
-    private static final String DEFAULT_FIAT = "USD";
+    private static final String DEFAULT_FIAT = ApiRepositoryImp.USD;
+
     private SharedPreferences sharedPreferences;
 
     public SettingsRepositoryImp(@NonNull Context context) {

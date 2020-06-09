@@ -13,6 +13,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class ApiRepositoryImp implements ApiRepository {
+    public static final String USD = "USD";
+    public static final String EUR = "EUR";
+    public static final String RUB = "RUB";
+    public static final String GBP = "GBP";
+    public static final String JPY = "JPY";
+    public static final String KRW = "KRW";
+    public static final String BYN = "BYN";
+    public static final String BTC = "BTC";
+    public static final String ETH = "ETH";
+
     private static final String API_KEY = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=%s&tsyms=%s";
     private OkHttpClient okHttpClient = new OkHttpClient();
 
