@@ -33,20 +33,11 @@
         android:layout_marginStart="8dp"
         android:textSize="@dimen/coinListItemTextSize"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/coinIcon"
         app:layout_constraintTop_toTopOf="@+id/divider"
         tools:text="BTCE" />
 
-    <TextView
-        android:id="@+id/fiatSymbol"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:textSize="@dimen/coinListItemTextSize"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/coinIcon"
-        app:layout_constraintTop_toBottomOf="@id/coinSymbol"
-        tools:text="/ USD" />
 
     <TextView
         android:id="@+id/coinPrise"
@@ -80,15 +71,15 @@
         app:layout_constraintTop_toBottomOf="@id/coinPrise24HChange"
         tools:text="1000000$" />
 
-    <TextView
-        android:id="@+id/sum"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:text="@string/sum_coin_list"
-        android:textSize="@dimen/coinListItemTextSize"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/coinPriseSum"
-        app:layout_constraintTop_toBottomOf="@id/coinPrise24HChange" />
+<!--    <TextView-->
+<!--        android:id="@+id/sum"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginStart="8dp"-->
+<!--        android:text="@string/sum_coin_list"-->
+<!--        android:textSize="@dimen/coinListItemTextSize"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/coinPriseSum"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/coinPrise24HChange" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

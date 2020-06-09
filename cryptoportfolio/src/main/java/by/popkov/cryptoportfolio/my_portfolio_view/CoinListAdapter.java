@@ -85,7 +85,6 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
     static class ItemHolder extends RecyclerView.ViewHolder {
         private ImageView coinIcon;
         private TextView coinSymbol;
-        private TextView fiatSymbol;
         private TextView coinPrise;
         private TextView coinPrise24HChange;
         private TextView coinPriseSum;
@@ -94,16 +93,10 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             super(itemView);
             coinIcon = itemView.findViewById(R.id.coinIcon);
             coinSymbol = itemView.findViewById(R.id.coinSymbol);
-            fiatSymbol = itemView.findViewById(R.id.fiatSymbol);
             coinPrise = itemView.findViewById(R.id.coinPrise);
             coinPrise24HChange = itemView.findViewById(R.id.coinPrise24HChange);
             coinPriseSum = itemView.findViewById(R.id.coinPriseSum);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onCoinListClickListener.onItemClick(itemList.get(ItemHolder.this.getAdapterPosition()));
-                }
-            });
+            itemView.setOnClickListener(v -> onCoinListClickListener.onItemClick(itemList.get(ItemHolder.this.getAdapterPosition())));
         }
 
         private void bindItem(CoinForView coinForView) {
@@ -111,7 +104,6 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
                     .load(coinForView.getLogoUrl())
                     .into(coinIcon);
             coinSymbol.setText(coinForView.getSymbol());
-            fiatSymbol.setText(coinForView.getFiatSymbol());
             coinPrise.setText(coinForView.getPrise());
             coinPrise24HChange.setText(coinForView.getChangePercent24Hour());
             coinPrise24HChange.setTextColor(coinForView.getChange24Color());
