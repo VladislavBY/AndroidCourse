@@ -52,6 +52,10 @@ public class SettingsFragment extends Fragment {
         selectedSymbol = view.findViewById(R.id.selectedSymbol);
         homeBtn = view.findViewById(R.id.homeBtn);
         setHomeBtnListener();
+        setSelectedSymbolChangeListener();
+    }
+
+    private void setSelectedSymbolChangeListener() {
     }
 
 
