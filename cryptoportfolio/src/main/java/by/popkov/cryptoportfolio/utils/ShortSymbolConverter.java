@@ -15,6 +15,7 @@ public class ShortSymbolConverter {
     private static final String ETH_SYMBOL_SHORT = "Ξ";
 
     public static String getShortSymbol(String symbol) {
+        if (symbol == null) return "null";
         switch (symbol) {
             case ApiRepositoryImp.USD:
                 return USD_SYMBOL_SHORT;

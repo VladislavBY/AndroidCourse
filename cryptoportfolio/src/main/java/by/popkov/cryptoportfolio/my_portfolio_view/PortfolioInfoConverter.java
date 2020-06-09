@@ -23,7 +23,13 @@ class PortfolioInfoConverter {
                 change24Hour += coinSumChange;
             }
         }
-        String fiatSymbol = coinList.get(0).getFiatSymbol();
+        String fiatSymbol;
+        if (!coinList.isEmpty()) {
+            fiatSymbol = coinList.get(0).getFiatSymbol();
+        } else {
+            fiatSymbol = null;
+        }
+
         changePercent24Hour = change24Hour / (sum - change24Hour) * 100;
         return new PortfolioInfo(sum, changePercent24Hour, change24Hour, fiatSymbol);
     }
