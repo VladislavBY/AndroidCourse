@@ -57,48 +57,56 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
-        <TextView
-            android:id="@+id/sumTextView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/portfolioInfoContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/portfolioDataTextSize"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/coinListRecyclerView"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolBar"
-            tools:text="19034$" />
+            app:layout_constraintTop_toBottomOf="@id/toolBar">
 
-        <TextView
-            android:id="@+id/change24PrsTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/portfolioDataTextSize"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sumTextView"
-            tools:text="7%" />
+            <TextView
+                android:id="@+id/sumTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/portfolioDataTextSize"
+                android:textStyle="bold"
+                tools:text="19034$" />
 
-        <TextView
-            android:id="@+id/change24TextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/portfolioDataTextSize"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/change24PrsTextView"
-            tools:text="12323" />
+            <TextView
+                android:id="@+id/change24PrsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/portfolioDataTextSize"
+                android:textStyle="bold"
+                tools:text="7%" />
+
+            <TextView
+                android:id="@+id/change24TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="@dimen/portfolioDataTextSize"
+                android:textStyle="bold"
+                tools:text="12323" />
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/coinListRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingStart="@dimen/defaultMargin"
             android:paddingEnd="@dimen/defaultMargin"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/change24TextView" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/portfolioInfoContainer"
+            app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addCoinFab"
