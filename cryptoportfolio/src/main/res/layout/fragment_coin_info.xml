@@ -47,7 +47,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/coin_info_tool_bar"
                         android:textColor="@color/tool_bar_element_color"
-                        android:textSize="28sp"
+                        android:textSize="@dimen/toolBarTextViewSize"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/homeBtn"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/my_coins"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinNumberDivider" />
 
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinNumberDivider"
                 tools:text="103.33$" />
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/my_coins_sum"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinSumDivider" />
 
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinSumDivider"
                 tools:text="103.33$" />
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/change_24h"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinChangeSum24HourDivider" />
 
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinChangeSum24HourDivider"
                 tools:text="103.33$" />
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/prise"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinPriseDivider" />
 
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinPriseDivider"
                 tools:text="9323821.23$" />
@@ -212,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/change_24_hour_prc"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinChangePercent24HourDivider" />
 
@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinChangePercent24HourDivider"
                 tools:text="100.99%" />
@@ -242,7 +242,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/change_24_hour"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinChange24HourDivider" />
 
@@ -252,7 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinChange24HourDivider"
                 tools:text="103.33$" />
@@ -272,7 +272,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/market_cap"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinMarketCapDivider" />
 
@@ -282,7 +282,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinMarketCapDivider"
                 tools:text="103.33$" />
@@ -302,7 +302,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/volume"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinMarket24VolumeDivider" />
 
@@ -312,7 +312,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinMarket24VolumeDivider"
                 tools:text="103.33$" />
@@ -332,7 +332,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:text="@string/supply"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinGlobalSupplyDivider" />
 
@@ -342,7 +342,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/defaultMargin"
                 android:layout_marginEnd="@dimen/defaultMargin"
-                android:textSize="@dimen/coinListItemTextSize"
+                android:textSize="@dimen/coinInfoTextSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coinGlobalSupplyDivider"
                 tools:text="103.33$" />

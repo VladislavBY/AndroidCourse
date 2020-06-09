@@ -108,13 +108,17 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
                 settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
     }
 
-    void portfolioIsEmptyVisibleSwitcher(List<CoinForView> coinForViewList) {
+    private void portfolioIsEmptyVisibleSwitcher(List<CoinForView> coinForViewList) {
         if (coinForViewList.isEmpty()) {
             portfolioIsEmpty.setVisibility(View.VISIBLE);
             sumTextView.setVisibility(View.INVISIBLE);
+            change24PrsTextView.setVisibility(View.INVISIBLE);
+            change24TextView.setVisibility(View.INVISIBLE);
         } else {
             portfolioIsEmpty.setVisibility(View.INVISIBLE);
             sumTextView.setVisibility(View.VISIBLE);
+            change24PrsTextView.setVisibility(View.VISIBLE);
+            change24TextView.setVisibility(View.VISIBLE);
         }
     }
 

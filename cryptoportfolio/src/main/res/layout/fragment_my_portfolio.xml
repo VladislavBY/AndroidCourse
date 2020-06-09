@@ -30,7 +30,7 @@
                     android:layout_marginStart="@dimen/defaultMargin"
                     android:text="@string/my_portfolio_toolbar_text"
                     android:textColor="@color/tool_bar_element_color"
-                    android:textSize="28sp"
+                    android:textSize="@dimen/toolBarTextViewSize"
                     android:textStyle="bold" />
 
                 <ImageButton
