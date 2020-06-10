@@ -10,6 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import by.popkov.homework9.city_database.CityEntity;
 
 public class CityFragmentAdapter extends RecyclerView.Adapter<CityFragmentAdapter.ItemViewHolder> {
     private ArrayList<String> cityNames = new ArrayList<>();
@@ -20,8 +24,11 @@ public class CityFragmentAdapter extends RecyclerView.Adapter<CityFragmentAdapte
         notifyDataSetChanged();
     }
 
-    void setCityNames(ArrayList<String> cityNames) {
-        this.cityNames = new ArrayList<>(cityNames);
+    void setCityNames(List<CityEntity> cities) {
+        cityNames.clear();
+        List<String> collect = cities.stream().map(CityEntity::getName)
+                .collect(Collectors.toList());
+        cityNames.addAll(collect);
         notifyDataSetChanged();
     }
 

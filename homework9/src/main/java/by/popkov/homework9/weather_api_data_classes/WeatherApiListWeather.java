@@ -8,6 +8,8 @@ public class WeatherApiListWeather {
     @SerializedName("icon")
     private String icon;
 
+    private int iconRes;
+
     public String getMain() {
         return main;
     }
@@ -15,8 +17,6 @@ public class WeatherApiListWeather {
     public String getIcon() {
         return icon;
     }
-
-    private int iconRes;
 
     public int getIconRes() {
         return iconRes;

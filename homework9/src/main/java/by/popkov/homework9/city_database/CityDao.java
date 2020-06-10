@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 @Dao
 public interface CityDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -19,7 +21,7 @@ public interface CityDao {
     void updateCity(CityEntity... cityEntity);
 
     @Query("SELECT * FROM CityEntity")
-    CityEntity[] loadAllCity();
+    List<CityEntity> loadAllCity();
 
     @Query("SELECT * FROM CityEntity WHERE name = :cityName")
     CityEntity loadCity(String cityName);

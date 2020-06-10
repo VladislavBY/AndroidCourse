@@ -16,9 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
+
 
 import by.popkov.homework9.city_database.CityDatabase;
 import by.popkov.homework9.city_database.CityEntity;
@@ -93,14 +92,7 @@ public class CityFragment extends Fragment implements CityFragmentDialog.CityFra
     }
 
     private void setCityFromDataBase() {
-        CompletableFuture.supplyAsync(() -> {
-            ArrayList<String> result = new ArrayList<>();
-            CityEntity[] cityEntities = cityDatabase.getCityDao().loadAllCity();
-            for (CityEntity cityEntity : cityEntities) {
-                result.add(cityEntity.getName());
-            }
-            return result;
-        }, cityDatabase.getExecutorService())
+        CompletableFuture.supplyAsync(() -> cityDatabase.getCityDao().loadAllCity(), cityDatabase.getExecutorService())
                 .thenAcceptAsync(strings -> cityFragmentAdapter.setCityNames(strings), ContextCompat.getMainExecutor(fragmentActivity));
 
     }
