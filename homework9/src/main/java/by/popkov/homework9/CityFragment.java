@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.concurrent.CompletableFuture;
 
+import java.util.concurrent.CompletableFuture;
 
 import by.popkov.homework9.city_database.CityDatabase;
 import by.popkov.homework9.city_database.CityEntity;
