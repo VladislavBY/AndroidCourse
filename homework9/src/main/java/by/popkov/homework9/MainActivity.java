@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnClickButtonListener {
-    static final String SHARED_PREFERENCES_NAME = "SETTINGS";
+    public static final String SHARED_PREFERENCES_NAME = "SETTINGS";
     private FragmentManager fragmentManager;
 
     @Override

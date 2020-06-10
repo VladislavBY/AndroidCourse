@@ -24,7 +24,7 @@ import by.popkov.homework9.city_database.CityEntity;
 
 public class CityFragment extends Fragment implements CityFragmentDialog.CityFragmentDialogListener {
     static final String FRAGMENT_TAG = "CityFragment";
-    static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY";
+    public static final String SELECTED_CITY_KEY = "SELECTED_CITY_KEY";
 
     private RecyclerView recyclerView;
     private FragmentActivity fragmentActivity;

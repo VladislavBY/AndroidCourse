@@ -42,11 +42,11 @@ import okhttp3.ResponseBody;
 public class MainFragment extends Fragment {
 
     static final String FRAGMENT_TAG = "MainFragment";
-    private static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
+    public static final String API_WEATHER_NOW = "https://api.openweathermap.org/data/2.5/weather?q=%s&units=%s&appid=%s";
     private static final String API_WEATHER_FORECAST = "https://api.openweathermap.org/data/2.5/forecast?q=%s&units=%s&appid=%s";
-    private static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
-    private static final String DEFAULT_CITY = "London";
-    private static final String DEFAULT_UNITS = "metric";
+    public static final String API_KEY = "a179821de4f14533abfde5b6ae9204b0";
+    public static final String DEFAULT_CITY = "London";
+    public static final String DEFAULT_UNITS = "metric";
 
     private String unitsSing;
 
