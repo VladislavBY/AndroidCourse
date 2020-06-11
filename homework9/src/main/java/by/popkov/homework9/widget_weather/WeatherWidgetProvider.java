@@ -51,7 +51,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                new Handler(context.getMainLooper()).post(() -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show());
             }
 
             @Override
@@ -86,10 +86,11 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private int getDrawableId(Context context, WeatherApi weatherApi) {
+    private int getDrawableId(@NotNull Context context, @NotNull WeatherApi weatherApi) {
         return context.getResources().getIdentifier("weather" + weatherApi.getWeatherApiListWeather().get(0).getIcon(), "drawable", context.getPackageName());
     }
 
+    @NotNull
     private String getTime(long dt) {
         return new SimpleDateFormat("dd MMM HH:mm", Locale.getDefault()).format(new Date(dt));
     }
