@@ -18,6 +18,7 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 
 import by.popkov.homework9.R;
 import by.popkov.homework9.weather_api_data_classes.WeatherApi;
@@ -70,10 +71,16 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
 
     private void setDataToView(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WeatherApi weatherApi, String city, String units) {
         for (int appWidgetId : appWidgetIds) {
+            Optional<String> unitsSymbolOptional = Optional.empty();
+            if (units.equals(UNITS_METRIC)) {
+                unitsSymbolOptional = Optional.of(context.getString(R.string.UNITS_METRIC));
+            } else if (units.equals(UNITS_IMPERIAL)) {
+                unitsSymbolOptional = Optional.of(context.getString(R.string.UNITS_IMPERIAL));
+            }
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_weather);
             remoteViews.setTextViewText(R.id.cityName, String.valueOf(city));
             remoteViews.setTextViewText(R.id.date, getTime(weatherApi.getDt()));
-            remoteViews.setTextViewText(R.id.weatherNow, String.valueOf(weatherApi.getWeatherApiMain().getTemp()));
+            unitsSymbolOptional.ifPresent(s -> remoteViews.setTextViewText(R.id.weatherNow, weatherApi.getWeatherApiMain().getTemp() + s));
             remoteViews.setImageViewResource(R.id.icon, getDrawableId(context, weatherApi));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
