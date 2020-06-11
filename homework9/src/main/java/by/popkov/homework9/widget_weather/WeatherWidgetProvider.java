@@ -15,6 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import by.popkov.homework9.R;
 import by.popkov.homework9.weather_api_data_classes.WeatherApi;
@@ -59,17 +62,28 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                     }.getType();
                     final WeatherApi weatherNow = new Gson().fromJson(json, type);
                     new Handler(context.getMainLooper()).post(() ->
-                            WeatherWidgetProvider.this.setDataToView(context, appWidgetManager, appWidgetIds, weatherNow));
+                            WeatherWidgetProvider.this.setDataToView(context, appWidgetManager, appWidgetIds, weatherNow, city, units));
                 }
             }
         });
     }
 
-    private void setDataToView(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WeatherApi weatherApi) {
+    private void setDataToView(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WeatherApi weatherApi, String city, String units) {
         for (int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_weather);
-            remoteViews.setTextViewText(R.id.cityName, String.valueOf(weatherApi.getDt()));
+            remoteViews.setTextViewText(R.id.cityName, String.valueOf(city));
+            remoteViews.setTextViewText(R.id.date, getTime(weatherApi.getDt()));
+            remoteViews.setTextViewText(R.id.weatherNow, String.valueOf(weatherApi.getWeatherApiMain().getTemp()));
+            remoteViews.setImageViewResource(R.id.icon, getDrawableId(context, weatherApi));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
+    }
+
+    private int getDrawableId(Context context, WeatherApi weatherApi) {
+        return context.getResources().getIdentifier("weather" + weatherApi.getWeatherApiListWeather().get(0).getIcon(), "drawable", context.getPackageName());
+    }
+
+    private String getTime(long dt) {
+        return new SimpleDateFormat("dd MMM HH:mm", Locale.getDefault()).format(new Date(dt));
     }
 }
