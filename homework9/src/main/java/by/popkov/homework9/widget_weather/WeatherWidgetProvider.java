@@ -35,6 +35,9 @@ import static by.popkov.homework9.MainFragment.*;
 import static by.popkov.homework9.SettingsFragment.*;
 
 public class WeatherWidgetProvider extends AppWidgetProvider {
+
+    public static final String DATE_FORMAT = "dd MMM HH:mm";
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         setData(context, appWidgetManager, appWidgetIds);
@@ -86,12 +89,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private int getDrawableId(@NotNull Context context, @NotNull WeatherApi weatherApi) {
-        return context.getResources().getIdentifier("weather" + weatherApi.getWeatherApiListWeather().get(0).getIcon(), "drawable", context.getPackageName());
-    }
-
     @NotNull
     private String getTime(long dt) {
-        return new SimpleDateFormat("dd MMM HH:mm", Locale.getDefault()).format(new Date(dt));
+        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(new Date(dt));
+    }
+
+    private int getDrawableId(@NotNull Context context, @NotNull WeatherApi weatherApi) {
+        return context.getResources().getIdentifier("weather" + weatherApi.getWeatherApiListWeather().get(0).getIcon(), "drawable", context.getPackageName());
     }
 }
