@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,6 +33,11 @@ import static by.popkov.homework9.SettingsFragment.*;
 public class WeatherWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        setData(context, appWidgetManager, appWidgetIds);
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+    }
+
+    private void setData(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         String city = sharedPreferences.getString(SELECTED_CITY_KEY, DEFAULT_CITY);
@@ -41,7 +47,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -53,18 +59,17 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                     }.getType();
                     final WeatherApi weatherNow = new Gson().fromJson(json, type);
                     new Handler(context.getMainLooper()).post(() ->
-                            WeatherWidgetProvider.this.setData(context, appWidgetManager, appWidgetIds, weatherNow));
+                            WeatherWidgetProvider.this.setDataToView(context, appWidgetManager, appWidgetIds, weatherNow));
                 }
             }
         });
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    private void setData(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WeatherApi weatherApi) {
-        for (int i = 0; i < appWidgetIds.length; i++) {
+    private void setDataToView(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WeatherApi weatherApi) {
+        for (int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_weather);
-            remoteViews.setTextViewText(R.id.textViewTest, String.valueOf(weatherApi.getWeatherApiMain().getTemp()));
-            appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+            remoteViews.setTextViewText(R.id.cityName, String.valueOf(weatherApi.getDt()));
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
 }

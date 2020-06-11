@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@mipmap/ic_launcher">
+    android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewTest"
+        android:id="@+id/cityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="40sp" />
+        android:layout_gravity="top|start"
+        android:textColor="@color/widgetTextColor"
+        android:textSize="@dimen/widgetTextSize"
+        tools:text="Minsk" />
 
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:textColor="@color/widgetTextColor"
+        android:textSize="@dimen/widgetTextSize"
+        tools:text="02.02.1995" />
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="bottom|start"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/weather11d" />
+
+    <TextView
+        android:id="@+id/weatherNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:textColor="@color/widgetTextColor"
+        android:textSize="@dimen/widgetTextSize"
+        tools:text="30C" />
 </FrameLayout>

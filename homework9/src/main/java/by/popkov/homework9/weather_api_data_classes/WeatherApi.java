@@ -11,11 +11,18 @@ public class WeatherApi {
     @SerializedName("main")
     private WeatherApiMain weatherApiMain;
 
+    @SerializedName("dt")
+    private long dt;
+
     public WeatherApiMain getWeatherApiMain() {
         return weatherApiMain;
     }
 
     public List<WeatherApiListWeather> getWeatherApiListWeather() {
         return weatherApiListWeather;
+    }
+
+    public long getDt() {
+        return dt;
     }
 }
