@@ -32,7 +32,6 @@ import static by.popkov.homework9.SettingsFragment.*;
 public class WeatherWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         String city = sharedPreferences.getString(SELECTED_CITY_KEY, DEFAULT_CITY);
@@ -53,10 +52,12 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
                     Type type = new TypeToken<WeatherApi>() {
                     }.getType();
                     final WeatherApi weatherNow = new Gson().fromJson(json, type);
-                    new Handler(context.getMainLooper()).post(() -> WeatherWidgetProvider.this.setData(context, appWidgetManager, appWidgetIds, weatherNow));
+                    new Handler(context.getMainLooper()).post(() ->
+                            WeatherWidgetProvider.this.setData(context, appWidgetManager, appWidgetIds, weatherNow));
                 }
             }
         });
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     private void setData(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds, WeatherApi weatherApi) {
