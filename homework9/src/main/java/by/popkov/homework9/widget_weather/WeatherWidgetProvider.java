@@ -1,8 +1,10 @@
 package by.popkov.homework9.widget_weather;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.widget.RemoteViews;
@@ -20,6 +22,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Optional;
 
+import by.popkov.homework9.MainActivity;
 import by.popkov.homework9.R;
 import by.popkov.homework9.weather_api_data_classes.WeatherApi;
 import okhttp3.Call;
@@ -85,16 +88,20 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.date, getTime(weatherApi.getDt()));
             unitsSymbolOptional.ifPresent(s -> remoteViews.setTextViewText(R.id.weatherNow, weatherApi.getWeatherApiMain().getTemp() + s));
             remoteViews.setImageViewResource(R.id.icon, getDrawableId(context, weatherApi));
+            remoteViews.setOnClickPendingIntent(R.id.rootLayout, PendingIntent
+                    .getActivity(context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
 
     @NotNull
     private String getTime(long dt) {
-        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(new Date(dt));
+        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(new Date(dt * 1000));
     }
 
     private int getDrawableId(@NotNull Context context, @NotNull WeatherApi weatherApi) {
-        return context.getResources().getIdentifier("weather" + weatherApi.getWeatherApiListWeather().get(0).getIcon(), "drawable", context.getPackageName());
+        return context.getResources().getIdentifier(
+                "weather" + weatherApi.getWeatherApiListWeather().get(0).getIcon(), "drawable", context.getPackageName()
+        );
     }
 }

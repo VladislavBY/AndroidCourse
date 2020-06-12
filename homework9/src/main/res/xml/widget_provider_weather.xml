@@ -3,6 +3,6 @@
     android:initialLayout="@layout/widget_weather"
     android:minWidth="240dp"
     android:minHeight="40dp"
-    android:resizeMode="vertical|horizontal"
+    android:resizeMode="horizontal"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen" />
