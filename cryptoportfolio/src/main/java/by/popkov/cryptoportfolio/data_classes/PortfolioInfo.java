@@ -1,24 +1,24 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.data_classes;
 
-class PortfolioInfo {
+public class PortfolioInfo {
     private Double sum;
     private Double changePercent24Hour;
     private Double change24Hour;
     private String fiatSymbol;
 
-    Double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    Double getChangePercent24Hour() {
+    public Double getChangePercent24Hour() {
         return changePercent24Hour;
     }
 
-    Double getChange24Hour() {
+    public Double getChange24Hour() {
         return change24Hour;
     }
 
-    String getFiatSymbol() {
+    public String getFiatSymbol() {
         return fiatSymbol;
     }
 

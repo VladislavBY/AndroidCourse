@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
-import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
+import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewModel.ShowThrowable {
     @Override

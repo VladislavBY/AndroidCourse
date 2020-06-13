@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.popkov.cryptoportfolio.R;
+import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHolder> {
 

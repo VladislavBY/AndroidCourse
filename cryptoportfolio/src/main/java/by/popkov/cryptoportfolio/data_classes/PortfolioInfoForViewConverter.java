@@ -1,16 +1,16 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.data_classes;
 
 import java.util.Locale;
 
 import by.popkov.cryptoportfolio.utils.ShortSymbolConverter;
 
-class PortfolioInfoForViewConverter {
+public class PortfolioInfoForViewConverter {
     private PortfolioInfoForViewConverter() {
     }
 
     private static final String numberFormat = "%.2f";
 
-    static PortfolioInfoForView convert(PortfolioInfo portfolioInfo) {
+    public static PortfolioInfoForView convert(PortfolioInfo portfolioInfo) {
         Locale locale = Locale.getDefault();
         int change24Color = 0;
         Double changePercent24Hour = portfolioInfo.getChangePercent24Hour();

@@ -10,6 +10,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import by.popkov.cryptoportfolio.domain.Coin;
+import by.popkov.cryptoportfolio.data_classes.CoinForView;
+import by.popkov.cryptoportfolio.data_classes.CoinForViewMapper;
+import by.popkov.cryptoportfolio.data_classes.PortfolioInfoConverter;
+import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
+import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForViewConverter;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;

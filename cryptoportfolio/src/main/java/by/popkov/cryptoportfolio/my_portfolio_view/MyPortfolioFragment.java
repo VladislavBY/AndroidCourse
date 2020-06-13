@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
+import by.popkov.cryptoportfolio.data_classes.CoinForView;
+import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 
 public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFragment.AddNewCoinDialogListener,
         MyPortfolioViewModel.ShowThrowable {

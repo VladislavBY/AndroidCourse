@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.data_classes;
 
 public interface Colors {
     int COLOR_UP = 0xFF19DA03;

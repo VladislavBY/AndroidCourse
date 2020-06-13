@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.data_classes;
 
 import java.util.Locale;
 import java.util.function.Function;

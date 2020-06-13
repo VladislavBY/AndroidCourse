@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.domain.Coin;
-import by.popkov.cryptoportfolio.my_portfolio_view.CoinForView;
+import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;

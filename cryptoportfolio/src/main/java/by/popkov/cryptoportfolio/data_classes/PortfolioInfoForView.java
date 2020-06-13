@@ -1,6 +1,6 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.data_classes;
 
-class PortfolioInfoForView {
+public class PortfolioInfoForView {
     private String sum;
     private String changePercent24Hour;
     private String change24Hour;

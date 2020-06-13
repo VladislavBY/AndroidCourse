@@ -1,14 +1,14 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.data_classes;
 
 import java.util.List;
 
 import by.popkov.cryptoportfolio.domain.Coin;
 
-class PortfolioInfoConverter {
+public class PortfolioInfoConverter {
     private PortfolioInfoConverter() {
     }
 
-    static PortfolioInfo convert(List<Coin> coinList) {
+    public static PortfolioInfo convert(List<Coin> coinList) {
         double sum = 0;
         double change24Hour = 0;
         double changePercent24Hour;
