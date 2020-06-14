@@ -1,5 +1,7 @@
 package by.popkov.cryptoportfolio.repositories.api_repository;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class ApiRepositoryImp implements ApiRepository {
     }
 
     @Override
-    public @NonNull Observable<Coin> getCoin(Coin rawCoin, String fiatSymbol) {
+    public @NonNull Observable<Coin> getCoin(@NotNull Coin rawCoin, String fiatSymbol) {
         Request request = new Request.Builder()
                 .url(String.format(API_KEY, rawCoin.getSymbol(), fiatSymbol))
                 .build();
@@ -48,7 +50,8 @@ public class ApiRepositoryImp implements ApiRepository {
                 .map(responseBody -> ConverterJsonToCoin.toCoin(rawCoin, fiatSymbol, responseBody.string()));
     }
 
-    private Request makeRequestFromList(List<Coin> rawCoinList, String fiatSymbol) {
+    @NotNull
+    private Request makeRequestFromList(@NotNull List<Coin> rawCoinList, String fiatSymbol) {
         ArrayList<String> symbols = new ArrayList<>();
         rawCoinList.forEach(coin -> symbols.add(coin.getSymbol()));
         StringBuilder stringBuilder = new StringBuilder();

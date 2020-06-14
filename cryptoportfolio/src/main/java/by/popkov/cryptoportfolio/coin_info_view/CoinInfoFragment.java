@@ -28,19 +28,14 @@ import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
 public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewModel.ShowThrowable {
-    @Override
-    public void show(Throwable throwable) {
-        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-    }
-
     public static final String TAG = "CoinInfoFragment";
-
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
+
     private OnHomeClickListener onHomeClickListener;
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
-
     private ImageView coinIcon;
+
     private TextView coinSymbol;
     private TextView coinNumberData;
     private TextView coinSumData;
@@ -63,6 +58,11 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         CoinInfoFragment coinInfoFragment = new CoinInfoFragment();
         coinInfoFragment.setArguments(bundle);
         return coinInfoFragment;
+    }
+
+    @Override
+    public void show(Throwable throwable) {
+        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -89,12 +89,22 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         setSwipeRefreshLayout();
     }
 
-    private void setSwipeRefreshLayout() {
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            coinInfoFragmentViewModel.refreshCoinData(this);
-            swipeRefreshLayout.setRefreshing(false);
-        });
-
+    private void initViews(@NonNull View view) {
+        coinIcon = view.findViewById(R.id.coinIcon);
+        coinSymbol = view.findViewById(R.id.coinSymbol);
+        coinNumberData = view.findViewById(R.id.coinNumberData);
+        coinSumData = view.findViewById(R.id.coinSumData);
+        coinChangeSum24HourData = view.findViewById(R.id.coinChangeSum24HourData);
+        coinPriseData = view.findViewById(R.id.coinPriseData);
+        coinChangePercent24HourData = view.findViewById(R.id.coinChangePercent24HourData);
+        coinChange24HourData = view.findViewById(R.id.coinChange24HourData);
+        coinMarketCapData = view.findViewById(R.id.coinMarketCapData);
+        coinMarket24VolumeData = view.findViewById(R.id.coinMarket24VolumeData);
+        coinGlobalSupplyData = view.findViewById(R.id.coinGlobalSupplyData);
+        editBtn = view.findViewById(R.id.editBtn);
+        deleteBtn = view.findViewById(R.id.deleteBtn);
+        homeBtn = view.findViewById(R.id.homeBtn);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
     }
 
     private void initViewModel() {
@@ -104,37 +114,11 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
     }
 
-    private void setBtnListeners() {
-        deleteBtn.setOnClickListener(v -> showDeleteDialog());
-        editBtn.setOnClickListener(v -> showEditDialog());
-        homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick());
-    }
-
-    private void showEditDialog() {
-        View view = LayoutInflater.from(context).inflate(R.layout.edit_dialog_view, null, false);
-        EditText editText = view.findViewById(R.id.newNumber);
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.edit_dialog_title)
-                .setView(view)
-                .setPositiveButton(R.string.edit_dialog_positive,
-                        (dialog, which) -> coinInfoFragmentViewModel.updateCoin(Double.valueOf(editText.getText().toString())))
-                .setNegativeButton(R.string.edit_dialog_negative, (dialog, which) -> {
-                })
-                .create()
-                .show();
-    }
-
-    private void showDeleteDialog() {
-        new AlertDialog.Builder(context)
-                .setTitle(R.string.delete_dialog_title)
-                .setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
-                    coinInfoFragmentViewModel.deleteCoin();
-                    onHomeClickListener.onHomeClick();
-                })
-                .setNeutralButton(R.string.delete_dialog_negative, ((dialog, which) -> {
-                }))
-                .create()
-                .show();
+    private CoinForView extractCoinForView() {
+        if (getArguments() != null) {
+            return (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
+        }
+        throw new IllegalArgumentException("Not found CoinForView in Arguments");
     }
 
     private void setViewsData(CoinForView coinForView) {
@@ -156,29 +140,45 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         coinGlobalSupplyData.setText(coinForView.getGlobalSupply());
     }
 
-    private CoinForView extractCoinForView() {
-        if (getArguments() != null) {
-            return (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
-        }
-        throw new IllegalArgumentException("Not found CoinForView in Arguments");
+    private void setBtnListeners() {
+        deleteBtn.setOnClickListener(v -> showDeleteDialog());
+        editBtn.setOnClickListener(v -> showEditDialog());
+        homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick());
     }
 
-    private void initViews(@NonNull View view) {
-        coinIcon = view.findViewById(R.id.coinIcon);
-        coinSymbol = view.findViewById(R.id.coinSymbol);
-        coinNumberData = view.findViewById(R.id.coinNumberData);
-        coinSumData = view.findViewById(R.id.coinSumData);
-        coinChangeSum24HourData = view.findViewById(R.id.coinChangeSum24HourData);
-        coinPriseData = view.findViewById(R.id.coinPriseData);
-        coinChangePercent24HourData = view.findViewById(R.id.coinChangePercent24HourData);
-        coinChange24HourData = view.findViewById(R.id.coinChange24HourData);
-        coinMarketCapData = view.findViewById(R.id.coinMarketCapData);
-        coinMarket24VolumeData = view.findViewById(R.id.coinMarket24VolumeData);
-        coinGlobalSupplyData = view.findViewById(R.id.coinGlobalSupplyData);
-        editBtn = view.findViewById(R.id.editBtn);
-        deleteBtn = view.findViewById(R.id.deleteBtn);
-        homeBtn = view.findViewById(R.id.homeBtn);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+    private void showDeleteDialog() {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.delete_dialog_title)
+                .setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
+                    coinInfoFragmentViewModel.deleteCoin();
+                    onHomeClickListener.onHomeClick();
+                })
+                .setNeutralButton(R.string.delete_dialog_negative, ((dialog, which) -> {
+                }))
+                .create()
+                .show();
+    }
+
+    private void showEditDialog() {
+        View view = LayoutInflater.from(context).inflate(R.layout.edit_dialog_view, null, false);
+        EditText editText = view.findViewById(R.id.newNumber);
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.edit_dialog_title)
+                .setView(view)
+                .setPositiveButton(R.string.edit_dialog_positive,
+                        (dialog, which) -> coinInfoFragmentViewModel.updateCoin(Double.valueOf(editText.getText().toString())))
+                .setNegativeButton(R.string.edit_dialog_negative, (dialog, which) -> {
+                })
+                .create()
+                .show();
+    }
+
+    private void setSwipeRefreshLayout() {
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            coinInfoFragmentViewModel.refreshCoinData(this);
+            swipeRefreshLayout.setRefreshing(false);
+        });
+
     }
 
     @Override
