@@ -1,14 +1,16 @@
 package by.popkov.cryptoportfolio.data_classes;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.domain.Coin;
 
-public class PortfolioInfoConverter {
-    private PortfolioInfoConverter() {
-    }
+public class PortfolioInfoMapper implements Function<List<Coin>, PortfolioInfo> {
 
-    public static PortfolioInfo convert(List<Coin> coinList) {
+    @Override
+    public PortfolioInfo apply(@NotNull List<Coin> coinList) {
         double sum = 0;
         double change24Hour = 0;
         double changePercent24Hour;

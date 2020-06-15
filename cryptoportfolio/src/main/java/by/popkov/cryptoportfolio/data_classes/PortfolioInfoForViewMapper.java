@@ -1,16 +1,17 @@
 package by.popkov.cryptoportfolio.data_classes;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
+import java.util.function.Function;
 
 import by.popkov.cryptoportfolio.utils.ShortSymbolConverter;
 
-public class PortfolioInfoForViewConverter {
-    private PortfolioInfoForViewConverter() {
-    }
-
+public class PortfolioInfoForViewMapper implements Function<PortfolioInfo, PortfolioInfoForView> {
     private static final String numberFormat = "%.2f";
 
-    public static PortfolioInfoForView convert(PortfolioInfo portfolioInfo) {
+    @Override
+    public PortfolioInfoForView apply(@NotNull PortfolioInfo portfolioInfo) {
         Locale locale = Locale.getDefault();
         int change24Color = 0;
         Double changePercent24Hour = portfolioInfo.getChangePercent24Hour();

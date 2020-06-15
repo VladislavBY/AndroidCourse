@@ -7,14 +7,13 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import by.popkov.cryptoportfolio.data_classes.PortfolioInfo;
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
-import by.popkov.cryptoportfolio.data_classes.CoinForViewMapper;
-import by.popkov.cryptoportfolio.data_classes.PortfolioInfoConverter;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
-import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForViewConverter;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
@@ -28,13 +27,26 @@ class MyPortfolioViewModel extends ViewModel {
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
     private SettingsRepository settingsRepository;
+    private Function<Coin, CoinForView> coinForViewMapper;
+    private Function<List<Coin>, PortfolioInfo> portfolioInfoMapper;
+    private Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
 
-    MyPortfolioViewModel(ApiRepository apiRepository, DatabaseRepository databaseRepository, SettingsRepository settingsRepository) {
+    MyPortfolioViewModel(
+            ApiRepository apiRepository,
+            DatabaseRepository databaseRepository,
+            SettingsRepository settingsRepository,
+            Function<Coin, CoinForView> coinForViewMapper,
+            Function<List<Coin>, PortfolioInfo> portfolioInfoMapper,
+            Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper
+    ) {
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
         this.settingsRepository = settingsRepository;
+        this.coinForViewMapper = coinForViewMapper;
+        this.portfolioInfoMapper = portfolioInfoMapper;
+        this.portfolioInfoForViewMapper = portfolioInfoForViewMapper;
     }
 
     LiveData<List<CoinForView>> getCoinForViewListLiveData() {
@@ -79,12 +91,12 @@ class MyPortfolioViewModel extends ViewModel {
 
 
     private void setCoinForViewListLiveData(List<Coin> coinList) {
-        List<CoinForView> coinForViews = coinList.stream().map(new CoinForViewMapper()).collect(Collectors.toList());
-        coinForViewListMutableLiveData.setValue(coinForViews);
+        coinForViewListMutableLiveData
+                .setValue(coinList.stream().map(coinForViewMapper).collect(Collectors.toList()));
     }
 
     private void setPortfolioInfoForViewMutableLiveData(List<Coin> coinList) {
         portfolioInfoForViewMutableLiveData
-                .setValue(PortfolioInfoForViewConverter.convert(PortfolioInfoConverter.convert(coinList)));
+                .setValue(portfolioInfoForViewMapper.apply(portfolioInfoMapper.apply(coinList)));
     }
 }

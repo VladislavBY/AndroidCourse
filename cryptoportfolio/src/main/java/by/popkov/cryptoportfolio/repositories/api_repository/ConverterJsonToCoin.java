@@ -1,7 +1,6 @@
 package by.popkov.cryptoportfolio.repositories.api_repository;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -28,16 +27,7 @@ class ConverterJsonToCoin {
                         String symbol = rawCoinList.get(i).getSymbol();
                         JSONObject jsonCoin = raw.getJSONObject(symbol);
                         JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
-                        Coin coin = new Coin.Builder(symbol, rawCoinList.get(i).getNumber())
-                                .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
-                                .setFiatSymbol(fiatSymbol)
-                                .setPrise(fiat.getDouble("PRICE"))
-                                .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
-                                .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
-                                .setGlobalSupply(fiat.getDouble("SUPPLY"))
-                                .setMarketCap(fiat.getDouble("MKTCAP"))
-                                .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))
-                                .build();
+                        Coin coin = getCoin(fiatSymbol, symbol, fiat, rawCoinList.get(i));
                         coinsList.add(coin);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -58,19 +48,24 @@ class ConverterJsonToCoin {
             JSONObject raw = jsonObject.getJSONObject("RAW");
             JSONObject jsonCoin = raw.getJSONObject(rawCoin.getSymbol());
             JSONObject fiat = jsonCoin.getJSONObject(fiatSymbol);
-            return new Coin.Builder(rawCoin.getSymbol(), rawCoin.getNumber())
-                    .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
-                    .setFiatSymbol(fiatSymbol)
-                    .setPrise(fiat.getDouble("PRICE"))
-                    .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
-                    .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
-                    .setGlobalSupply(fiat.getDouble("SUPPLY"))
-                    .setMarketCap(fiat.getDouble("MKTCAP"))
-                    .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))
-                    .build();
+            return getCoin(fiatSymbol, rawCoin.getSymbol(), fiat, rawCoin);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         throw new IllegalArgumentException("Uncorrected coin symbol");
+    }
+
+    @NotNull
+    private static Coin getCoin(@NonNull String fiatSymbol, @NotNull String symbol, @NotNull JSONObject fiat, @NotNull Coin rawCoin) throws JSONException {
+        return new Coin.Builder(symbol, rawCoin.getNumber())
+                .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
+                .setFiatSymbol(fiatSymbol)
+                .setPrise(fiat.getDouble("PRICE"))
+                .setChangePercent24Hour(fiat.getDouble("CHANGEPCT24HOUR"))
+                .setChange24Hour(fiat.getDouble("CHANGE24HOUR"))
+                .setGlobalSupply(fiat.getDouble("SUPPLY"))
+                .setMarketCap(fiat.getDouble("MKTCAP"))
+                .setMarket24Volume(fiat.getDouble("TOTALVOLUME24HTO"))
+                .build();
     }
 }

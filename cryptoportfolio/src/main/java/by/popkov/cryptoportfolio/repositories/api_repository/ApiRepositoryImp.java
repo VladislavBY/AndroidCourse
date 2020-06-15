@@ -28,6 +28,9 @@ public class ApiRepositoryImp implements ApiRepository {
     private static final String API_KEY = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=%s&tsyms=%s";
     private OkHttpClient okHttpClient = new OkHttpClient();
 
+    public ApiRepositoryImp() {
+    }
+
     @Override
     public @NonNull Observable<List<Coin>> getCoinsList(List<Coin> rawCoinList, String fiatSymbol) {
         final Request request = makeRequestFromList(rawCoinList, fiatSymbol);
