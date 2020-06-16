@@ -133,7 +133,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     }
 
     private void showEditDialog() {
-        View view = LayoutInflater.from(context).inflate(R.layout.edit_dialog_view, null, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.view_edit_dialog, null, false);
         EditText editText = view.findViewById(R.id.newNumber);
         new AlertDialog.Builder(context)
                 .setTitle(R.string.edit_dialog_title)
