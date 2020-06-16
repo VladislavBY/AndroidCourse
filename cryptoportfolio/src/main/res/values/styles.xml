@@ -7,6 +7,10 @@
         <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textColorHint">@color/text_color_hint</item>
+        <item name="android:shadowColor">@color/shadow_color</item>
+        <item name="android:shadowRadius">3</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

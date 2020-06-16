@@ -17,5 +17,6 @@
     <color name="delete_btn_color">#F44336</color>
     <color name="layout_background">#FFFFFF</color>
     <color name="widget_portfolio_info_text_color">#FFFFFF</color>
+    <color name="shadow_color">#6C6C6C</color>
 
 </resources>
