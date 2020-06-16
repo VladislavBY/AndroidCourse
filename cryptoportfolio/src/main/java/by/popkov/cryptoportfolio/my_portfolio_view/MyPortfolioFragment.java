@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     @Override
     public void show(Throwable throwable) {
         Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        loadSwitcher(false);
     }
 
     @Override
@@ -52,6 +54,8 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private TextView sumTextView;
     private TextView change24PrsTextView;
     private TextView change24TextView;
+    private SwipeRefreshLayout refreshLayout;
+    private ProgressBar progressBar;
 
     private TextView portfolioIsEmpty;
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
@@ -83,14 +87,13 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         initRecyclerView(view);
         initViews(view);
         initViewModel();
-        initSwipeRefreshLayout(view);
     }
 
-    private void initSwipeRefreshLayout(View view) {
-        SwipeRefreshLayout refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+    private void setSwipeRefreshLayoutListener() {
         refreshLayout.setOnRefreshListener(() -> {
             myPortfolioViewModel.updateCoinList(this);
             refreshLayout.setRefreshing(false);
+            loadSwitcher(true);
         });
     }
 
@@ -101,7 +104,10 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         change24PrsTextView = view.findViewById(R.id.change24PrsTextView);
         change24TextView = view.findViewById(R.id.change24TextView);
         portfolioIsEmpty = view.findViewById(R.id.portfolioIsEmpty);
+        refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        progressBar = view.findViewById(R.id.progressBar);
         setBtnListeners();
+        setSwipeRefreshLayoutListener();
     }
 
     private void setBtnListeners() {
@@ -132,6 +138,12 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         coinListAdapterOptional = Optional.ofNullable((CoinListAdapter) coinListRecyclerView.getAdapter());
     }
 
+    private void loadSwitcher(boolean isLoading) {
+        if (isLoading) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else progressBar.setVisibility(View.GONE);
+    }
+
     private void initViewModel() {
         if (getActivity() != null) {
             LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
@@ -142,6 +154,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
             myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {
                         coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews));
                         portfolioIsEmptyVisibleSwitcher(coinForViews);
+                        loadSwitcher(false);
                     }
             );
             myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,

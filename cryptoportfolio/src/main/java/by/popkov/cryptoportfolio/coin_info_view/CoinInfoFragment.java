@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private Button deleteBtn;
     private ImageButton homeBtn;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
 
     @NotNull
     public static CoinInfoFragment getInstance(CoinForView coinForView) {
@@ -63,6 +65,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     @Override
     public void show(Throwable throwable) {
         Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+        loadSwitcher(false);
     }
 
     @Override
@@ -85,8 +88,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         initViewModel();
-        setBtnListeners();
-        setSwipeRefreshLayout();
     }
 
     private void initViews(@NonNull View view) {
@@ -105,39 +106,9 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         deleteBtn = view.findViewById(R.id.deleteBtn);
         homeBtn = view.findViewById(R.id.homeBtn);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-    }
-
-    private void initViewModel() {
-        coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(extractCoinForView(), context))
-                .get(CoinInfoFragmentViewModel.class);
-        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner(), this);
-        coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
-    }
-
-    private CoinForView extractCoinForView() {
-        if (getArguments() != null) {
-            return (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
-        }
-        throw new IllegalArgumentException("Not found CoinForView in Arguments");
-    }
-
-    private void setViewsData(CoinForView coinForView) {
-        Glide.with(this)
-                .load(coinForView.getLogoUrl())
-                .into(coinIcon);
-        coinSymbol.setText(coinForView.getSymbol());
-        coinNumberData.setText(coinForView.getNumber());
-        coinSumData.setText(coinForView.getSum());
-        coinChangeSum24HourData.setText(coinForView.getChangeSum24Hour());
-        coinChangeSum24HourData.setTextColor(coinForView.getChange24Color());
-        coinPriseData.setText(coinForView.getPrise());
-        coinChangePercent24HourData.setText(coinForView.getChangePercent24Hour());
-        coinChangePercent24HourData.setTextColor(coinForView.getChange24Color());
-        coinChange24HourData.setText(coinForView.getChange24Hour());
-        coinChange24HourData.setTextColor(coinForView.getChange24Color());
-        coinMarketCapData.setText(coinForView.getMarketCap());
-        coinMarket24VolumeData.setText(coinForView.getMarket24Volume());
-        coinGlobalSupplyData.setText(coinForView.getGlobalSupply());
+        progressBar = view.findViewById(R.id.progressBar);
+        setBtnListeners();
+        setSwipeRefreshLayout();
     }
 
     private void setBtnListeners() {
@@ -177,8 +148,50 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         swipeRefreshLayout.setOnRefreshListener(() -> {
             coinInfoFragmentViewModel.refreshCoinData(this);
             swipeRefreshLayout.setRefreshing(false);
+            loadSwitcher(true);
         });
+    }
 
+    private void initViewModel() {
+        coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(extractCoinForView(), context))
+                .get(CoinInfoFragmentViewModel.class);
+        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner(), this);
+        coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), coinForView -> {
+            this.setViewsData(coinForView);
+            loadSwitcher(false);
+        });
+    }
+
+    private CoinForView extractCoinForView() {
+        if (getArguments() != null) {
+            return (CoinForView) getArguments().getSerializable(EXTRA_COIN_FOR_VIEW);
+        }
+        throw new IllegalArgumentException("Not found CoinForView in Arguments");
+    }
+
+    private void setViewsData(CoinForView coinForView) {
+        Glide.with(this)
+                .load(coinForView.getLogoUrl())
+                .into(coinIcon);
+        coinSymbol.setText(coinForView.getSymbol());
+        coinNumberData.setText(coinForView.getNumber());
+        coinSumData.setText(coinForView.getSum());
+        coinChangeSum24HourData.setText(coinForView.getChangeSum24Hour());
+        coinChangeSum24HourData.setTextColor(coinForView.getChange24Color());
+        coinPriseData.setText(coinForView.getPrise());
+        coinChangePercent24HourData.setText(coinForView.getChangePercent24Hour());
+        coinChangePercent24HourData.setTextColor(coinForView.getChange24Color());
+        coinChange24HourData.setText(coinForView.getChange24Hour());
+        coinChange24HourData.setTextColor(coinForView.getChange24Color());
+        coinMarketCapData.setText(coinForView.getMarketCap());
+        coinMarket24VolumeData.setText(coinForView.getMarket24Volume());
+        coinGlobalSupplyData.setText(coinForView.getGlobalSupply());
+    }
+
+    private void loadSwitcher(boolean isLoading) {
+        if (isLoading) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else progressBar.setVisibility(View.GONE);
     }
 
     @Override
