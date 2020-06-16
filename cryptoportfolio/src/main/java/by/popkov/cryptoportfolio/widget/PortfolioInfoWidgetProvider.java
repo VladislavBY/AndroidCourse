@@ -3,6 +3,7 @@ package by.popkov.cryptoportfolio.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
+import by.popkov.cryptoportfolio.MainActivity;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfo;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
@@ -28,6 +30,8 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+
+import static android.app.PendingIntent.*;
 
 public class PortfolioInfoWidgetProvider extends AppWidgetProvider {
     @Override
@@ -74,6 +78,8 @@ public class PortfolioInfoWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextColor(R.id.change24PrsTextView, portfolioInfoForView.getChange24Color());
             remoteViews.setTextViewText(R.id.change24TextView, portfolioInfoForView.getChange24Hour());
             remoteViews.setTextColor(R.id.change24TextView, portfolioInfoForView.getChange24Color());
+            remoteViews.setOnClickPendingIntent(R.id.rootLayout,
+                    getActivity(context, 0, new Intent(context, MainActivity.class), FLAG_UPDATE_CURRENT));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }

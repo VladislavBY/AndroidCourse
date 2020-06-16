@@ -32,6 +32,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+import static android.app.PendingIntent.*;
 import static by.popkov.homework9.CityFragment.*;
 import static by.popkov.homework9.MainActivity.*;
 import static by.popkov.homework9.MainFragment.*;
@@ -88,8 +89,8 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.date, getTime(weatherApi.getDt()));
             unitsSymbolOptional.ifPresent(s -> remoteViews.setTextViewText(R.id.weatherNow, weatherApi.getWeatherApiMain().getTemp() + s));
             remoteViews.setImageViewResource(R.id.icon, getDrawableId(context, weatherApi));
-            remoteViews.setOnClickPendingIntent(R.id.rootLayout, PendingIntent
-                    .getActivity(context, 0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
+            remoteViews.setOnClickPendingIntent(R.id.rootLayout,
+                    getActivity(context, 0, new Intent(context, MainActivity.class), FLAG_UPDATE_CURRENT));
             appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
         }
     }
