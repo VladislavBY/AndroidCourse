@@ -24,6 +24,8 @@ import com.bumptech.glide.Glide;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
@@ -32,7 +34,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     public static final String TAG = "CoinInfoFragment";
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
 
-    private OnHomeClickListener onHomeClickListener;
+    private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
     private CoinInfoFragmentViewModel coinInfoFragmentViewModel;
     private Context context;
     private ImageView coinIcon;
@@ -73,7 +75,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         super.onAttach(context);
         this.context = context;
         if (context instanceof OnHomeClickListener) {
-            onHomeClickListener = (OnHomeClickListener) context;
+            onHomeClickListenerOptional = Optional.of((OnHomeClickListener) context);
         }
     }
 
@@ -114,7 +116,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private void setBtnListeners() {
         deleteBtn.setOnClickListener(v -> showDeleteDialog());
         editBtn.setOnClickListener(v -> showEditDialog());
-        homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick());
+        onHomeClickListenerOptional.ifPresent(onHomeClickListener -> homeBtn.setOnClickListener(v -> onHomeClickListener.onHomeClick()));
     }
 
     private void showDeleteDialog() {
@@ -122,7 +124,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
                 .setTitle(R.string.delete_dialog_title)
                 .setPositiveButton(R.string.delete_dialog_positive, (dialog, which) -> {
                     coinInfoFragmentViewModel.deleteCoin();
-                    onHomeClickListener.onHomeClick();
+                    onHomeClickListenerOptional.ifPresent(OnHomeClickListener::onHomeClick);
                 })
                 .setNeutralButton(R.string.delete_dialog_negative, ((dialog, which) -> {
                 }))
@@ -197,7 +199,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     @Override
     public void onDetach() {
         super.onDetach();
-        onHomeClickListener = null;
+        onHomeClickListenerOptional = Optional.empty();
         context = null;
     }
 }
