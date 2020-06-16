@@ -65,7 +65,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     }
 
     @Override
-    public void show(Throwable throwable) {
+    public void show(@NotNull Throwable throwable) {
         Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         loadSwitcher(false);
     }
@@ -171,7 +171,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         throw new IllegalArgumentException("Not found CoinForView in Arguments");
     }
 
-    private void setViewsData(CoinForView coinForView) {
+    private void setViewsData(@NotNull CoinForView coinForView) {
         Glide.with(this)
                 .load(coinForView.getLogoUrl())
                 .into(coinIcon);

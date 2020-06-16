@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.OnHomeClickListener;
@@ -57,7 +59,7 @@ public class SettingsFragment extends Fragment {
                 .get(SettingsFragmentViewModel.class);
     }
 
-    private void initViews(View view) {
+    private void initViews(@NotNull View view) {
         selectedSymbol = view.findViewById(R.id.selectedSymbol);
         setCheckedSymbol(view);
         setSelectedSymbolChangeListener();

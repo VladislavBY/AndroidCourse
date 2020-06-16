@@ -27,7 +27,7 @@ public class PortfolioInfoForView {
         return fiatSymbol;
     }
 
-    public PortfolioInfoForView(String sum, String changePercent24Hour, String change24Hour, int change24Color, String fiatSymbol) {
+    PortfolioInfoForView(String sum, String changePercent24Hour, String change24Hour, int change24Color, String fiatSymbol) {
         this.sum = sum;
         this.changePercent24Hour = changePercent24Hour;
         this.change24Hour = change24Hour;

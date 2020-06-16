@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
@@ -57,14 +59,14 @@ class MyPortfolioViewModel extends ViewModel {
         return portfolioInfoForViewMutableLiveData;
     }
 
-    void saveCoin(String symbol, String number, ShowThrowable showThrowable) {
+    void saveCoin(@NotNull String symbol, String number, @NotNull ShowThrowable showThrowable) {
         Coin coin = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coin1 -> databaseRepository.addNewCoin(coin), showThrowable::show);
     }
 
-    void updateCoinList(ShowThrowable showThrowable) {
+    void updateCoinList(@NotNull ShowThrowable showThrowable) {
         try {
             List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();
             apiRepository.getCoinsList(currentCoinListDatabase, settingsRepository.getFiatSetting())
@@ -90,7 +92,7 @@ class MyPortfolioViewModel extends ViewModel {
     }
 
 
-    private void setCoinForViewListLiveData(List<Coin> coinList) {
+    private void setCoinForViewListLiveData(@NotNull List<Coin> coinList) {
         coinForViewListMutableLiveData
                 .setValue(coinList.stream().map(coinForViewMapper).collect(Collectors.toList()));
     }

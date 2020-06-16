@@ -7,10 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

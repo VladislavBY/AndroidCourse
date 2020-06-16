@@ -38,18 +38,22 @@ public class CoinInfoFragmentViewModelFactory implements ViewModelProvider.Facto
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 
+    @NonNull
     private ApiRepository getApiRepository() {
         return new ApiRepositoryImp();
     }
 
+    @NonNull
     private DatabaseRepository getDatabaseRepository() {
         return new DatabaseRepositoryImp(context, new CoinMapper());
     }
 
+    @NonNull
     private SettingsRepository getSettingsRepository() {
         return new SettingsRepositoryImp(context);
     }
 
+    @NonNull
     private Function<Coin, CoinForView> getMapper() {
         return new CoinForViewMapper();
     }

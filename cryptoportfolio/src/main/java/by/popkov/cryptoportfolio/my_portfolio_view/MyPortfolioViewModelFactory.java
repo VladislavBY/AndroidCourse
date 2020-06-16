@@ -47,26 +47,32 @@ public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
         throw new IllegalArgumentException("Unknown ViewModel class");
     }
 
+    @NonNull
     private ApiRepository getApiRepository() {
         return new ApiRepositoryImp();
     }
 
+    @NonNull
     private DatabaseRepository getDatabaseRepository() {
         return new DatabaseRepositoryImp(context, new CoinMapper());
     }
 
+    @NonNull
     private SettingsRepository getSettingsRepository() {
         return new SettingsRepositoryImp(context);
     }
 
+    @NonNull
     private Function<Coin, CoinForView> getCoinForViewMapper() {
         return new CoinForViewMapper();
     }
 
+    @NonNull
     private Function<List<Coin>, PortfolioInfo> getPortfolioInfoMapper() {
         return new PortfolioInfoMapper();
     }
 
+    @NonNull
     private Function<PortfolioInfo, PortfolioInfoForView> getPortfolioInfoForViewMapper() {
         return new PortfolioInfoForViewMapper();
     }

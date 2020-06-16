@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +102,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             itemView.setOnClickListener(v -> onCoinListClickListener.onItemClick(itemList.get(ItemHolder.this.getAdapterPosition())));
         }
 
-        private void bindItem(CoinForView coinForView) {
+        private void bindItem(@NotNull CoinForView coinForView) {
             Glide.with(itemView.getContext())
                     .load(coinForView.getLogoUrl())
                     .into(coinIcon);

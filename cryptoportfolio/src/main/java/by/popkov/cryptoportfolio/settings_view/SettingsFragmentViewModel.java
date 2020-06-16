@@ -18,5 +18,4 @@ class SettingsFragmentViewModel extends ViewModel {
     void saveFiatSetting(String fiatSymbol) {
         settingsRepository.saveFiatSetting(fiatSymbol);
     }
-
 }
