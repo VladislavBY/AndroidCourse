@@ -15,16 +15,16 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
 
 
     @Override
-    public void onClickSettings() {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, new SettingsFragment(), SettingsFragment.TAG)
-                .addToBackStack(null)
-                .commit();
+    public void onHomeClick() {
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override
-    public void onHomeClick() {
-        getSupportFragmentManager().popBackStack();
+    public void onClickSettings() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, SettingsFragment.getInstance(), SettingsFragment.TAG)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
 
     private void showMyPortfolioFragment() {
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragmentContainer, new MyPortfolioFragment(), MyPortfolioFragment.TAG)
+                .add(R.id.fragmentContainer, MyPortfolioFragment.getInstance(), MyPortfolioFragment.TAG)
                 .commit();
     }
 

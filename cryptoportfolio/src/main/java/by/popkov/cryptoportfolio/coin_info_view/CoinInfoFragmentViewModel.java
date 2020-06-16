@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
@@ -49,7 +51,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
         return coinForViewMutableLiveData;
     }
 
-    void refreshCoinData(ShowThrowable showThrowable) {
+    void refreshCoinData(@NotNull ShowThrowable showThrowable) {
         try {
             Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
             apiRepository.getCoin(currentCoinDatabase, settingsRepository.getFiatSetting())

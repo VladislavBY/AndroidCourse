@@ -31,6 +31,10 @@ public class SettingsFragment extends Fragment {
     private RadioGroup selectedSymbol;
     private ImageButton homeBtn;
 
+    @NotNull
+    public static SettingsFragment getInstance() {
+        return new SettingsFragment();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

@@ -54,6 +54,11 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
     private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
+    @NotNull
+    public static MyPortfolioFragment getInstance() {
+        return new MyPortfolioFragment();
+    }
+
     @Override
     public void show(@NotNull Throwable throwable) {
         Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
