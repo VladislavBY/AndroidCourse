@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
@@ -19,6 +20,7 @@ import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
+import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 class MyPortfolioViewModel extends ViewModel {
@@ -91,10 +93,32 @@ class MyPortfolioViewModel extends ViewModel {
         );
     }
 
+    private Comparator<? super Coin> getComparator(@NotNull String sortSetting) {
+        switch (sortSetting) {
+            case SettingsRepositoryImp.ALPHABET_SORT:
+                return (Comparator<Coin>) (o1, o2) -> o1.getSymbol().compareToIgnoreCase(o2.getSymbol());
+            case SettingsRepositoryImp.SUM_SORT:
+                return (Comparator<Coin>) (o1, o2) -> {
+                    if (o1.getPrise() != null && o2.getPrise() != null) {
+                        Double sumOne = o1.getPrise() * o1.getNumber();
+                        Double sumTwo = o2.getPrise() * o2.getNumber();
+                        return sumOne.compareTo(sumTwo);
+                    } else return 0;
+                };
+            case SettingsRepositoryImp.TIME_ADD_SORT:
+            default: return (Comparator<Coin>) (o1, o2) -> 0;
+        }
+    }
+
 
     private void setCoinForViewListLiveData(@NotNull List<Coin> coinList) {
         coinForViewListMutableLiveData
-                .setValue(coinList.stream().map(coinForViewMapper).collect(Collectors.toList()));
+                .setValue(
+                        coinList.stream()
+                                .sorted(getComparator(settingsRepository.getSortSetting()))
+                                .map(coinForViewMapper)
+                                .collect(Collectors.toList())
+                );
     }
 
     private void setPortfolioInfoForViewMutableLiveData(List<Coin> coinList) {
