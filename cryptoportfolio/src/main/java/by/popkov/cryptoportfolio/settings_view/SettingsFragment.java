@@ -20,7 +20,8 @@ import java.util.Optional;
 
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
-import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
+
+import static by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp.*;
 
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
@@ -73,31 +74,31 @@ public class SettingsFragment extends Fragment {
 
     private void setCheckedSymbol(View view) {
         switch (settingsFragmentViewModel.getFiatSettings()) {
-            case ApiRepositoryImp.USD:
+            case USD:
                 ((RadioButton) view.findViewById(R.id.usd)).setChecked(true);
                 break;
-            case ApiRepositoryImp.EUR:
+            case EUR:
                 ((RadioButton) view.findViewById(R.id.eur)).setChecked(true);
                 break;
-            case ApiRepositoryImp.RUB:
+            case RUB:
                 ((RadioButton) view.findViewById(R.id.rub)).setChecked(true);
                 break;
-            case ApiRepositoryImp.GBP:
+            case GBP:
                 ((RadioButton) view.findViewById(R.id.gbp)).setChecked(true);
                 break;
-            case ApiRepositoryImp.JPY:
+            case JPY:
                 ((RadioButton) view.findViewById(R.id.jpy)).setChecked(true);
                 break;
-            case ApiRepositoryImp.KRW:
+            case KRW:
                 ((RadioButton) view.findViewById(R.id.krw)).setChecked(true);
                 break;
-            case ApiRepositoryImp.BYN:
+            case BYN:
                 ((RadioButton) view.findViewById(R.id.byn)).setChecked(true);
                 break;
-            case ApiRepositoryImp.BTC:
+            case BTC:
                 ((RadioButton) view.findViewById(R.id.btc)).setChecked(true);
                 break;
-            case ApiRepositoryImp.ETH:
+            case ETH:
                 ((RadioButton) view.findViewById(R.id.eth)).setChecked(true);
                 break;
         }
@@ -107,31 +108,31 @@ public class SettingsFragment extends Fragment {
         selectedSymbol.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.usd:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.USD);
+                    settingsFragmentViewModel.saveFiatSetting(USD);
                     break;
                 case R.id.eur:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.EUR);
+                    settingsFragmentViewModel.saveFiatSetting(EUR);
                     break;
                 case R.id.rub:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.RUB);
+                    settingsFragmentViewModel.saveFiatSetting(RUB);
                     break;
                 case R.id.gbp:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.GBP);
+                    settingsFragmentViewModel.saveFiatSetting(GBP);
                     break;
                 case R.id.jpy:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.JPY);
+                    settingsFragmentViewModel.saveFiatSetting(JPY);
                     break;
                 case R.id.krw:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.KRW);
+                    settingsFragmentViewModel.saveFiatSetting(KRW);
                     break;
                 case R.id.byn:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.BYN);
+                    settingsFragmentViewModel.saveFiatSetting(BYN);
                     break;
                 case R.id.btc:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.BTC);
+                    settingsFragmentViewModel.saveFiatSetting(BTC);
                     break;
                 case R.id.eth:
-                    settingsFragmentViewModel.saveFiatSetting(ApiRepositoryImp.ETH);
+                    settingsFragmentViewModel.saveFiatSetting(ETH);
                     break;
             }
         });
