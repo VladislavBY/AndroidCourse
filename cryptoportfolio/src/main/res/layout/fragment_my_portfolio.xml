@@ -26,6 +26,7 @@
                 <SearchView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:closeIcon="@drawable/ic_close_black_40dp"
                     android:searchIcon="@drawable/ic_search_40dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/settingsImageButton"
