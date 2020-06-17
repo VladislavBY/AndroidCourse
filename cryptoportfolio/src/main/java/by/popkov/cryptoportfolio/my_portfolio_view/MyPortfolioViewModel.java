@@ -20,7 +20,6 @@ import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
-import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
