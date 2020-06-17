@@ -38,6 +38,7 @@ class MyPortfolioViewModel extends ViewModel {
     private Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper;
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<String> searchViewQueryMutableLiveData = new MutableLiveData<>();
 
     MyPortfolioViewModel(
             ApiRepository apiRepository,
@@ -53,6 +54,14 @@ class MyPortfolioViewModel extends ViewModel {
         this.coinForViewMapper = coinForViewMapper;
         this.portfolioInfoMapper = portfolioInfoMapper;
         this.portfolioInfoForViewMapper = portfolioInfoForViewMapper;
+    }
+
+    LiveData<String> getSearchViewQueryViewLiveData() {
+        return searchViewQueryMutableLiveData;
+    }
+
+    void setValueSearchViewQueryLiveData(String queryText) {
+        this.searchViewQueryMutableLiveData.setValue(queryText);
     }
 
     LiveData<List<CoinForView>> getCoinForViewListLiveData() {

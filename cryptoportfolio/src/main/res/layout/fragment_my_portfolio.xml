@@ -24,6 +24,7 @@
                 android:layout_height="match_parent">
 
                 <SearchView
+                    android:id="@+id/searchCoin"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:closeIcon="@drawable/ic_close_black_40dp"
@@ -34,6 +35,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/titleToolBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/my_portfolio_toolbar_text"
