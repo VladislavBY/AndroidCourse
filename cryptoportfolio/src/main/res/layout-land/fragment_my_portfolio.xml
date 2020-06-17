@@ -23,16 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <SearchView
-                    android:id="@+id/searchCoin"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:closeIcon="@drawable/ic_close_black_40dp"
-                    android:searchIcon="@drawable/ic_search_40dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/settingsImageButton"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/titleToolBar"
@@ -45,6 +35,19 @@
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <SearchView
+                    android:id="@+id/searchCoin"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+
+                    android:closeIcon="@drawable/ic_close_black_40dp"
+                    android:queryBackground="@color/tool_bar_background"
+                    android:searchIcon="@drawable/ic_search_40dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/settingsImageButton"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

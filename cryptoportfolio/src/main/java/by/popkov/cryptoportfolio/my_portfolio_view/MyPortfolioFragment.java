@@ -139,11 +139,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     }
 
     private void setSearchCoinListener() {
-        searchCoin.setOnSearchClickListener(v -> titleToolBar.setVisibility(View.INVISIBLE));
-        searchCoin.setOnCloseListener(() -> {
-            titleToolBar.setVisibility(View.VISIBLE);
-            return false;
-        });
         searchCoin.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
