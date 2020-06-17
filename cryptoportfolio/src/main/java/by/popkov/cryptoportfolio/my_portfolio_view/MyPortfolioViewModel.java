@@ -93,6 +93,17 @@ class MyPortfolioViewModel extends ViewModel {
         );
     }
 
+
+    private void setCoinForViewListLiveData(@NotNull List<Coin> coinList) {
+        coinForViewListMutableLiveData
+                .setValue(
+                        coinList.stream()
+                                .sorted(getComparator(settingsRepository.getSortSetting()))
+                                .map(coinForViewMapper)
+                                .collect(Collectors.toList())
+                );
+    }
+
     private Comparator<? super Coin> getComparator(@NotNull String sortSetting) {
         switch (sortSetting) {
             case SettingsRepositoryImp.ALPHABET_SORT:
@@ -108,17 +119,6 @@ class MyPortfolioViewModel extends ViewModel {
             case SettingsRepositoryImp.TIME_ADD_SORT:
             default: return (Comparator<Coin>) (o1, o2) -> 0;
         }
-    }
-
-
-    private void setCoinForViewListLiveData(@NotNull List<Coin> coinList) {
-        coinForViewListMutableLiveData
-                .setValue(
-                        coinList.stream()
-                                .sorted(getComparator(settingsRepository.getSortSetting()))
-                                .map(coinForViewMapper)
-                                .collect(Collectors.toList())
-                );
     }
 
     private void setPortfolioInfoForViewMutableLiveData(List<Coin> coinList) {

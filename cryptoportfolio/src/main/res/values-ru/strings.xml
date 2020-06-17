@@ -30,6 +30,10 @@
     <string name="edit_dialog_negative">Отменить</string>
     <string name="settings_tool_bar_text">Настройки</string>
     <string name="select_symbol_to_convert">Выберите валюту для счёта</string>
+    <string name="select_sort_type">Выберите тип сортировки</string>
+    <string name="by_add_time">По добавлению</string>
+    <string name="by_alphabet">По алфавиту</string>
+    <string name="by_sum">По сумме</string>
     <string name="usd">USD</string>
     <string name="eur">EUR</string>
     <string name="rub">RUB</string>

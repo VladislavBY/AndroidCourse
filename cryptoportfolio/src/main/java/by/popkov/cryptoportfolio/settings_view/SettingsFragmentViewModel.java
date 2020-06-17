@@ -18,4 +18,12 @@ class SettingsFragmentViewModel extends ViewModel {
     void saveFiatSetting(String fiatSymbol) {
         settingsRepository.saveFiatSetting(fiatSymbol);
     }
+
+    String getSortSettings() {
+        return settingsRepository.getSortSetting();
+    }
+
+    void saveSortSetting(String sortType) {
+        settingsRepository.saveSortSetting(sortType);
+    }
 }
