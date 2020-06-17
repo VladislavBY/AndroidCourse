@@ -23,6 +23,8 @@ import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsReposi
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
+import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
+
 class MyPortfolioViewModel extends ViewModel {
     interface ShowThrowable {
         void show(Throwable throwable);
@@ -106,18 +108,19 @@ class MyPortfolioViewModel extends ViewModel {
 
     private Comparator<? super Coin> getComparator(@NotNull String sortSetting) {
         switch (sortSetting) {
-            case SettingsRepositoryImp.ALPHABET_SORT:
+            case ALPHABET_SORT:
                 return (Comparator<Coin>) (o1, o2) -> o1.getSymbol().compareToIgnoreCase(o2.getSymbol());
-            case SettingsRepositoryImp.SUM_SORT:
+            case SUM_SORT:
                 return (Comparator<Coin>) (o1, o2) -> {
                     if (o1.getPrise() != null && o2.getPrise() != null) {
                         Double sumOne = o1.getPrise() * o1.getNumber();
                         Double sumTwo = o2.getPrise() * o2.getNumber();
-                        return sumOne.compareTo(sumTwo);
+                        return sumTwo.compareTo(sumOne);
                     } else return 0;
                 };
-            case SettingsRepositoryImp.TIME_ADD_SORT:
-            default: return (Comparator<Coin>) (o1, o2) -> 0;
+            case TIME_ADD_SORT:
+            default:
+                return (Comparator<Coin>) (o1, o2) -> 0;
         }
     }
 

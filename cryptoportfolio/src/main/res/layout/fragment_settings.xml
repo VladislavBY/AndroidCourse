@@ -52,7 +52,9 @@
             android:id="@+id/selectSortType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/defaultMargin"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
             android:text="@string/select_sort_type"
             android:textSize="@dimen/settingsTextSize"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +64,8 @@
             android:id="@+id/selectedSortType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/defaultMargin"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/selectSortType">
 
@@ -95,7 +98,9 @@
             android:id="@+id/selectToFiat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/defaultMargin"
+            android:layout_marginStart="@dimen/defaultMargin"
+
+            android:layout_marginEnd="@dimen/defaultMargin"
             android:text="@string/select_symbol_to_convert"
             android:textSize="@dimen/settingsTextSize"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +110,9 @@
             android:id="@+id/selectedSymbol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/defaultMargin"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
+            android:layout_marginBottom="@dimen/defaultMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/selectToFiat">
 

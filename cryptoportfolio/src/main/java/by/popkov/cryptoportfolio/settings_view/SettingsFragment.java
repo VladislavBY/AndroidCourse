@@ -20,8 +20,10 @@ import java.util.Optional;
 
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
+import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 
 import static by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp.*;
+import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
 
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
@@ -30,6 +32,7 @@ public class SettingsFragment extends Fragment {
     private SettingsFragmentViewModel settingsFragmentViewModel;
 
     private RadioGroup selectedSymbol;
+    private RadioGroup selectedSortType;
     private ImageButton homeBtn;
 
     @NotNull
@@ -65,11 +68,44 @@ public class SettingsFragment extends Fragment {
     }
 
     private void initViews(@NotNull View view) {
+        selectedSortType = view.findViewById(R.id.selectedSortType);
+        setCheckedSortType(view);
+        setSelectedSortTypeChangeListener();
         selectedSymbol = view.findViewById(R.id.selectedSymbol);
         setCheckedSymbol(view);
         setSelectedSymbolChangeListener();
         homeBtn = view.findViewById(R.id.homeBtn);
         setHomeBtnListener();
+    }
+
+    private void setCheckedSortType(View view) {
+        switch (settingsFragmentViewModel.getSortSettings()) {
+            case TIME_ADD_SORT:
+                ((RadioButton) view.findViewById(R.id.sortByAddTime)).setChecked(true);
+                break;
+            case ALPHABET_SORT:
+                ((RadioButton) view.findViewById(R.id.sortByAlphabet)).setChecked(true);
+                break;
+            case SUM_SORT:
+                ((RadioButton) view.findViewById(R.id.sortBySum)).setChecked(true);
+                break;
+        }
+    }
+
+    private void setSelectedSortTypeChangeListener() {
+        selectedSortType.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.sortByAddTime:
+                    settingsFragmentViewModel.saveSortSetting(TIME_ADD_SORT);
+                    break;
+                case R.id.sortByAlphabet:
+                    settingsFragmentViewModel.saveSortSetting(ALPHABET_SORT);
+                    break;
+                case R.id.sortBySum:
+                    settingsFragmentViewModel.saveSortSetting(SUM_SORT);
+                    break;
+            }
+        });
     }
 
     private void setCheckedSymbol(View view) {
