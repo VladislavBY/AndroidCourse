@@ -1,5 +1,7 @@
 package by.popkov.cryptoportfolio.coin_info_view;
 
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -41,6 +43,7 @@ class CoinInfoFragmentViewModel extends ViewModel {
         this.settingsRepository = settingsRepository;
         this.mapper = mapper;
         this.coinForView = coinForView;
+        connectToRepo();
     }
 
     private void setCoinForViewMutableLiveData(CoinForView coinForView) {
@@ -63,13 +66,15 @@ class CoinInfoFragmentViewModel extends ViewModel {
         }
     }
 
-    void connectToRepo(LifecycleOwner lifecycleOwner, ShowThrowable showThrowable) {
-        databaseRepository.getCoinLiveData(coinForView.getSymbol()).observe(
-                lifecycleOwner, coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
-                        .map(coin1 -> mapper.apply(coin1))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(this::setCoinForViewMutableLiveData, showThrowable::show)
-        );
+    @SuppressLint("CheckResult")
+    private void connectToRepo() {
+        databaseRepository.getCoinObservable(coinForView.getSymbol()).observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(
+                        coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
+                                .map(coin1 -> mapper.apply(coin1))
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(this::setCoinForViewMutableLiveData)
+                );
     }
 
     void updateCoin(Double number) {

@@ -157,7 +157,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
     private void initViewModel() {
         coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(extractCoinForView(), context))
                 .get(CoinInfoFragmentViewModel.class);
-        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner(), this);
         coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), coinForView -> {
             this.setViewsData(coinForView);
             loadSwitcher(false);
