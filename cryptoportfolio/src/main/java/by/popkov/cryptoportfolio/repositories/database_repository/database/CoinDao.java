@@ -10,8 +10,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import by.popkov.cryptoportfolio.domain.Coin;
-import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.Observable;
+
 
 @Dao
 public interface CoinDao {
@@ -22,7 +22,7 @@ public interface CoinDao {
     List<CoinEntity> getAll();
 
     @Query("SELECT * FROM coin")
-    Flowable<List<CoinEntity>> getAllFlowable();
+    Observable<List<CoinEntity>> getAllFlowable();
 
     @Query("SELECT * FROM coin WHERE symbol =:symbol")
     LiveData<CoinEntity> getCoinLiveData(String symbol);
@@ -31,7 +31,7 @@ public interface CoinDao {
     CoinEntity getCoin(String symbol);
 
     @Query("SELECT * FROM coin WHERE symbol =:symbol")
-    Flowable<CoinEntity> getCoinFlowable(String symbol);
+    Observable<CoinEntity> getCoinFlowable(String symbol);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CoinEntity coinEntity);

@@ -1,6 +1,7 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
-import androidx.lifecycle.LifecycleOwner;
+import android.annotation.SuppressLint;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -21,6 +22,7 @@ import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+
 
 import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
 
@@ -53,6 +55,7 @@ class MyPortfolioViewModel extends ViewModel {
         this.coinForViewMapper = coinForViewMapper;
         this.portfolioInfoMapper = portfolioInfoMapper;
         this.portfolioInfoForViewMapper = portfolioInfoForViewMapper;
+        connectToRepo();
     }
 
     LiveData<String> getSearchViewQueryViewLiveData() {
@@ -92,15 +95,17 @@ class MyPortfolioViewModel extends ViewModel {
         }
     }
 
-    void connectToRepo(LifecycleOwner lifecycleOwner, ShowThrowable showThrowable) {
-        databaseRepository.getCoinListLiveData().observe(
-                lifecycleOwner, coins -> apiRepository.getCoinsList(coins, settingsRepository.getFiatSetting())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(coinList -> {
-                            setCoinForViewListLiveData(coinList);
-                            setPortfolioInfoForViewMutableLiveData(coinList);
-                        }, showThrowable::show)
-        );
+    @SuppressLint("CheckResult")
+    private void connectToRepo() {
+        databaseRepository.getCoinListFlowable()
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(rawCoinList ->
+                        apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(coinList -> {
+                                    setCoinForViewListLiveData(coinList);
+                                    setPortfolioInfoForViewMutableLiveData(coinList);
+                                }));
     }
 
 

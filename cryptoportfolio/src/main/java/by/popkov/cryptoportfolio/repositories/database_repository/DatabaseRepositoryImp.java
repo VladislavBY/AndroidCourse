@@ -16,7 +16,7 @@ import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDao;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinDatabase;
 import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinEntity;
-import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.Observable;
 
 public class DatabaseRepositoryImp implements DatabaseRepository {
     private CoinDao coinDao;
@@ -65,7 +65,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public Flowable<List<Coin>> getCoinListFlowable() {
+    public Observable<List<Coin>> getCoinListFlowable() {
         return coinDao.getAllFlowable().map(coinEntities ->
                 coinEntities.stream()
                         .map(mapper)
@@ -73,7 +73,7 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public Flowable<Coin> getCoinListFlowable(String symbol) {
+    public Observable<Coin> getCoinListFlowable(String symbol) {
         return coinDao.getCoinFlowable(symbol).map(mapper::apply);
     }
 
