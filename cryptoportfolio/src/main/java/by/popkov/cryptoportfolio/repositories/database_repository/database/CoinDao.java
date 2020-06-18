@@ -22,7 +22,7 @@ public interface CoinDao {
     List<CoinEntity> getAll();
 
     @Query("SELECT * FROM coin")
-    Observable<List<CoinEntity>> getAllFlowable();
+    Observable<List<CoinEntity>> getAllObservable();
 
     @Query("SELECT * FROM coin WHERE symbol =:symbol")
     LiveData<CoinEntity> getCoinLiveData(String symbol);
@@ -31,7 +31,7 @@ public interface CoinDao {
     CoinEntity getCoin(String symbol);
 
     @Query("SELECT * FROM coin WHERE symbol =:symbol")
-    Observable<CoinEntity> getCoinFlowable(String symbol);
+    Observable<CoinEntity> getCoinObservable(String symbol);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CoinEntity coinEntity);

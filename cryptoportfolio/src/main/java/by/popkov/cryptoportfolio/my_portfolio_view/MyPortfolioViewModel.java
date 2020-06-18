@@ -23,7 +23,6 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
-
 import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
 
 class MyPortfolioViewModel extends ViewModel {
@@ -97,7 +96,7 @@ class MyPortfolioViewModel extends ViewModel {
 
     @SuppressLint("CheckResult")
     private void connectToRepo() {
-        databaseRepository.getCoinListFlowable()
+        databaseRepository.getCoinListObservable()
                 .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(rawCoinList ->
                         apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())

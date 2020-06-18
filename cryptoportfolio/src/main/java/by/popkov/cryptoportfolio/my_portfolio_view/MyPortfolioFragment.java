@@ -51,7 +51,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private ProgressBar progressBar;
     private TextView portfolioIsEmpty;
     private SearchView searchCoin;
-    private TextView titleToolBar;
 
     private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
     private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
@@ -117,7 +116,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         progressBar = view.findViewById(R.id.progressBar);
         searchCoin = view.findViewById(R.id.searchCoin);
-        titleToolBar = view.findViewById(R.id.titleToolBar);
         setBtnListeners();
         setSwipeRefreshLayoutListener();
         setSearchCoinListener();

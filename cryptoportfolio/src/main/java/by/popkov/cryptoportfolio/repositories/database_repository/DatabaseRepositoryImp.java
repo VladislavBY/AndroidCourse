@@ -65,16 +65,16 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public Observable<List<Coin>> getCoinListFlowable() {
-        return coinDao.getAllFlowable().map(coinEntities ->
+    public Observable<List<Coin>> getCoinListObservable() {
+        return coinDao.getAllObservable().map(coinEntities ->
                 coinEntities.stream()
                         .map(mapper)
                         .collect(Collectors.toList()));
     }
 
     @Override
-    public Observable<Coin> getCoinListFlowable(String symbol) {
-        return coinDao.getCoinFlowable(symbol).map(mapper::apply);
+    public Observable<Coin> getCoinObservable(String symbol) {
+        return coinDao.getCoinObservable(symbol).map(mapper::apply);
     }
 
     @Override
