@@ -129,10 +129,14 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
 
     private void setSwipeRefreshLayoutListener() {
         refreshLayout.setOnRefreshListener(() -> {
-            myPortfolioViewModel.updateCoinList(this);
             refreshLayout.setRefreshing(false);
-            loadSwitcher(true);
+            updateCoinList();
         });
+    }
+
+    public void updateCoinList() {
+        myPortfolioViewModel.updateCoinList(this);
+        loadSwitcher(true);
     }
 
     private void setSearchCoinListener() {

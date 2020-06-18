@@ -2,7 +2,6 @@ package by.popkov.cryptoportfolio.coin_info_view;
 
 import android.annotation.SuppressLint;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

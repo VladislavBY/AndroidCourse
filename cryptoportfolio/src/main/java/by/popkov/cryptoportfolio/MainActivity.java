@@ -1,6 +1,7 @@
 package by.popkov.cryptoportfolio;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
@@ -11,7 +12,7 @@ import by.popkov.cryptoportfolio.my_portfolio_view.MyPortfolioFragment;
 import by.popkov.cryptoportfolio.settings_view.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
-        OnHomeClickListener, MyPortfolioFragment.OnSettingsBtnClickListener {
+        OnHomeClickListener, MyPortfolioFragment.OnSettingsBtnClickListener, SettingsFragment.OnUpdateCoinListListener {
 
 
     @Override
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
     @Override
     public void onClickSettings() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, SettingsFragment.getInstance(), SettingsFragment.TAG)
+                .add(R.id.fragmentContainer, SettingsFragment.getInstance(), SettingsFragment.TAG)
                 .addToBackStack(null)
                 .commit();
     }
@@ -33,6 +34,14 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
                 .add(R.id.fragmentContainer, CoinInfoFragment.getInstance(coinForView), CoinInfoFragment.TAG)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onUpdateCoinList() {
+        Fragment myPortfolioFragment = getSupportFragmentManager().findFragmentByTag(MyPortfolioFragment.TAG);
+        if (myPortfolioFragment instanceof MyPortfolioFragment) {
+            ((MyPortfolioFragment) myPortfolioFragment).updateCoinList();
+        }
     }
 
     @Override
@@ -50,5 +59,4 @@ public class MainActivity extends AppCompatActivity implements CoinListAdapter.O
                 .add(R.id.fragmentContainer, MyPortfolioFragment.getInstance(), MyPortfolioFragment.TAG)
                 .commit();
     }
-
 }

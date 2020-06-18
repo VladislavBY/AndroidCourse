@@ -20,7 +20,6 @@ import java.util.Optional;
 
 import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
-import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp;
 
 import static by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp.*;
 import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
@@ -28,12 +27,17 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
     private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
+    private Optional<OnUpdateCoinListListener> onUpdateCoinListListenerOptional = Optional.empty();
     private Context context;
     private SettingsFragmentViewModel settingsFragmentViewModel;
 
     private RadioGroup selectedSymbol;
     private RadioGroup selectedSortType;
     private ImageButton homeBtn;
+
+    public interface OnUpdateCoinListListener {
+        void onUpdateCoinList();
+    }
 
     @NotNull
     public static SettingsFragment getInstance() {
@@ -46,6 +50,9 @@ public class SettingsFragment extends Fragment {
         this.context = context;
         if (context instanceof OnHomeClickListener) {
             onHomeClickListenerOptional = Optional.of((OnHomeClickListener) context);
+        }
+        if (context instanceof OnUpdateCoinListListener) {
+            onUpdateCoinListListenerOptional = Optional.of((OnUpdateCoinListListener) context);
         }
     }
 
@@ -105,6 +112,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveSortSetting(SUM_SORT);
                     break;
             }
+            onUpdateCoinListListenerOptional.ifPresent(OnUpdateCoinListListener::onUpdateCoinList);
         });
     }
 
@@ -171,6 +179,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveFiatSetting(ETH);
                     break;
             }
+            onUpdateCoinListListenerOptional.ifPresent(OnUpdateCoinListListener::onUpdateCoinList);
         });
     }
 
@@ -184,6 +193,7 @@ public class SettingsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         onHomeClickListenerOptional = Optional.empty();
+        onUpdateCoinListListenerOptional = Optional.empty();
         context = null;
     }
 }
