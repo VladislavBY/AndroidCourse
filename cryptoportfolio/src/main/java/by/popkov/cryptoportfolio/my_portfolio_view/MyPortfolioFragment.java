@@ -128,7 +128,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
 
     public void updateCoinList() {
         myPortfolioViewModel.updateCoinList();
-        loadSwitcher(true);
     }
 
     private void setSearchCoinListener() {
@@ -166,6 +165,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
             );
             myPortfolioViewModel.getSearchViewQueryViewLiveData().observe(viewLifecycleOwner,
                     s -> coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.getFilter().filter(s)));
+            myPortfolioViewModel.getIsLoadingLiveData().observe(viewLifecycleOwner, this::loadSwitcher);
         }
     }
 

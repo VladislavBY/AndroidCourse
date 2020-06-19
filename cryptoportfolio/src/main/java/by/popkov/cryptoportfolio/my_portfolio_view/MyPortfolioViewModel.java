@@ -37,6 +37,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
     private MutableLiveData<List<CoinForView>> coinForViewListMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<PortfolioInfoForView> portfolioInfoForViewMutableLiveData = new MutableLiveData<>();
     private MutableLiveData<String> searchViewQueryMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
 
     MyPortfolioViewModel(
             Application application,
@@ -55,6 +56,14 @@ class MyPortfolioViewModel extends AndroidViewModel {
         this.portfolioInfoMapper = portfolioInfoMapper;
         this.portfolioInfoForViewMapper = portfolioInfoForViewMapper;
         connectToRepo();
+    }
+
+    public LiveData<Boolean> getIsLoadingLiveData() {
+        return isLoadingMutableLiveData;
+    }
+
+    public void setIsLoadingLiveData(Boolean isLoading) {
+        this.isLoadingMutableLiveData.setValue(isLoading);
     }
 
     LiveData<String> getSearchViewQueryViewLiveData() {
@@ -81,6 +90,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
     }
 
     void updateCoinList() {
+        setIsLoadingLiveData(true);
         try {
             List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();
             apiRepository.getCoinsList(currentCoinListDatabase, settingsRepository.getFiatSetting())
@@ -88,14 +98,20 @@ class MyPortfolioViewModel extends AndroidViewModel {
                     .subscribe(coinList -> {
                         setCoinForViewListLiveData(coinList);
                         setPortfolioInfoForViewMutableLiveData(coinList);
-                    }, this::showThrowable);
+                    }, throwable -> {
+                        showThrowable(throwable);
+                        setIsLoadingLiveData(false);
+                    });
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            setIsLoadingLiveData(false);
         }
     }
 
     @SuppressLint("CheckResult")
     private void connectToRepo() {
+        setIsLoadingLiveData(true);
         databaseRepository.getCoinListObservable()
                 .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(rawCoinList ->
@@ -104,8 +120,15 @@ class MyPortfolioViewModel extends AndroidViewModel {
                                         .subscribe(coinList -> {
                                             setCoinForViewListLiveData(coinList);
                                             setPortfolioInfoForViewMutableLiveData(coinList);
-                                        }, this::showThrowable),
-                        this::showThrowable);
+                                            setIsLoadingLiveData(false);
+                                        }, throwable -> {
+                                            showThrowable(throwable);
+                                            setIsLoadingLiveData(false);
+                                        }),
+                        throwable -> {
+                            showThrowable(throwable);
+                            setIsLoadingLiveData(false);
+                        });
     }
 
 
