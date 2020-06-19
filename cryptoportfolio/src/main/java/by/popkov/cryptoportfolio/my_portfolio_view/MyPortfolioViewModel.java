@@ -95,17 +95,9 @@ class MyPortfolioViewModel extends AndroidViewModel {
             List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();
             apiRepository.getCoinsList(currentCoinListDatabase, settingsRepository.getFiatSetting())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(coinList -> {
-                        setCoinForViewListLiveData(coinList);
-                        setPortfolioInfoForViewMutableLiveData(coinList);
-                    }, throwable -> {
-                        showThrowable(throwable);
-                        setIsLoadingLiveData(false);
-                    });
+                    .subscribe(this::onNextCoinList, this::onError);
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            setIsLoadingLiveData(false);
+            onError(e);
         }
     }
 
@@ -117,20 +109,25 @@ class MyPortfolioViewModel extends AndroidViewModel {
                 .subscribe(rawCoinList ->
                                 apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(coinList -> {
-                                            setCoinForViewListLiveData(coinList);
-                                            setPortfolioInfoForViewMutableLiveData(coinList);
-                                            setIsLoadingLiveData(false);
-                                        }, throwable -> {
-                                            showThrowable(throwable);
-                                            setIsLoadingLiveData(false);
-                                        }),
-                        throwable -> {
-                            showThrowable(throwable);
-                            setIsLoadingLiveData(false);
-                        });
+                                        .subscribe(this::onNextCoinList, this::onError),
+                        this::onError);
     }
 
+
+    private void onNextCoinList(List<Coin> coinList) {
+        setIsLoadingLiveData(false);
+        setCoinForViewListLiveData(coinList);
+        setPortfolioInfoForViewMutableLiveData(coinList);
+    }
+
+    private void onError(@NotNull Throwable throwable) {
+        setIsLoadingLiveData(false);
+        showThrowable(throwable);
+    }
+
+    private void showThrowable(@NotNull Throwable throwable) {
+        Toast.makeText(getApplication(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+    }
 
     private void setCoinForViewListLiveData(@NotNull List<Coin> coinList) {
         coinForViewListMutableLiveData
@@ -163,9 +160,5 @@ class MyPortfolioViewModel extends AndroidViewModel {
     private void setPortfolioInfoForViewMutableLiveData(List<Coin> coinList) {
         portfolioInfoForViewMutableLiveData
                 .setValue(portfolioInfoForViewMapper.apply(portfolioInfoMapper.apply(coinList)));
-    }
-
-    private void showThrowable(@NotNull Throwable throwable) {
-        Toast.makeText(getApplication(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 }
