@@ -58,11 +58,11 @@ class MyPortfolioViewModel extends AndroidViewModel {
         connectToRepo();
     }
 
-    public LiveData<Boolean> getIsLoadingLiveData() {
+    LiveData<Boolean> getIsLoadingLiveData() {
         return isLoadingMutableLiveData;
     }
 
-    public void setIsLoadingLiveData(Boolean isLoading) {
+    private void setIsLoadingLiveData(Boolean isLoading) {
         this.isLoadingMutableLiveData.setValue(isLoading);
     }
 

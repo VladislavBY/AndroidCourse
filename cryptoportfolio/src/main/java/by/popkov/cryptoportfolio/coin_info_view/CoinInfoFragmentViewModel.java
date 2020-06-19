@@ -28,6 +28,7 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     private Function<Coin, CoinForView> mapper;
     private CoinForView coinForView;
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<Boolean> isLoadingMutableLiveData = new MutableLiveData<>();
 
     CoinInfoFragmentViewModel(
             Application application,
@@ -46,6 +47,14 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
         connectToRepo();
     }
 
+    LiveData<Boolean> getIsLoadingLiveData() {
+        return isLoadingMutableLiveData;
+    }
+
+    private void setIsLoadingLiveData(Boolean isLoading) {
+        this.isLoadingMutableLiveData.setValue(isLoading);
+    }
+
     private void setCoinForViewMutableLiveData(CoinForView coinForView) {
         coinForViewMutableLiveData.setValue(coinForView);
     }
@@ -55,27 +64,43 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     }
 
     void refreshCoinData() {
+        setIsLoadingLiveData(true);
         try {
             Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
             apiRepository.getCoin(currentCoinDatabase, settingsRepository.getFiatSetting())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(coin -> mapper.apply(coin))
-                    .subscribe(this::setCoinForViewMutableLiveData, this::showThrowable);
+                    .subscribe(this::onNextCoinForView, this::onError);
         } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+            onError(e);
         }
     }
 
     @SuppressLint("CheckResult")
     private void connectToRepo() {
+        setIsLoadingLiveData(true);
         databaseRepository.getCoinObservable(coinForView.getSymbol()).observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(
                         coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                                 .map(coin1 -> mapper.apply(coin1))
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(this::setCoinForViewMutableLiveData, this::showThrowable),
-                        this::showThrowable
+                                .subscribe(this::onNextCoinForView, this::onError),
+                        this::onError
                 );
+    }
+
+    private void onNextCoinForView(CoinForView coinForView) {
+        setCoinForViewMutableLiveData(coinForView);
+        setIsLoadingLiveData(false);
+    }
+
+    private void onError(@NotNull Throwable throwable) {
+        setIsLoadingLiveData(false);
+        showThrowable(throwable);
+    }
+
+    private void showThrowable(@NotNull Throwable throwable) {
+        Toast.makeText(getApplication(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 
     void updateCoin(Double number) {
@@ -85,9 +110,4 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     void deleteCoin() {
         databaseRepository.deleteCoin(new Coin.Builder(coinForView.getSymbol(), 0.0).build());
     }
-
-    private void showThrowable(@NotNull Throwable throwable) {
-        Toast.makeText(getApplication(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-    }
-
 }

@@ -143,7 +143,6 @@ public class CoinInfoFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             coinInfoFragmentViewModel.refreshCoinData();
             swipeRefreshLayout.setRefreshing(false);
-            loadSwitcher(true);
         });
     }
 
@@ -152,12 +151,9 @@ public class CoinInfoFragment extends Fragment {
             coinInfoFragmentViewModel = new ViewModelProvider(this,
                     new CoinInfoFragmentViewModelFactory(extractCoinForView(), getActivity().getApplication(), context))
                     .get(CoinInfoFragmentViewModel.class);
-            coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), coinForView -> {
-                this.setViewsData(coinForView);
-                loadSwitcher(false);
-            });
+            coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
+            coinInfoFragmentViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), this::loadSwitcher);
         }
-
     }
 
     private CoinForView extractCoinForView() {
