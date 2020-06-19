@@ -1,5 +1,6 @@
 package by.popkov.cryptoportfolio.coin_info_view;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -21,18 +22,20 @@ import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsReposi
 
 public class CoinInfoFragmentViewModelFactory implements ViewModelProvider.Factory {
     private Context context;
+    private Application application;
     private CoinForView coinForView;
 
-    CoinInfoFragmentViewModelFactory(CoinForView coinForView, Context context) {
+    CoinInfoFragmentViewModelFactory(CoinForView coinForView, Application application, Context context) {
         this.context = context;
         this.coinForView = coinForView;
+        this.application = application;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(CoinInfoFragmentViewModel.class)) {
-            return (T) new CoinInfoFragmentViewModel(coinForView, getApiRepository(),
+            return (T) new CoinInfoFragmentViewModel(application, coinForView, getApiRepository(),
                     getDatabaseRepository(), getSettingsRepository(), getMapper());
         }
         throw new IllegalArgumentException("Unknown ViewModel class");

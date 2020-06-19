@@ -1,10 +1,12 @@
 package by.popkov.cryptoportfolio.coin_info_view;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
+import android.widget.Toast;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,10 +20,7 @@ import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseReposi
 import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
-class CoinInfoFragmentViewModel extends ViewModel {
-    interface ShowThrowable {
-        void show(Throwable throwable);
-    }
+class CoinInfoFragmentViewModel extends AndroidViewModel {
 
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
@@ -31,12 +30,14 @@ class CoinInfoFragmentViewModel extends ViewModel {
     private MutableLiveData<CoinForView> coinForViewMutableLiveData = new MutableLiveData<>();
 
     CoinInfoFragmentViewModel(
+            Application application,
             CoinForView coinForView,
             ApiRepository apiRepository,
             DatabaseRepository databaseRepository,
             SettingsRepository settingsRepository,
             Function<Coin, CoinForView> mapper
     ) {
+        super(application);
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
         this.settingsRepository = settingsRepository;
@@ -53,13 +54,13 @@ class CoinInfoFragmentViewModel extends ViewModel {
         return coinForViewMutableLiveData;
     }
 
-    void refreshCoinData(@NotNull ShowThrowable showThrowable) {
+    void refreshCoinData() {
         try {
             Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
             apiRepository.getCoin(currentCoinDatabase, settingsRepository.getFiatSetting())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(coin -> mapper.apply(coin))
-                    .subscribe(this::setCoinForViewMutableLiveData, showThrowable::show);
+                    .subscribe(this::setCoinForViewMutableLiveData, this::showThrowable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -72,7 +73,8 @@ class CoinInfoFragmentViewModel extends ViewModel {
                         coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                                 .map(coin1 -> mapper.apply(coin1))
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(this::setCoinForViewMutableLiveData)
+                                .subscribe(this::setCoinForViewMutableLiveData, this::showThrowable),
+                        this::showThrowable
                 );
     }
 
@@ -82,6 +84,10 @@ class CoinInfoFragmentViewModel extends ViewModel {
 
     void deleteCoin() {
         databaseRepository.deleteCoin(new Coin.Builder(coinForView.getSymbol(), 0.0).build());
+    }
+
+    private void showThrowable(@NotNull Throwable throwable) {
+        Toast.makeText(getApplication(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 
 }
