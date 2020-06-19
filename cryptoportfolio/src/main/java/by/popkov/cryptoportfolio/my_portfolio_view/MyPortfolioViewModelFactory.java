@@ -1,5 +1,6 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -26,9 +27,11 @@ import by.popkov.cryptoportfolio.repositories.settings_repository.SettingsReposi
 
 public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     private Context context;
+    private Application application;
 
-    MyPortfolioViewModelFactory(Context context) {
+    MyPortfolioViewModelFactory(Application application, Context context) {
         this.context = context;
+        this.application = application;
     }
 
     @NonNull
@@ -36,6 +39,7 @@ public class MyPortfolioViewModelFactory implements ViewModelProvider.Factory {
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.equals(MyPortfolioViewModel.class)) {
             return (T) new MyPortfolioViewModel(
+                    application,
                     getApiRepository(),
                     getDatabaseRepository(),
                     getSettingsRepository(),

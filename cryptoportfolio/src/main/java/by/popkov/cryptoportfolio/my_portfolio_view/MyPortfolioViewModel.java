@@ -1,10 +1,12 @@
 package by.popkov.cryptoportfolio.my_portfolio_view;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
+import android.widget.Toast;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,11 +27,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 import static by.popkov.cryptoportfolio.repositories.settings_repository.SettingsRepositoryImp.*;
 
-class MyPortfolioViewModel extends ViewModel {
-    interface ShowThrowable {
-        void show(Throwable throwable);
-    }
-
+class MyPortfolioViewModel extends AndroidViewModel {
     private ApiRepository apiRepository;
     private DatabaseRepository databaseRepository;
     private SettingsRepository settingsRepository;
@@ -41,6 +39,7 @@ class MyPortfolioViewModel extends ViewModel {
     private MutableLiveData<String> searchViewQueryMutableLiveData = new MutableLiveData<>();
 
     MyPortfolioViewModel(
+            Application application,
             ApiRepository apiRepository,
             DatabaseRepository databaseRepository,
             SettingsRepository settingsRepository,
@@ -48,6 +47,7 @@ class MyPortfolioViewModel extends ViewModel {
             Function<List<Coin>, PortfolioInfo> portfolioInfoMapper,
             Function<PortfolioInfo, PortfolioInfoForView> portfolioInfoForViewMapper
     ) {
+        super(application);
         this.apiRepository = apiRepository;
         this.databaseRepository = databaseRepository;
         this.settingsRepository = settingsRepository;
@@ -73,14 +73,14 @@ class MyPortfolioViewModel extends ViewModel {
         return portfolioInfoForViewMutableLiveData;
     }
 
-    void saveCoin(@NotNull String symbol, String number, @NotNull ShowThrowable showThrowable) {
+    void saveCoin(@NotNull String symbol, String number) {
         Coin coin = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coin1 -> databaseRepository.addNewCoin(coin), showThrowable::show);
+                .subscribe(coin1 -> databaseRepository.addNewCoin(coin), this::showThrowable);
     }
 
-    void updateCoinList(@NotNull ShowThrowable showThrowable) {
+    void updateCoinList() {
         try {
             List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();
             apiRepository.getCoinsList(currentCoinListDatabase, settingsRepository.getFiatSetting())
@@ -88,7 +88,7 @@ class MyPortfolioViewModel extends ViewModel {
                     .subscribe(coinList -> {
                         setCoinForViewListLiveData(coinList);
                         setPortfolioInfoForViewMutableLiveData(coinList);
-                    }, showThrowable::show);
+                    }, this::showThrowable);
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -99,12 +99,13 @@ class MyPortfolioViewModel extends ViewModel {
         databaseRepository.getCoinListObservable()
                 .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(rawCoinList ->
-                        apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(coinList -> {
-                                    setCoinForViewListLiveData(coinList);
-                                    setPortfolioInfoForViewMutableLiveData(coinList);
-                                }));
+                                apiRepository.getCoinsList(rawCoinList, settingsRepository.getFiatSetting())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(coinList -> {
+                                            setCoinForViewListLiveData(coinList);
+                                            setPortfolioInfoForViewMutableLiveData(coinList);
+                                        }, this::showThrowable),
+                        this::showThrowable);
     }
 
 
@@ -139,5 +140,9 @@ class MyPortfolioViewModel extends ViewModel {
     private void setPortfolioInfoForViewMutableLiveData(List<Coin> coinList) {
         portfolioInfoForViewMutableLiveData
                 .setValue(portfolioInfoForViewMapper.apply(portfolioInfoMapper.apply(coinList)));
+    }
+
+    private void showThrowable(@NotNull Throwable throwable) {
+        Toast.makeText(getApplication(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 }
