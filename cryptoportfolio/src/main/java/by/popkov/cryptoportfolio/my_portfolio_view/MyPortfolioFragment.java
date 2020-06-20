@@ -39,6 +39,10 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
 
     private Context context;
     private MyPortfolioViewModel myPortfolioViewModel;
+    private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
+    private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
+    private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
+
     private RecyclerView coinListRecyclerView;
     private FloatingActionButton addCoinFab;
     private ImageButton settingsImageButton;
@@ -50,9 +54,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private TextView portfolioIsEmpty;
     private SearchView searchCoin;
 
-    private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
-    private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
-    private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
 
     @NotNull
     public static MyPortfolioFragment getInstance() {
