@@ -158,7 +158,6 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
                             coinListAdapter.getFilter().filter(myPortfolioViewModel.getSearchViewQueryViewLiveData().getValue());
                         });
                         portfolioIsEmptyVisibleSwitcher(coinForViews);
-                        loadSwitcher(false);
                     }
             );
             myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
