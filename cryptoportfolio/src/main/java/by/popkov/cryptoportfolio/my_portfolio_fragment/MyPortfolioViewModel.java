@@ -83,6 +83,9 @@ class MyPortfolioViewModel extends AndroidViewModel {
     }
 
     void saveCoin(@NotNull String symbol, String number) {
+        if (number == null || number.isEmpty()) {
+            number = "0.0";
+        }
         Coin coinToCheck = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coinToCheck, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())

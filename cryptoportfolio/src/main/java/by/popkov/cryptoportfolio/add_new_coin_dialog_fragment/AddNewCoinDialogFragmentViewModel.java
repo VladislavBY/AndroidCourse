@@ -3,6 +3,7 @@ package by.popkov.cryptoportfolio.add_new_coin_dialog_fragment;
 import android.app.Application;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,9 @@ class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
     }
 
     void saveCoin(@NotNull String symbol, String number) {
+        if (number == null || number.isEmpty()) {
+            number = "0.0";
+        }
         Coin coinToCheck = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coinToCheck, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())
