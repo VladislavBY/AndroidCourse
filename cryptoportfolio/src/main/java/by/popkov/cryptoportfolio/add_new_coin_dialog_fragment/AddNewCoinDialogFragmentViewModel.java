@@ -3,7 +3,6 @@ package by.popkov.cryptoportfolio.add_new_coin_dialog_fragment;
 import android.app.Application;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
 import org.jetbrains.annotations.NotNull;
