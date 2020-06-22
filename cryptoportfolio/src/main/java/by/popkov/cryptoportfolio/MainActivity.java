@@ -9,7 +9,7 @@ import by.popkov.cryptoportfolio.coin_info_fragment.CoinInfoFragment;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.my_portfolio_fragment.CoinListAdapter;
 import by.popkov.cryptoportfolio.my_portfolio_fragment.MyPortfolioFragment;
-import by.popkov.cryptoportfolio.settings_view.SettingsFragment;
+import by.popkov.cryptoportfolio.settings_fragment.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
         OnHomeClickListener, MyPortfolioFragment.OnSettingsBtnClickListener, SettingsFragment.OnUpdateCoinListListener {

@@ -1,7 +1,6 @@
-package by.popkov.cryptoportfolio.settings_view;
+package by.popkov.cryptoportfolio.settings_fragment;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

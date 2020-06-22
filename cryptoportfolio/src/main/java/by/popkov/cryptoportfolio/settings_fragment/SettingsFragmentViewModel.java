@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.settings_view;
+package by.popkov.cryptoportfolio.settings_fragment;
 
 import androidx.lifecycle.ViewModel;
 
