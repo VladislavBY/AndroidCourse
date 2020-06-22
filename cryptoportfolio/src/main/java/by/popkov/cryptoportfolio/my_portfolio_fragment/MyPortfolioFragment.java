@@ -31,7 +31,7 @@ import by.popkov.cryptoportfolio.add_new_coin_dialog_fragment.AddNewCoinDialogFr
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 
-public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFragment.AddNewCoinDialogListener {
+public class MyPortfolioFragment extends Fragment {
     public interface OnSettingsBtnClickListener {
         void onClickSettings();
     }
@@ -55,15 +55,9 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private TextView portfolioIsEmpty;
     private SearchView searchCoin;
 
-
     @NotNull
     public static MyPortfolioFragment getInstance() {
         return new MyPortfolioFragment();
-    }
-
-    @Override
-    public void OnPositiveButtonClick(String symbol, String number) {
-        myPortfolioViewModel.saveCoin(symbol, number);
     }
 
     @Override
@@ -116,7 +110,7 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     }
 
     private void setBtnListeners() {
-        addCoinFab.setOnClickListener(v -> new AddNewCoinDialogFragment().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        addCoinFab.setOnClickListener(v -> AddNewCoinDialogFragment.getInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
         onSettingsBtnClickListenerOptional.ifPresent(onSettingsBtnClickListener ->
                 settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
     }
