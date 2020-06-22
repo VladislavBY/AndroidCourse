@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.my_portfolio_fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.my_portfolio_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
+import by.popkov.cryptoportfolio.add_new_coin_dialog_fragment.AddNewCoinDialogFragment;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 

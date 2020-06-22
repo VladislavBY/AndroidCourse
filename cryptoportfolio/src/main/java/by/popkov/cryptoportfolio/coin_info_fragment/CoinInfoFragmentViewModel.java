@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.coin_info_view;
+package by.popkov.cryptoportfolio.coin_info_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.my_portfolio_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -83,10 +83,10 @@ class MyPortfolioViewModel extends AndroidViewModel {
     }
 
     void saveCoin(@NotNull String symbol, String number) {
-        Coin coin = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
-        apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
+        Coin coinToCheck = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
+        apiRepository.getCoin(coinToCheck, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coin1 -> databaseRepository.addNewCoin(coin), this::showThrowable);
+                .subscribe(coin -> databaseRepository.addNewCoin(coinToCheck), this::showThrowable);
     }
 
     void updateCoinList() {

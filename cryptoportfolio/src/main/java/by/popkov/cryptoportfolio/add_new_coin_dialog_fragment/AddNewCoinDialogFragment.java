@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.add_new_coin_dialog_fragment;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -12,18 +12,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import org.jetbrains.annotations.NotNull;
+
 import by.popkov.cryptoportfolio.R;
 
 public class AddNewCoinDialogFragment extends DialogFragment {
-    interface AddNewCoinDialogListener {
+    public interface AddNewCoinDialogListener {
         void OnPositiveButtonClick(final String symbol, final String number);
     }
 
-    static final String TAG = "AddNewCoinDialogFragment";
+    public static final String TAG = "AddNewCoinDialogFragment";
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return makeDialog();
+    }
+
+    @NotNull
+    private Dialog makeDialog() {
         if (getParentFragment() instanceof AddNewCoinDialogListener && getContext() != null) {
             AddNewCoinDialogListener addNewCoinDialogListener = (AddNewCoinDialogListener) getParentFragment();
             View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_ftagment_add_coin, null, false);

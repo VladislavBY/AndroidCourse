@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
-import by.popkov.cryptoportfolio.coin_info_view.CoinInfoFragment;
+import by.popkov.cryptoportfolio.coin_info_fragment.CoinInfoFragment;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
-import by.popkov.cryptoportfolio.my_portfolio_view.CoinListAdapter;
-import by.popkov.cryptoportfolio.my_portfolio_view.MyPortfolioFragment;
+import by.popkov.cryptoportfolio.my_portfolio_fragment.CoinListAdapter;
+import by.popkov.cryptoportfolio.my_portfolio_fragment.MyPortfolioFragment;
 import by.popkov.cryptoportfolio.settings_view.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements CoinListAdapter.OnCoinListClickListener,
