@@ -67,7 +67,7 @@ public class PortfolioInfoWidgetProvider extends AppWidgetProvider {
     }
 
     private void showThrowable(@NotNull Throwable throwable, @NonNull Context context) {
-        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
     }
 
     private void setDataToView(PortfolioInfoForView portfolioInfoForView, Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
