@@ -27,7 +27,7 @@ import static by.popkov.cryptoportfolio.repositories.settings_repository.Setting
 public class SettingsFragment extends Fragment {
     public static final String TAG = "SettingsFragment";
     private Optional<OnHomeClickListener> onHomeClickListenerOptional = Optional.empty();
-    private Optional<OnUpdateCoinListListener> onUpdateCoinListListenerOptional = Optional.empty();
+    private Optional<OnUpdatePortfolioListener> onUpdateCoinListListenerOptional = Optional.empty();
     private Context context;
     private SettingsFragmentViewModel settingsFragmentViewModel;
 
@@ -35,8 +35,8 @@ public class SettingsFragment extends Fragment {
     private RadioGroup selectedSortType;
     private ImageButton homeBtn;
 
-    public interface OnUpdateCoinListListener {
-        void onUpdateCoinList();
+    public interface OnUpdatePortfolioListener {
+        void onUpdatePortfolio();
     }
 
     @NotNull
@@ -51,8 +51,8 @@ public class SettingsFragment extends Fragment {
         if (context instanceof OnHomeClickListener) {
             onHomeClickListenerOptional = Optional.of((OnHomeClickListener) context);
         }
-        if (context instanceof OnUpdateCoinListListener) {
-            onUpdateCoinListListenerOptional = Optional.of((OnUpdateCoinListListener) context);
+        if (context instanceof OnUpdatePortfolioListener) {
+            onUpdateCoinListListenerOptional = Optional.of((OnUpdatePortfolioListener) context);
         }
     }
 
@@ -112,7 +112,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveSortSetting(SUM_SORT);
                     break;
             }
-            onUpdateCoinListListenerOptional.ifPresent(OnUpdateCoinListListener::onUpdateCoinList);
+            onUpdateCoinListListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
         });
     }
 
@@ -179,7 +179,7 @@ public class SettingsFragment extends Fragment {
                     settingsFragmentViewModel.saveFiatSetting(ETH);
                     break;
             }
-            onUpdateCoinListListenerOptional.ifPresent(OnUpdateCoinListListener::onUpdateCoinList);
+            onUpdateCoinListListenerOptional.ifPresent(OnUpdatePortfolioListener::onUpdatePortfolio);
         });
     }
 

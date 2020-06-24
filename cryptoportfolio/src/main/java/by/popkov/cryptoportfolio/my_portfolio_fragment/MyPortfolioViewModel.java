@@ -82,7 +82,7 @@ class MyPortfolioViewModel extends AndroidViewModel {
         return portfolioInfoForViewMutableLiveData;
     }
 
-    void updateCoinList() {
+    void updatePortfolioData() {
         setIsLoadingLiveData(true);
         try {
             List<Coin> currentCoinListDatabase = databaseRepository.getCoinListFuture().get();

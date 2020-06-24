@@ -118,12 +118,12 @@ public class MyPortfolioFragment extends Fragment {
     private void setSwipeRefreshLayoutListener() {
         refreshLayout.setOnRefreshListener(() -> {
             refreshLayout.setRefreshing(false);
-            updateCoinList();
+            updatePortfolioData();
         });
     }
 
-    public void updateCoinList() {
-        myPortfolioViewModel.updateCoinList();
+    public void updatePortfolioData() {
+        myPortfolioViewModel.updatePortfolioData();
     }
 
     private void setSearchCoinListener() {
