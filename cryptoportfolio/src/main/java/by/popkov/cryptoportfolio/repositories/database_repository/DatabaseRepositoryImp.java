@@ -44,9 +44,9 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public LiveData<Coin> getCoinLiveData(String symbol) {
+    public LiveData<Coin> getCoinLiveData(String id) {
         if (coinEntityLiveData == null) {
-            coinEntityLiveData = coinDao.getCoinLiveData(symbol);
+            coinEntityLiveData = coinDao.getCoinLiveData(id);
         }
         return Transformations.map(coinEntityLiveData, input -> mapper.apply(input));
     }
@@ -60,8 +60,8 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public Future<Coin> getCoin(String symbol) {
-        return executorService.submit(() -> mapper.apply(coinDao.getCoin(symbol)));
+    public Future<Coin> getCoin(String id) {
+        return executorService.submit(() -> mapper.apply(coinDao.getCoin(id)));
     }
 
     @Override
@@ -73,8 +73,8 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
     }
 
     @Override
-    public Observable<Coin> getCoinObservable(String symbol) {
-        return coinDao.getCoinObservable(symbol).map(mapper::apply);
+    public Observable<Coin> getCoinObservable(String id) {
+        return coinDao.getCoinObservable(id).map(mapper::apply);
     }
 
     @Override

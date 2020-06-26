@@ -13,9 +13,9 @@ public interface DatabaseRepository {
     LiveData<List<Coin>> getCoinListLiveData();
     Future<List<Coin>> getCoinListFuture();
     Observable<List<Coin>> getCoinListObservable();
-    LiveData<Coin> getCoinLiveData(String symbol);
-    Future <Coin> getCoin(String symbol);
-    Observable<Coin> getCoinObservable(String symbol);
+    LiveData<Coin> getCoinLiveData(String id);
+    Future <Coin> getCoin(String id);
+    Observable<Coin> getCoinObservable(String id);
     void addNewCoin(final Coin coin);
     void deleteCoin(final Coin coin);
     void updateCoin(final Coin coin);

@@ -66,7 +66,7 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     void refreshCoinData() {
         setIsLoadingLiveData(true);
         try {
-            Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getSymbol()).get();
+            Coin currentCoinDatabase = databaseRepository.getCoin(coinForView.getId()).get();
             apiRepository.getCoin(currentCoinDatabase, settingsRepository.getFiatSetting())
                     .observeOn(AndroidSchedulers.mainThread())
                     .map(coin -> mapper.apply(coin))
@@ -79,7 +79,7 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     @SuppressLint("CheckResult")
     private void connectToRepo() {
         setIsLoadingLiveData(true);
-        databaseRepository.getCoinObservable(coinForView.getSymbol()).observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+        databaseRepository.getCoinObservable(coinForView.getId()).observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
                 .subscribe(
                         coin -> apiRepository.getCoin(coin, settingsRepository.getFiatSetting())
                                 .map(coin1 -> mapper.apply(coin1))

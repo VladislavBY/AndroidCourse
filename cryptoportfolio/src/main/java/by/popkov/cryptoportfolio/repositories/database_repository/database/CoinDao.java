@@ -24,14 +24,14 @@ public interface CoinDao {
     @Query("SELECT * FROM coin")
     Observable<List<CoinEntity>> getAllObservable();
 
-    @Query("SELECT * FROM coin WHERE symbol =:symbol")
-    LiveData<CoinEntity> getCoinLiveData(String symbol);
+    @Query("SELECT * FROM coin WHERE id =:id")
+    LiveData<CoinEntity> getCoinLiveData(String id);
 
-    @Query("SELECT * FROM coin WHERE symbol =:symbol")
-    CoinEntity getCoin(String symbol);
+    @Query("SELECT * FROM coin WHERE id =:id")
+    CoinEntity getCoin(String id);
 
-    @Query("SELECT * FROM coin WHERE symbol =:symbol")
-    Observable<CoinEntity> getCoinObservable(String symbol);
+    @Query("SELECT * FROM coin WHERE id =:id")
+    Observable<CoinEntity> getCoinObservable(String id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CoinEntity coinEntity);
