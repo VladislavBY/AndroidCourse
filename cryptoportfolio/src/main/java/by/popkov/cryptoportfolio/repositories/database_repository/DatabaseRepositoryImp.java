@@ -79,16 +79,16 @@ public class DatabaseRepositoryImp implements DatabaseRepository {
 
     @Override
     public void addNewCoin(Coin coin) {
-        executorService.execute(() -> coinDao.insert(new CoinEntity(coin.getSymbol(), coin.getNumber())));
+        executorService.execute(() -> coinDao.insert(new CoinEntity(coin.getId(), coin.getSymbol(), coin.getNumber())));
     }
 
     @Override
     public void deleteCoin(Coin coin) {
-        executorService.execute(() -> coinDao.delete(new CoinEntity(coin.getSymbol(), coin.getNumber())));
+        executorService.execute(() -> coinDao.delete(new CoinEntity(coin.getId(), coin.getSymbol(), coin.getNumber())));
     }
 
     @Override
     public void updateCoin(Coin coin) {
-        executorService.execute(() -> coinDao.update(new CoinEntity(coin.getSymbol(), coin.getNumber())));
+        executorService.execute(() -> coinDao.update(new CoinEntity(coin.getId(), coin.getSymbol(), coin.getNumber())));
     }
 }

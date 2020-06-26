@@ -104,10 +104,10 @@ class CoinInfoFragmentViewModel extends AndroidViewModel {
     }
 
     void updateCoin(Double number) {
-        databaseRepository.updateCoin(new Coin.Builder(coinForView.getSymbol(), number).build());
+        databaseRepository.updateCoin(new Coin.Builder(coinForView.getId(), coinForView.getSymbol(), number).build());
     }
 
     void deleteCoin() {
-        databaseRepository.deleteCoin(new Coin.Builder(coinForView.getSymbol(), 0.0).build());
+        databaseRepository.deleteCoin(new Coin.Builder(coinForView.getId(), coinForView.getSymbol(), 0.0).build());
     }
 }

@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 import by.popkov.cryptoportfolio.domain.Coin;
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepository;
 import by.popkov.cryptoportfolio.repositories.database_repository.DatabaseRepository;
@@ -34,7 +36,7 @@ class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
         if (number == null || number.isEmpty()) {
             number = "0.0";
         }
-        Coin coinToCheck = new Coin.Builder(symbol.toUpperCase().trim(), Double.valueOf(number)).build();
+        Coin coinToCheck = new Coin.Builder(UUID.randomUUID().toString() ,symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coinToCheck, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coin -> databaseRepository.addNewCoin(coinToCheck), this::showThrowable);

@@ -10,6 +10,6 @@ import by.popkov.cryptoportfolio.repositories.database_repository.database.CoinE
 public class CoinMapper implements Function<CoinEntity, Coin> {
     @Override
     public Coin apply(@NotNull CoinEntity input) {
-        return new Coin.Builder(input.getSymbol(), input.getNumber()).build();
+        return new Coin.Builder(input.getId(), input.getSymbol(), input.getNumber()).build();
     }
 }
