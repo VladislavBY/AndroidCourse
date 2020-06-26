@@ -36,7 +36,7 @@ class AddNewCoinDialogFragmentViewModel extends AndroidViewModel {
         if (number == null || number.isEmpty()) {
             number = "0.0";
         }
-        Coin coinToCheck = new Coin.Builder(UUID.randomUUID().toString() ,symbol.toUpperCase().trim(), Double.valueOf(number)).build();
+        Coin coinToCheck = new Coin.Builder(UUID.randomUUID().toString(), symbol.toUpperCase().trim(), Double.valueOf(number)).build();
         apiRepository.getCoin(coinToCheck, settingsRepository.getFiatSetting())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(coin -> databaseRepository.addNewCoin(coinToCheck), this::showThrowable);
