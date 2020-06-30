@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 public class AddContactActivity extends AppCompatActivity {
     public static final String EXTRA_CONTACT_FOR_ADD = "EXTRA_CONTACT_FOR_ADD";
@@ -55,54 +53,45 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     private void setRadioButtonEmailListener() {
-        radioButtonEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextPhoneNumberOrEmail.setHint(R.string.email);
-                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-            }
+        radioButtonEmail.setOnClickListener(v -> {
+            editTextPhoneNumberOrEmail.setHint(R.string.email);
+            editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         });
     }
 
     private void setRadioButtonPhoneNumberListener() {
-        radioButtonPhoneNumber.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
-                editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
-            }
+        radioButtonPhoneNumber.setOnClickListener(v -> {
+            editTextPhoneNumberOrEmail.setHint(R.string.phone_number);
+            editTextPhoneNumberOrEmail.setInputType(InputType.TYPE_CLASS_PHONE);
         });
     }
 
     private void setButtonAddListener() {
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Contact contact = null;
-                String name = editTextName.getText().toString();
-                String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
-                if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
-                    if (radioButtonEmail.isChecked()) {
-                        contact = new Contact(Contact.Type.EMAIL, name, phoneNumberOrEmail);
-                    } else if (radioButtonPhoneNumber.isChecked()) {
-                        contact = new Contact(Contact.Type.PHONE, name, phoneNumberOrEmail);
-                    }
-                    Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
-                    if (contact != null) {
-                        result.putExtra(EXTRA_CONTACT_FOR_ADD, contact);
-                        setResult(RESULT_OK, result);
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(AddContactActivity.this, R.string.input_data_please, Toast.LENGTH_LONG)
-                            .show();
+        buttonAdd.setOnClickListener(v -> {
+            Contact contact = null;
+            String name = editTextName.getText().toString();
+            String phoneNumberOrEmail = editTextPhoneNumberOrEmail.getText().toString();
+            if (!name.trim().isEmpty() && !phoneNumberOrEmail.trim().isEmpty()) {
+                if (radioButtonEmail.isChecked()) {
+                    contact = new Contact(Contact.Type.EMAIL, name, phoneNumberOrEmail);
+                } else if (radioButtonPhoneNumber.isChecked()) {
+                    contact = new Contact(Contact.Type.PHONE, name, phoneNumberOrEmail);
                 }
+                Intent result = new Intent(AddContactActivity.this, ContactsActivity.class);
+                if (contact != null) {
+                    result.putExtra(EXTRA_CONTACT_FOR_ADD, contact);
+                    setResult(RESULT_OK, result);
+                    finish();
+                }
+            } else {
+                Toast.makeText(AddContactActivity.this, R.string.input_data_please, Toast.LENGTH_LONG)
+                        .show();
             }
         });
     }
 
     private void setToolBar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        setSupportActionBar(findViewById(R.id.toolBar));
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);

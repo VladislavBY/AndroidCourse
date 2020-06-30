@@ -10,18 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 
 public class ContactsActivity extends AppCompatActivity {
@@ -29,9 +25,8 @@ public class ContactsActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FOR_EDIT = 1111;
     private static final String CONTACT_ITEM_LIST = "contactItemList";
     private static final String CONTACT_ITEM_LIST_FULL = "contactItemListFull";
-    private static final String CONTACT_DATABASE = "ContactDatabase";
 
-    private ContactDatabase contactDatabase;
+    private volatile ContactDatabase contactDatabase;
     private RecyclerView contactsRecyclerView;
     private ContactListAdapter adapter;
 
@@ -47,8 +42,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void connectContactDatabase() {
-        contactDatabase = Room.databaseBuilder(this, ContactDatabase.class, CONTACT_DATABASE)
-                .build();
+        contactDatabase = ContactDatabase.getInstance(this);
     }
 
     private void initContactsRecyclerView(Bundle savedInstanceState) {
@@ -70,36 +64,30 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void contactsFromDatabase() {
-        CompletableFuture.supplyAsync(new Supplier<ArrayList<Contact>>() {
-            @Override
-            public ArrayList<Contact> get() {
-                final ArrayList<Contact> result = new ArrayList<>();
-                for (ContactEntity contactEntity : contactDatabase.getContactDao().loadAllContacts()) {
-                    Contact contact;
-                    if (contactEntity.getType().equals(Contact.Type.EMAIL.name())) {
-                        contact = new Contact(
-                                Contact.Type.EMAIL,
-                                contactEntity.getName(),
-                                contactEntity.getData()
-                        );
-                    } else {
-                        contact = new Contact(
-                                Contact.Type.PHONE,
-                                contactEntity.getName(),
-                                contactEntity.getData()
-                        );
-                    }
-                    contact.setId(contactEntity.getId());
-                    result.add(contact);
+        CompletableFuture.supplyAsync(() -> {
+            final ArrayList<Contact> result = new ArrayList<>();
+            for (ContactEntity contactEntity : contactDatabase.getContactDao().loadAllContacts()) {
+                Contact contact;
+                if (contactEntity.getType().equals(Contact.Type.EMAIL.name())) {
+                    contact = new Contact(
+                            Contact.Type.EMAIL,
+                            contactEntity.getName(),
+                            contactEntity.getData()
+                    );
+                } else {
+                    contact = new Contact(
+                            Contact.Type.PHONE,
+                            contactEntity.getName(),
+                            contactEntity.getData()
+                    );
                 }
-                return result;
+                contact.setId(contactEntity.getId());
+                result.add(contact);
             }
-        }).thenAcceptAsync(new Consumer<ArrayList<Contact>>() {
-            @Override
-            public void accept(ArrayList<Contact> contacts) {
-                adapter.setContactLists(contacts);
-                visibleSwitcher(contacts.size());
-            }
+            return result;
+        }, contactDatabase.getExecutorService()).thenAcceptAsync(contacts -> {
+            adapter.setContactLists(contacts);
+            visibleSwitcher(contacts.size());
         }, ContextCompat.getMainExecutor(ContactsActivity.this));
     }
 
@@ -112,18 +100,10 @@ public class ContactsActivity extends AppCompatActivity {
     private void setSearchViewListener() {
         final TextView textViewHead = findViewById(R.id.textViewHead);
         SearchView searchView = findViewById(R.id.searchView);
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                textViewHead.setVisibility(View.INVISIBLE);
-            }
-        });
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                textViewHead.setVisibility(View.VISIBLE);
-                return false;
-            }
+        searchView.setOnSearchClickListener(v -> textViewHead.setVisibility(View.INVISIBLE));
+        searchView.setOnCloseListener(() -> {
+            textViewHead.setVisibility(View.VISIBLE);
+            return false;
         });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -141,29 +121,19 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void setFloatingActionButtonAddContactListener() {
         FloatingActionButton floatingActionButtonAddContact = findViewById(R.id.floatingActionButtonAddContact);
-        floatingActionButtonAddContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(AddContactActivity
-                        .newIntent(ContactsActivity.this), REQUEST_CODE_FOR_ADD);
-            }
-        });
+        floatingActionButtonAddContact.setOnClickListener(v -> startActivityForResult(AddContactActivity
+                .newIntent(ContactsActivity.this), REQUEST_CODE_FOR_ADD));
     }
 
     private void setItemListenerWithData() {
-        adapter.setItemListenerWithData(new ContactListAdapter.ItemListenerWithData() {
-            @Override
-            public void onClick(Contact oldContact) {
-                startActivityForResult(
-                        EditContactActivity.newIntent(ContactsActivity.this, oldContact),
-                        REQUEST_CODE_FOR_EDIT
-                );
-            }
-        });
+        adapter.setItemListenerWithData(oldContact -> startActivityForResult(
+                EditContactActivity.newIntent(ContactsActivity.this, oldContact),
+                REQUEST_CODE_FOR_EDIT
+        ));
     }
 
     private void setToolBar() {
-        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
+        setSupportActionBar(findViewById(R.id.toolBar));
     }
 
     @Override
@@ -199,47 +169,33 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void addContactToDatabase(final Contact contact) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                contactDatabase.getContactDao().insertContact(
-                        new ContactEntity.Builder(contact.getId())
-                                .setType(contact.getType().name())
-                                .setName(contact.getName())
-                                .setData(contact.getData())
-                                .setImageID(contact.getImageID())
-                                .build()
-                );
-            }
-        }).start();
+        contactDatabase.getExecutorService().execute(() -> {
+                    ContactEntity contactEntity = new ContactEntity(contact.getId());
+                    contactEntity.setType(contact.getType().name());
+                    contactEntity.setName(contact.getName());
+                    contactEntity.setData(contact.getData());
+                    contactEntity.setImageID(contact.getImageID());
+                    contactDatabase.getContactDao().insertContact(contactEntity);
+                }
+        );
     }
 
     private void updateContactToDatabase(final Contact contact) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                contactDatabase.getContactDao().updateContact(
-                        new ContactEntity.Builder(contact.getId())
-                                .setType(contact.getType().name())
-                                .setName(contact.getName())
-                                .setData(contact.getData())
-                                .setImageID(contact.getImageID())
-                                .build()
-                );
-            }
-        }).start();
+        contactDatabase.getExecutorService().execute(() -> {
+                    ContactEntity contactEntity = new ContactEntity(contact.getId());
+                    contactEntity.setType(contact.getType().name());
+                    contactEntity.setName(contact.getName());
+                    contactEntity.setData(contact.getData());
+                    contactEntity.setImageID(contact.getImageID());
+                    contactDatabase.getContactDao().updateContact(contactEntity);
+                }
+        );
     }
 
     private void deleteContactFromDatabase(final Contact contact) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                contactDatabase.getContactDao().deleteContact(
-                        new ContactEntity.Builder(contact.getId())
-                                .build()
-                );
-            }
-        }).start();
+        contactDatabase.getExecutorService().execute(
+                () -> contactDatabase.getContactDao().deleteContact(new ContactEntity(contact.getId()))
+        );
     }
 
     private void visibleSwitcher(int fullItemCount) {
