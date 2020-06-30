@@ -1,0 +1,28 @@
+package by.popkov.homework9.city_database;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import java.util.List;
+
+@Dao
+public interface CityDao {
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertCity(CityEntity... cityEntity);
+
+    @Delete
+    void deleteCity(CityEntity... cityEntity);
+
+    @Update
+    void updateCity(CityEntity... cityEntity);
+
+    @Query("SELECT * FROM CityEntity")
+    List<CityEntity> loadAllCity();
+
+    @Query("SELECT * FROM CityEntity WHERE name = :cityName")
+    CityEntity loadCity(String cityName);
+}

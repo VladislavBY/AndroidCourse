@@ -1,6 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/layout_background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/defaultMargin">
+
+            <Toolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/homeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/tool_bar_background"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:src="@drawable/ic_arrow_back40dp"
+                        android:tint="@color/tool_bar_element_color"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/toolBarTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/coin_info_tool_bar"
+                        android:textColor="@color/tool_bar_element_color"
+                        android:textSize="@dimen/toolBarTextViewSize"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/homeBtn"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </Toolbar>
+
+            <ImageView
+                android:id="@+id/coinIcon"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
+                android:layout_marginTop="@dimen/defaultMargin"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolBar"
+                tools:src="@drawable/ic_account_balance_wallet_black_24dp" />
+
+            <TextView
+                android:id="@+id/coinSymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinIcon"
+                tools:text="BTC" />
+
+            <View
+                android:id="@+id/coinNumberDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinSymbol" />
+
+            <TextView
+                android:id="@+id/coinNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/my_coins"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinNumberDivider" />
+
+            <TextView
+                android:id="@+id/coinNumberData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinNumberDivider"
+                tools:text="103.33$" />
+
+            <View
+                android:id="@+id/coinSumDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinNumberData" />
+
+            <TextView
+                android:id="@+id/coinSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/my_coins_sum"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinSumDivider" />
+
+            <TextView
+                android:id="@+id/coinSumData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinSumDivider"
+                tools:text="103.33$" />
+
+            <View
+                android:id="@+id/coinChangeSum24HourDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinSumData" />
+
+            <TextView
+                android:id="@+id/coinChangeSum24Hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/change_24h"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinChangeSum24HourDivider" />
+
+            <TextView
+                android:id="@+id/coinChangeSum24HourData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinChangeSum24HourDivider"
+                tools:text="103.33$" />
+
+            <View
+                android:id="@+id/coinPriseDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinChangeSum24HourData" />
+
+            <TextView
+                android:id="@+id/coinPrise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/prise"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinPriseDivider" />
+
+            <TextView
+                android:id="@+id/coinPriseData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinPriseDivider"
+                tools:text="9323821.23$" />
+
+            <View
+                android:id="@+id/coinChangePercent24HourDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinPriseData" />
+
+            <TextView
+                android:id="@+id/coinChangePercent24Hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/change_24_hour_prc"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinChangePercent24HourDivider" />
+
+            <TextView
+                android:id="@+id/coinChangePercent24HourData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinChangePercent24HourDivider"
+                tools:text="100.99%" />
+
+            <View
+                android:id="@+id/coinChange24HourDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinChangePercent24Hour" />
+
+            <TextView
+                android:id="@+id/coinChange24Hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/change_24_hour"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinChange24HourDivider" />
+
+            <TextView
+                android:id="@+id/coinChange24HourData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinChange24HourDivider"
+                tools:text="103.33$" />
+
+            <View
+                android:id="@+id/coinMarketCapDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinChange24Hour" />
+
+            <TextView
+                android:id="@+id/coinMarketCap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/market_cap"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinMarketCapDivider" />
+
+            <TextView
+                android:id="@+id/coinMarketCapData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinMarketCapDivider"
+                tools:text="103.33$" />
+
+            <View
+                android:id="@+id/coinMarket24VolumeDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinMarketCap" />
+
+            <TextView
+                android:id="@+id/coinMarket24Volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/volume"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinMarket24VolumeDivider" />
+
+            <TextView
+                android:id="@+id/coinMarket24VolumeData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinMarket24VolumeDivider"
+                tools:text="103.33$" />
+
+            <View
+                android:id="@+id/coinGlobalSupplyDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@color/divider_color"
+                app:layout_constraintTop_toBottomOf="@id/coinMarket24Volume" />
+
+            <TextView
+                android:id="@+id/coinGlobalSupply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:text="@string/supply"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinGlobalSupplyDivider" />
+
+            <TextView
+                android:id="@+id/coinGlobalSupplyData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinGlobalSupplyDivider"
+                tools:text="103.33$" />
+
+            <Button
+                android:id="@+id/editBtn"
+                android:layout_width="160dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginTop="@dimen/defaultMargin"
+                android:background="@drawable/button_background_red"
+                android:backgroundTint="@color/edit_btn_color"
+                android:text="@string/edit_btn"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinGlobalSupply" />
+
+            <Button
+                android:id="@+id/deleteBtn"
+                android:layout_width="160dp"
+                android:layout_height="62dp"
+                android:layout_marginStart="@dimen/defaultMargin"
+                android:layout_marginTop="@dimen/defaultMargin"
+                android:layout_marginEnd="@dimen/defaultMargin"
+                android:background="@drawable/button_background_red"
+                android:backgroundTint="@color/delete_btn_color"
+                android:text="@string/delete_btn"
+                android:textSize="@dimen/coinInfoTextSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coinGlobalSupply" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

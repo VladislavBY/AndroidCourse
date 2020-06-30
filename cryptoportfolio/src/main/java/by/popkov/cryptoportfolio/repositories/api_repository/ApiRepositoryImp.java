@@ -1,48 +1,62 @@
 package by.popkov.cryptoportfolio.repositories.api_repository;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
-import by.popkov.cryptoportfolio.Coin;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import by.popkov.cryptoportfolio.domain.Coin;
+import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class ApiRepositoryImp implements ApiRepository {
+    public static final String USD = "USD";
+    public static final String EUR = "EUR";
+    public static final String RUB = "RUB";
+    public static final String GBP = "GBP";
+    public static final String JPY = "JPY";
+    public static final String KRW = "KRW";
+    public static final String BYN = "BYN";
+    public static final String BTC = "BTC";
+    public static final String ETH = "ETH";
+
     private static final String API_KEY = "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=%s&tsyms=%s";
     private OkHttpClient okHttpClient = new OkHttpClient();
 
-    @Override
-    public void getCoinsList(List<String> symbols, List<Double> numbers, String fiatSymbol, Consumer<List<Coin>> onSuccess, Consumer<Throwable> onError) {
-        final Request request = makeRequestFromList(symbols, fiatSymbol);
-        Observable.create((ObservableOnSubscribe<Response>) emitter ->
-                emitter.onNext(okHttpClient.newCall(request).execute()))
-                .subscribeOn(Schedulers.io())
-                .map(Response::body)
-                .map(responseBody -> ConverterJsonToCoin.toCoinList(symbols, numbers, fiatSymbol, responseBody.string()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onSuccess);
+    public ApiRepositoryImp() {
     }
 
     @Override
-    public void getCoin(String symbol, Double number, String fiatSymbol, Consumer<Coin> onSuccess, Consumer<Throwable> onError) {
+    public @NonNull Observable<List<Coin>> getCoinsList(List<Coin> rawCoinList, String fiatSymbol) {
+        final Request request = makeRequestFromList(rawCoinList, fiatSymbol);
+        return Observable.create((ObservableOnSubscribe<Response>) emitter ->
+                emitter.onNext(okHttpClient.newCall(request).execute()))
+                .subscribeOn(Schedulers.io())
+                .map(Response::body)
+                .map(responseBody -> ConverterJsonToCoin.toCoinList(rawCoinList, fiatSymbol, responseBody.string()));
+    }
+
+    @Override
+    public @NonNull Observable<Coin> getCoin(@NotNull Coin rawCoin, String fiatSymbol) {
         Request request = new Request.Builder()
-                .url(String.format(API_KEY, symbol, fiatSymbol))
+                .url(String.format(API_KEY, rawCoin.getSymbol(), fiatSymbol))
                 .build();
-        Observable.create((ObservableOnSubscribe<Response>) emitter ->
+        return Observable.create((ObservableOnSubscribe<Response>) emitter ->
                 emitter.onNext(okHttpClient.newCall(request).execute()))
                 .subscribeOn(Schedulers.io())
                 .map(Response::body)
-                .map(responseBody -> ConverterJsonToCoin.toCoin(symbol, number, fiatSymbol, responseBody.string()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(coin -> onSuccess.accept(coin));
+                .map(responseBody -> ConverterJsonToCoin.toCoin(rawCoin, fiatSymbol, responseBody.string()));
     }
 
-    private Request makeRequestFromList(List<String> symbols, String fiatSymbol) {
+    @NotNull
+    private Request makeRequestFromList(@NotNull List<Coin> rawCoinList, String fiatSymbol) {
+        ArrayList<String> symbols = new ArrayList<>();
+        rawCoinList.forEach(coin -> symbols.add(coin.getSymbol()));
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < symbols.size(); i++) {
             if (i == 0) {
