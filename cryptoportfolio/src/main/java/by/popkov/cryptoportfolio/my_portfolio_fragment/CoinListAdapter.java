@@ -1,8 +1,10 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.my_portfolio_fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,50 +13,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
-public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHolder> {
+public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHolder> implements Filterable {
 
     public interface OnCoinListClickListener {
+
         void onItemClick(CoinForView coinForView);
     }
 
     private OnCoinListClickListener onCoinListClickListener;
 
     private List<CoinForView> itemList = new ArrayList<>();
-
-    void addCoin(CoinForView coinForView) {
-        itemList.add(coinForView);
-        notifyDataSetChanged();
-    }
-
-    void deleteCoin(CoinForView coinForView) {
-        CoinForView oldCoin = itemList.stream()
-                .filter(coin -> coin.getSymbol().equals(coinForView.getSymbol()))
-                .findFirst()
-                .orElse(null);
-        itemList.remove(oldCoin);
-        notifyDataSetChanged();
-    }
-
-    void updateCoin(CoinForView coinForView) {
-        CoinForView oldCoin = itemList.stream()
-                .filter(coin -> coin.getSymbol().equals(coinForView.getSymbol()))
-                .findFirst()
-                .orElse(null);
-        int indexOfOldCoin = itemList.indexOf(oldCoin);
-        itemList.remove(indexOfOldCoin);
-        itemList.add(indexOfOldCoin, coinForView);
-        notifyDataSetChanged();
-    }
+    private List<CoinForView> itemListFull = new ArrayList<>();
 
     void setCoinItemList(List<CoinForView> listCoinForView) {
         itemList.clear();
         itemList.addAll(listCoinForView);
+        itemListFull.clear();
+        itemListFull.addAll(listCoinForView);
         notifyDataSetChanged();
     }
 
@@ -83,8 +66,11 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
         return (itemList != null) ? itemList.size() : 0;
     }
 
+
     static class ItemHolder extends RecyclerView.ViewHolder {
+
         private ImageView coinIcon;
+
         private TextView coinSymbol;
         private TextView coinPrise;
         private TextView coinPrise24HChange;
@@ -100,7 +86,7 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             itemView.setOnClickListener(v -> onCoinListClickListener.onItemClick(itemList.get(ItemHolder.this.getAdapterPosition())));
         }
 
-        private void bindItem(CoinForView coinForView) {
+        private void bindItem(@NotNull CoinForView coinForView) {
             Glide.with(itemView.getContext())
                     .load(coinForView.getLogoUrl())
                     .into(coinIcon);
@@ -110,5 +96,38 @@ public class CoinListAdapter extends RecyclerView.Adapter<CoinListAdapter.ItemHo
             coinPrise24HChange.setTextColor(coinForView.getChange24Color());
             coinPriseSum.setText(coinForView.getSum());
         }
+
+    }
+
+    private Filter contactFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<CoinForView> filteredContactItemList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredContactItemList.addAll(itemListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (CoinForView coin : itemListFull) {
+                    if (coin.getSymbol().toLowerCase().contains(filterPattern)) {
+                        filteredContactItemList.add(coin);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredContactItemList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            itemList.clear();
+            itemList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    @Override
+    public Filter getFilter() {
+        return contactFilter;
     }
 }

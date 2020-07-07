@@ -1,5 +1,7 @@
 package by.popkov.cryptoportfolio.utils;
 
+import androidx.annotation.NonNull;
+
 import by.popkov.cryptoportfolio.repositories.api_repository.ApiRepositoryImp;
 
 public class ShortSymbolConverter {
@@ -14,7 +16,7 @@ public class ShortSymbolConverter {
     private static final String BTC_SYMBOL_SHORT = "Ƀ";
     private static final String ETH_SYMBOL_SHORT = "Ξ";
 
-    public static String getShortSymbol(String symbol) {
+    public static String getShortSymbol(@NonNull String symbol) {
         if (symbol == null) return "null";
         switch (symbol) {
             case ApiRepositoryImp.USD:

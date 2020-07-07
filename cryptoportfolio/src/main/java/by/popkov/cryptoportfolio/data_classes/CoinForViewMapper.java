@@ -1,5 +1,7 @@
 package by.popkov.cryptoportfolio.data_classes;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
 import java.util.function.Function;
 
@@ -10,10 +12,10 @@ public class CoinForViewMapper implements Function<Coin, CoinForView> {
     private static final String numberFormat = "%.2f";
 
     @Override
-    public CoinForView apply(Coin coin) {
+    public CoinForView apply(@NotNull Coin coin) {
         Locale locale = Locale.getDefault();
         String shortSymbol = ShortSymbolConverter.getShortSymbol(coin.getFiatSymbol());
-        CoinForView.Builder builder = new CoinForView.Builder(coin.getSymbol());
+        CoinForView.Builder builder = new CoinForView.Builder(coin.getId(), coin.getSymbol());
         builder.setLogoUrl(coin.getLogoUrl())
                 .setFiatSymbol(coin.getFiatSymbol())
                 .setPrise(String.format(locale, numberFormat, coin.getPrise()) + shortSymbol)

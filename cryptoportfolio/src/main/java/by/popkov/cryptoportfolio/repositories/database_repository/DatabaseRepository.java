@@ -7,12 +7,15 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import by.popkov.cryptoportfolio.domain.Coin;
+import io.reactivex.Observable;
 
 public interface DatabaseRepository {
     LiveData<List<Coin>> getCoinListLiveData();
     Future<List<Coin>> getCoinListFuture();
-    LiveData<Coin> getCoinLiveData(String symbol);
-    Future <Coin> getCoin(String symbol);
+    Observable<List<Coin>> getCoinListObservable();
+    LiveData<Coin> getCoinLiveData(String id);
+    Future <Coin> getCoin(String id);
+    Observable<Coin> getCoinObservable(String id);
     void addNewCoin(final Coin coin);
     void deleteCoin(final Coin coin);
     void updateCoin(final Coin coin);

@@ -3,9 +3,9 @@ package by.popkov.cryptoportfolio.domain;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
 public class Coin {
+    @NonNull
+    private String id;
     @NonNull
     private String symbol;
     @NonNull
@@ -26,6 +26,11 @@ public class Coin {
     private Double marketCap;
     @Nullable
     private Double market24Volume;
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
 
     @NonNull
     public String getSymbol() {
@@ -78,17 +83,19 @@ public class Coin {
     }
 
     private Coin(
+            @NonNull String id,
             @NonNull String symbol,
             @Nullable String logoUrl,
             @Nullable String fiatSymbol,
             @Nullable Double prise,
             @Nullable Double changePercent24Hour,
             @Nullable Double change24Hour,
-            @NotNull Double number,
+            @NonNull Double number,
             @Nullable Double globalSupply,
             @Nullable Double marketCap,
             @Nullable Double market24Volume
     ) {
+        this.id = id;
         this.symbol = symbol;
         this.logoUrl = logoUrl;
         this.fiatSymbol = fiatSymbol;
@@ -102,6 +109,8 @@ public class Coin {
     }
 
     public static class Builder {
+        @NonNull
+        private String id;
         @NonNull
         private String symbol;
         @NonNull
@@ -163,7 +172,8 @@ public class Coin {
             return this;
         }
 
-        public Builder(@NotNull String symbol, @NonNull Double number) {
+        public Builder(@NonNull String id, @NonNull String symbol, @NonNull Double number) {
+            this.id = id;
             this.symbol = symbol;
             this.number = number;
         }
@@ -171,6 +181,7 @@ public class Coin {
         @NonNull
         public Coin build() {
             return new Coin(
+                    id,
                     symbol,
                     logoUrl,
                     fiatSymbol,

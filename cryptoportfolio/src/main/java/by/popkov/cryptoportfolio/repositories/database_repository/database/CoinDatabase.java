@@ -15,6 +15,8 @@ public abstract class CoinDatabase extends RoomDatabase {
     static private volatile CoinDatabase INSTANCE;
     private static final String CITY_DATABASE_NAME = "db_coin";
     private static final int CORE_NUMBER = Runtime.getRuntime().availableProcessors();
+    private ExecutorService executorService = Executors.newFixedThreadPool(CORE_NUMBER);
+
 
     public static CoinDatabase getInstance(@NonNull final Context context) {
         if (INSTANCE == null) {
@@ -28,11 +30,9 @@ public abstract class CoinDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(CORE_NUMBER);
+    public abstract CoinDao getCoinDao();
 
     public ExecutorService getExecutorService() {
         return executorService;
     }
-
-    public abstract CoinDao getCoinDao();
 }

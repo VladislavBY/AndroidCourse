@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.coin_info_view;
+package by.popkov.cryptoportfolio.coin_info_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +29,7 @@ import by.popkov.cryptoportfolio.OnHomeClickListener;
 import by.popkov.cryptoportfolio.R;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 
-public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewModel.ShowThrowable {
+public class CoinInfoFragment extends Fragment {
     public static final String TAG = "CoinInfoFragment";
     private static final String EXTRA_COIN_FOR_VIEW = "ExtraCoinForView";
 
@@ -62,12 +61,6 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         CoinInfoFragment coinInfoFragment = new CoinInfoFragment();
         coinInfoFragment.setArguments(bundle);
         return coinInfoFragment;
-    }
-
-    @Override
-    public void show(Throwable throwable) {
-        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        loadSwitcher(false);
     }
 
     @Override
@@ -148,20 +141,19 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
 
     private void setSwipeRefreshLayout() {
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            coinInfoFragmentViewModel.refreshCoinData(this);
+            coinInfoFragmentViewModel.refreshCoinData();
             swipeRefreshLayout.setRefreshing(false);
-            loadSwitcher(true);
         });
     }
 
     private void initViewModel() {
-        coinInfoFragmentViewModel = new ViewModelProvider(this, new CoinInfoFragmentViewModelFactory(extractCoinForView(), context))
-                .get(CoinInfoFragmentViewModel.class);
-        coinInfoFragmentViewModel.connectToRepo(getViewLifecycleOwner(), this);
-        coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), coinForView -> {
-            this.setViewsData(coinForView);
-            loadSwitcher(false);
-        });
+        if (getActivity() != null) {
+            coinInfoFragmentViewModel = new ViewModelProvider(this,
+                    new CoinInfoFragmentViewModelFactory(extractCoinForView(), getActivity().getApplication(), context))
+                    .get(CoinInfoFragmentViewModel.class);
+            coinInfoFragmentViewModel.getCoinForViewLiveData().observe(getViewLifecycleOwner(), this::setViewsData);
+            coinInfoFragmentViewModel.getIsLoadingLiveData().observe(getViewLifecycleOwner(), this::loadSwitcher);
+        }
     }
 
     private CoinForView extractCoinForView() {
@@ -171,7 +163,7 @@ public class CoinInfoFragment extends Fragment implements CoinInfoFragmentViewMo
         throw new IllegalArgumentException("Not found CoinForView in Arguments");
     }
 
-    private void setViewsData(CoinForView coinForView) {
+    private void setViewsData(@NotNull CoinForView coinForView) {
         Glide.with(this)
                 .load(coinForView.getLogoUrl())
                 .into(coinIcon);

@@ -44,10 +44,6 @@ public class PortfolioInfoWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    private void showThrowable(@NotNull Throwable throwable, @NonNull Context context) {
-        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-    }
-
     private void setData(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         ApiRepository apiRepository = new ApiRepositoryImp();
         DatabaseRepository databaseRepository = new DatabaseRepositoryImp(context, new CoinMapper());
@@ -68,6 +64,10 @@ public class PortfolioInfoWidgetProvider extends AppWidgetProvider {
                 showThrowable(e.getCause(), context);
             }
         }
+    }
+
+    private void showThrowable(@NotNull Throwable throwable, @NonNull Context context) {
+        throwable.printStackTrace();
     }
 
     private void setDataToView(PortfolioInfoForView portfolioInfoForView, Context context, AppWidgetManager appWidgetManager, int appWidgetId) {

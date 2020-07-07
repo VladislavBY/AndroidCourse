@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.settings_view;
+package by.popkov.cryptoportfolio.settings_fragment;
 
 import androidx.lifecycle.ViewModel;
 
@@ -19,4 +19,11 @@ class SettingsFragmentViewModel extends ViewModel {
         settingsRepository.saveFiatSetting(fiatSymbol);
     }
 
+    String getSortSettings() {
+        return settingsRepository.getSortSetting();
+    }
+
+    void saveSortSetting(String sortType) {
+        settingsRepository.saveSortSetting(sortType);
+    }
 }

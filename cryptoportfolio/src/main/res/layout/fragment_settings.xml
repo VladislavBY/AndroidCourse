@@ -3,12 +3,12 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/layout_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/layout_background">
+        android:layout_height="wrap_content">
 
         <Toolbar
             android:id="@+id/toolBar"
@@ -43,26 +43,77 @@
                     android:textSize="@dimen/toolBarTextViewSize"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/homeBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </Toolbar>
 
         <TextView
-            android:id="@+id/selectToFiat"
+            android:id="@+id/selectSortType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/defaultMargin"
-            android:text="@string/select_symbol_to_convert"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginTop="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
+            android:text="@string/select_sort_type"
             android:textSize="@dimen/settingsTextSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
         <RadioGroup
+            android:id="@+id/selectedSortType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectSortType">
+
+            <RadioButton
+                android:id="@+id/sortByAddTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/settingsSymbolPadding"
+                android:text="@string/by_add_time"
+                android:textSize="@dimen/settingsTextSize" />
+
+            <RadioButton
+                android:id="@+id/sortByAlphabet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/settingsSymbolPadding"
+                android:text="@string/by_alphabet"
+                android:textSize="@dimen/settingsTextSize" />
+
+            <RadioButton
+                android:id="@+id/sortBySum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/settingsSymbolPadding"
+                android:text="@string/by_sum"
+                android:textSize="@dimen/settingsTextSize" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/selectToFiat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/defaultMargin"
+
+            android:layout_marginEnd="@dimen/defaultMargin"
+            android:text="@string/select_symbol_to_convert"
+            android:textSize="@dimen/settingsTextSize"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectedSortType" />
+
+        <RadioGroup
             android:id="@+id/selectedSymbol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/defaultMargin"
+            android:layout_marginStart="@dimen/defaultMargin"
+            android:layout_marginEnd="@dimen/defaultMargin"
+            android:layout_marginBottom="@dimen/defaultMargin"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/selectToFiat">
 

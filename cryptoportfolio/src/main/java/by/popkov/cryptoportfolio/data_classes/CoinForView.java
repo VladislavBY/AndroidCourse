@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public class CoinForView implements Serializable {
     @NonNull
+    private String id;
+    @NonNull
     private String symbol;
     @Nullable
     private String logoUrl;
@@ -31,6 +33,11 @@ public class CoinForView implements Serializable {
     private String marketCap;
     @Nullable
     private String market24Volume;
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
 
     @NonNull
     public String getSymbol() {
@@ -98,6 +105,7 @@ public class CoinForView implements Serializable {
     }
 
     private CoinForView(
+            @NonNull String id,
             @NonNull String symbol,
             @Nullable String logoUrl,
             @Nullable String fiatSymbol,
@@ -112,6 +120,7 @@ public class CoinForView implements Serializable {
             @Nullable String marketCap,
             @Nullable String market24Volume
     ) {
+        this.id = id;
         this.symbol = symbol;
         this.logoUrl = logoUrl;
         this.fiatSymbol = fiatSymbol;
@@ -128,6 +137,8 @@ public class CoinForView implements Serializable {
     }
 
     public static class Builder {
+        @NonNull
+        private String id;
         @NonNull
         private String symbol;
         @Nullable
@@ -154,7 +165,8 @@ public class CoinForView implements Serializable {
         @Nullable
         private String market24Volume;
 
-        public Builder(@NonNull String symbol) {
+        public Builder(@NonNull String id, @NonNull String symbol) {
+            this.id = id;
             this.symbol = symbol;
         }
 
@@ -220,6 +232,7 @@ public class CoinForView implements Serializable {
 
         public CoinForView build() {
             return new CoinForView(
+                    id,
                     symbol,
                     logoUrl,
                     fiatSymbol,
@@ -236,6 +249,4 @@ public class CoinForView implements Serializable {
             );
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-package by.popkov.cryptoportfolio.my_portfolio_view;
+package by.popkov.cryptoportfolio.my_portfolio_fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,33 +21,29 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import java.util.Optional;
 
 import by.popkov.cryptoportfolio.R;
+import by.popkov.cryptoportfolio.add_new_coin_dialog_fragment.AddNewCoinDialogFragment;
 import by.popkov.cryptoportfolio.data_classes.CoinForView;
 import by.popkov.cryptoportfolio.data_classes.PortfolioInfoForView;
 
-public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFragment.AddNewCoinDialogListener,
-        MyPortfolioViewModel.ShowThrowable {
+public class MyPortfolioFragment extends Fragment {
     public interface OnSettingsBtnClickListener {
         void onClickSettings();
     }
 
-    @Override
-    public void show(Throwable throwable) {
-        Toast.makeText(context, throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        loadSwitcher(false);
-    }
-
-    @Override
-    public void OnPositiveButtonClick(String symbol, String number) {
-        myPortfolioViewModel.saveCoin(symbol, number, this);
-    }
-
     public static String TAG = "MyPortfolioFragment";
+
     private Context context;
     private MyPortfolioViewModel myPortfolioViewModel;
+    private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
+    private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
+    private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
+
     private RecyclerView coinListRecyclerView;
     private FloatingActionButton addCoinFab;
     private ImageButton settingsImageButton;
@@ -56,11 +52,13 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
     private TextView change24TextView;
     private SwipeRefreshLayout refreshLayout;
     private ProgressBar progressBar;
-
     private TextView portfolioIsEmpty;
-    private Optional<CoinListAdapter.OnCoinListClickListener> onCoinListClickListenerOptional = Optional.empty();
-    private Optional<OnSettingsBtnClickListener> onSettingsBtnClickListenerOptional = Optional.empty();
-    private Optional<CoinListAdapter> coinListAdapterOptional = Optional.empty();
+    private SearchView searchCoin;
+
+    @NotNull
+    public static MyPortfolioFragment getInstance() {
+        return new MyPortfolioFragment();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -88,15 +86,15 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         initViewModel();
     }
 
-    private void setSwipeRefreshLayoutListener() {
-        refreshLayout.setOnRefreshListener(() -> {
-            myPortfolioViewModel.updateCoinList(this);
-            refreshLayout.setRefreshing(false);
-            loadSwitcher(true);
-        });
+    private void initRecyclerView(@NotNull View view) {
+        coinListRecyclerView = view.findViewById(R.id.coinListRecyclerView);
+        onCoinListClickListenerOptional.ifPresent(onCoinListClickListener ->
+                coinListRecyclerView.setAdapter(new CoinListAdapter(onCoinListClickListener)));
+        coinListRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        coinListAdapterOptional = Optional.ofNullable((CoinListAdapter) coinListRecyclerView.getAdapter());
     }
 
-    private void initViews(View view) {
+    private void initViews(@NotNull View view) {
         addCoinFab = view.findViewById(R.id.addCoinFab);
         settingsImageButton = view.findViewById(R.id.settingsImageButton);
         sumTextView = view.findViewById(R.id.sumTextView);
@@ -105,17 +103,76 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         portfolioIsEmpty = view.findViewById(R.id.portfolioIsEmpty);
         refreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         progressBar = view.findViewById(R.id.progressBar);
+        searchCoin = view.findViewById(R.id.searchCoin);
         setBtnListeners();
         setSwipeRefreshLayoutListener();
+        setSearchCoinListener();
     }
 
     private void setBtnListeners() {
-        addCoinFab.setOnClickListener(v -> new AddNewCoinDialogFragment().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
+        addCoinFab.setOnClickListener(v -> AddNewCoinDialogFragment.getInstance().show(getChildFragmentManager(), AddNewCoinDialogFragment.TAG));
         onSettingsBtnClickListenerOptional.ifPresent(onSettingsBtnClickListener ->
                 settingsImageButton.setOnClickListener(v -> onSettingsBtnClickListener.onClickSettings()));
     }
 
-    private void portfolioIsEmptyVisibleSwitcher(List<CoinForView> coinForViewList) {
+    private void setSwipeRefreshLayoutListener() {
+        refreshLayout.setOnRefreshListener(() -> {
+            refreshLayout.setRefreshing(false);
+            updatePortfolioData();
+        });
+    }
+
+    public void updatePortfolioData() {
+        myPortfolioViewModel.updatePortfolioData();
+    }
+
+    private void setSearchCoinListener() {
+        searchCoin.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                myPortfolioViewModel.setValueSearchViewQueryLiveData(newText);
+                return false;
+            }
+        });
+    }
+
+    private void initViewModel() {
+        if (getActivity() != null) {
+            LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
+            myPortfolioViewModel = new ViewModelProvider(
+                    this, new MyPortfolioViewModelFactory(getActivity().getApplication(), context))
+                    .get(MyPortfolioViewModel.class);
+            myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {
+                        coinListAdapterOptional.ifPresent(coinListAdapter -> {
+                            coinListAdapter.setCoinItemList(coinForViews);
+                            coinListAdapter.getFilter().filter(myPortfolioViewModel.getSearchViewQueryViewLiveData().getValue());
+                        });
+                        portfolioIsEmptyVisibleSwitcher(coinForViews);
+                    }
+            );
+            myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
+                    this::setPortfolioViewData
+            );
+            myPortfolioViewModel.getSearchViewQueryViewLiveData().observe(viewLifecycleOwner,
+                    s -> coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.getFilter().filter(s)));
+            myPortfolioViewModel.getIsLoadingLiveData().observe(viewLifecycleOwner, this::loadSwitcher);
+        }
+    }
+
+    private void setPortfolioViewData(@NotNull PortfolioInfoForView portfolioInfoForView) {
+        sumTextView.setText(portfolioInfoForView.getSum());
+        change24PrsTextView.setText(portfolioInfoForView.getChangePercent24Hour());
+        change24PrsTextView.setTextColor(portfolioInfoForView.getChange24Color());
+        change24TextView.setText(portfolioInfoForView.getChange24Hour());
+        change24TextView.setTextColor(portfolioInfoForView.getChange24Color());
+    }
+
+    private void portfolioIsEmptyVisibleSwitcher(@NotNull List<CoinForView> coinForViewList) {
         if (coinForViewList.isEmpty()) {
             portfolioIsEmpty.setVisibility(View.VISIBLE);
             sumTextView.setVisibility(View.INVISIBLE);
@@ -129,45 +186,10 @@ public class MyPortfolioFragment extends Fragment implements AddNewCoinDialogFra
         }
     }
 
-    private void initRecyclerView(View view) {
-        coinListRecyclerView = view.findViewById(R.id.coinListRecyclerView);
-        onCoinListClickListenerOptional.ifPresent(onCoinListClickListener ->
-                coinListRecyclerView.setAdapter(new CoinListAdapter(onCoinListClickListener)));
-        coinListRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-        coinListAdapterOptional = Optional.ofNullable((CoinListAdapter) coinListRecyclerView.getAdapter());
-    }
-
     private void loadSwitcher(boolean isLoading) {
         if (isLoading) {
             progressBar.setVisibility(View.VISIBLE);
         } else progressBar.setVisibility(View.GONE);
-    }
-
-    private void initViewModel() {
-        if (getActivity() != null) {
-            LifecycleOwner viewLifecycleOwner = getViewLifecycleOwner();
-            myPortfolioViewModel = new ViewModelProvider(
-                    this, new MyPortfolioViewModelFactory(context))
-                    .get(MyPortfolioViewModel.class);
-            myPortfolioViewModel.connectToRepo(viewLifecycleOwner, this);
-            myPortfolioViewModel.getCoinForViewListLiveData().observe(viewLifecycleOwner, coinForViews -> {
-                        coinListAdapterOptional.ifPresent(coinListAdapter -> coinListAdapter.setCoinItemList(coinForViews));
-                        portfolioIsEmptyVisibleSwitcher(coinForViews);
-                        loadSwitcher(false);
-                    }
-            );
-            myPortfolioViewModel.getPortfolioInfoForViewLiveData().observe(viewLifecycleOwner,
-                    this::setPortfolioViewData
-            );
-        }
-    }
-
-    private void setPortfolioViewData(PortfolioInfoForView portfolioInfoForView) {
-        sumTextView.setText(portfolioInfoForView.getSum());
-        change24PrsTextView.setText(portfolioInfoForView.getChangePercent24Hour());
-        change24PrsTextView.setTextColor(portfolioInfoForView.getChange24Color());
-        change24TextView.setText(portfolioInfoForView.getChange24Hour());
-        change24TextView.setTextColor(portfolioInfoForView.getChange24Color());
     }
 
     @Override

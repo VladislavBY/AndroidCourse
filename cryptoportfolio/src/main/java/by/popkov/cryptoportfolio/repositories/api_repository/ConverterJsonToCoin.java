@@ -57,7 +57,7 @@ class ConverterJsonToCoin {
 
     @NotNull
     private static Coin getCoin(@NonNull String fiatSymbol, @NotNull String symbol, @NotNull JSONObject fiat, @NotNull Coin rawCoin) throws JSONException {
-        return new Coin.Builder(symbol, rawCoin.getNumber())
+        return new Coin.Builder(rawCoin.getId(), symbol, rawCoin.getNumber())
                 .setLogoUrl("https://www.cryptocompare.com" + fiat.getString("IMAGEURL"))
                 .setFiatSymbol(fiatSymbol)
                 .setPrise(fiat.getDouble("PRICE"))
